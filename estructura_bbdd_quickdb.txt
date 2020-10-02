@@ -1,0 +1,49 @@
+Bonificacion 
+- 
+cod int PK 
+cliente Cliente FK >- Cliente.dni 
+nombre String 
+descripcion String 
+ 
+Cliente 
+- 
+dni String PK 
+nombre String 
+apellidos String 
+edad int 
+profesión String # Trabajador, estudiante, jubilado 
+contrasenya String 
+ 
+Empleado 
+- 
+dni String PK 
+nombre String 
+primerApellido String 
+fechaNac Date 
+fechaContratacion Date 
+nacionalidad String 
+cargo String 
+contrasenya String 
+ 
+Visita 
+- 
+cod int PK 
+guia Empleado FK >- Empleado.dni 
+nombre String 
+numMaxClientes int 
+puntoPartida String 
+cursoAcademico String 
+fecha Datetime 
+duracionEstimada float 
+tematica String 
+coste float 
+ 
+VisitasClientes 
+- 
+cliente Cliente PK FK >- Cliente.dni 
+visita Visita PK FK >- Visita.cod 
+
+BonificacionesVisita
+-
+bonificacion Bonificacion PK FK >- Bonificacion.cod
+visita Visita PK FK >- Visita.cod
