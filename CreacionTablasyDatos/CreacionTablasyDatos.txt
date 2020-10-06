@@ -1,1 +1,0 @@
-Copiad aquí todos los CREATE TABLE e INSERT INTO que hagáis para luego ir copiando y pegando a cada BBDD :)

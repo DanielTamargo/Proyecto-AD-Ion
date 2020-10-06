@@ -21,46 +21,69 @@ CREATE TABLE CLIENTE (
 	);
 	
 CREATE TABLE VISITA (
-	cod INT(5) PRIMARY KEY NOT NULL,
+	cod INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	guia INT(9),
 	nombre VARCHAR(45),
 	numMaxClientes INT(3),
 	puntoPartida VARCHAR(100),
-	anyo DATE,
 	fecha DATETIME,
+	anyo INT(4),
 	duracionEstimada FLOAT,
 	tematica VARCHAR(45),
 	coste FLOAT,	
 	CONSTRAINT 'fk_empleados_visita' FOREIGN KEY (guia) REFERENCES EMPLEADO (dni) ON DELETE CASCADE
 );
 
-
 CREATE TABLE VISITACLIENTE (
-	cliente VARCHAR(9) PRIMARY KEY NOT NULL,
-	visita INT(5) PRIMARY KEY NOT NULL,
+	cliente VARCHAR(9) NOT NULL,
+	visita INT(5) NOT NULL,
+	CONSTRAINT 'fk_visCli_PKvisCli' PRIMARY KEY (cliente, visita), 
 	CONSTRAINT 'fk_visitaCliente_cliente' FOREIGN KEY (cliente) REFERENCES CLIENTE (dni) ON DELETE CASCADE,
 	CONSTRAINT 'fk_visitaCliente_visita' FOREIGN KEY (visita) REFERENCES VISITA (cod) ON DELETE CASCADE
 );
 
-
+-- Por ahora no hace falta rellenar esta tabla con datos (a priori no añadiremos el tema de las bonificaciones)
 CREATE TABLE BONIFICACION (
-	cod INT(5) PRIMARY KEY NOT NULL,
+	cod INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	cliente VARCHAR(9) NOT NULL,
 	nombre VARCHAR(45),
 	descripcion VARCHAR(200),
 	CONSTRAINT 'fk_cliente_bonificacion' FOREIGN KEY (cliente) REFERENCES CLIENTE (dni) ON DELETE CASCADE
 );
 
+-- Por ahora no hace falta rellenar esta tabla con datos (a priori no añadiremos el tema de las bonificaciones)
 CREATE TABLE BONIFICACIONESVISITA (
-	bonificacion INT(5) PRIMARY KEY NOT NULL,
-	visita INT(5) PRIMARY KEY NOT NULL,
+	bonificacion INT(5) NOT NULL,
+	visita INT(5) NOT NULL,
+	CONSTRAINT 'pk_bonVis_PKbonVis' PRIMARY KEY (bonificacion, visita),
 	CONSTRAINT 'fk_bonificacion_bonificacionesVisita' FOREIGN KEY (bonificacion) REFERENCES BONIFICACION (cod) ON DELETE CASCADE,
 	CONSTRAINT 'fk_visita_bonificacionesVisita' FOREIGN KEY (visita) REFERENCES VISITA (cod) ON DELETE CASCADE
 );
 
+-- AUTOINCREMENT en SQLite = rowid // BD4O = controlarlo desde Java (recoger último objeto y sumarle 1 y fuera)
+
+-- No hace falta rellenarlas con datos, ya cuando preparemos la app de Java generamos registros en un momento
+CREATE TABLE REGISTROSCLIENTE (
+	cod INT (10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	cliente VARCHAR(9) NOT NULL,
+	fecha DATETIME NOT NULL,
+	registro VARCHAR(100) NOT NULL, -- 'Ha iniciado sesión' 'Se ha inscrito en la actividad 9' etc etc etc
+	CONSTRAINT 'fk_cliente_regisCli' FOREIGN KEY (cliente) REFERENCES CLIENTE (dni) ON DELETE CASCADE
+);
+
+-- No hace falta rellenarlas con datos, ya cuando preparemos la app de Java generamos registros en un momento
+CREATE TABLE REGISTROSEMPLEADO (
+	cod INT (10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	empleado VARCHAR(9) NOT NULL,
+	fecha DATETIME NOT NULL,
+	registro VARCHAR(100) NOT NULL, -- 'Ha iniciado sesión' 'Se ha inscrito en la actividad 9' etc etc etc
+	CONSTRAINT 'fk_empleado_regisEmple' FOREIGN KEY (empleado) REFERENCES EMPLEADO (dni) ON DELETE CASCADE
+);
 
 ////////////---------- DELETES -----------////////////
 
+DROP TABLE REGISTROSEMPLEADO;
+DROP TABLE REGISTROSCLIENTE;
 DROP TABLE BONIFICACIONESVISITA;
 DROP TABLE VISITACLIENTE;
 DROP TABLE BONIFICACION;
@@ -69,6 +92,7 @@ DROP TABLE EMPLEADO;
 DROP TABLE CLIENTE;
 
 ////////////---------- INSERTS -----------////////////
+-- Cada agencia tendrá sus datos. Algunos ejempos:
 INSERT INTO EMPLEADO VALUES ('34678765G', 'Violeta', 'Bicardi', 34, 'Arquitecta', 'abcdfxi34');
 INSERT INTO EMPLEADO VALUES ('56789432W', 'Diego', 'Jimenez', 22, 'Estudiante', '1234abcd');
 INSERT INTO EMPLEADO VALUES ('22347812Q', 'Julen', 'Olarizu', 28, 'Administrativo', '12345Abc');
