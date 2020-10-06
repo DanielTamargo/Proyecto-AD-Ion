@@ -31,8 +31,7 @@ cod int PK
 guia Empleado FK >- Empleado.dni 
 nombre String 
 numMaxClientes int 
-puntoPartida String 
-cursoAcademico String 
+puntoPartida String
 fecha Datetime 
 duracionEstimada float 
 tematica String 
