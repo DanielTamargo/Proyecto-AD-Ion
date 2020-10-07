@@ -22,7 +22,7 @@ CREATE TABLE CLIENTE (
 	
 CREATE TABLE VISITA (
 	cod INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	guia INT(9),
+	guia VARCHAR(9),
 	nombre VARCHAR(45),
 	numMaxClientes INT(3),
 	puntoPartida VARCHAR(100),
