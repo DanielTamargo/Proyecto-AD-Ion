@@ -26,7 +26,7 @@ CREATE TABLE VISITA (
 	nombre VARCHAR(45),
 	numMaxClientes INT(3),
 	puntoPartida VARCHAR(100),
-	fecha DATETIME,
+	fecha DATE,
 	anyo INT(4),
 	duracionEstimada FLOAT,
 	tematica VARCHAR(45),
