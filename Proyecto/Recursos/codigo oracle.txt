@@ -1,0 +1,6 @@
+Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            Connection conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "grupo3", "grupo3");
+            Statement sentencia = conexion.createStatement();
+            ResultSet resul = null;
+            DatabaseMetaData dbmd = conexion.getMetaData();//
