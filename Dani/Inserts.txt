@@ -1,0 +1,1 @@
+INSERT INTO empleado VALUES ('54907646E', 'Andrea', 'González', 10/01/1997, 23/09/1995, 'Española', 'Guía', 'test'); 
