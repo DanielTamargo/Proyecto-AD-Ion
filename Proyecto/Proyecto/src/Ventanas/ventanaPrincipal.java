@@ -13,6 +13,56 @@ public class ventanaPrincipal {
 
     public void ventanaInicio() {
 
+    oracleButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("holoa");
+            JFrame frame = new JFrame("VentaSecundaria");
+            frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
+            frame.pack();
+            frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        }
+
+    });
+    MYSQLButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("hola");
+            JFrame frame = new JFrame("Venta Secundaria");
+            frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+        }
+    });
+    DB4OButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFrame frame = new JFrame("Venta Secundaria");
+            frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+        }
+    });
+
+
+
+
+
+    SQLiteButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFrame frame = new JFrame();
+            frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setVisible(true);
+        }
+    });
+
 
     }
     public static void main(String[] args) {
