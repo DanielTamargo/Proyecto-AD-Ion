@@ -1,9 +1,11 @@
-package com.company;
+package com.company.Modelo;
+
+import java.sql.Date;
 
 public class Visita {
 
     private int cod;
-    private Empleado empleado;
+    private Empleado guia;
     private String nombre;
     private int numMaxClientes;
     private String puntoPartida;
@@ -16,10 +18,10 @@ public class Visita {
     public Visita() {
     }
 
-    public Visita(int cod, Empleado empleado, String nombre, int numMaxClientes, String puntoPartida,
-                  Date fecha, int anyo, float duracionEstimada, String tematica, float coste) {
+    public Visita(int cod, Empleado guia, String nombre, int numMaxClientes, String puntoPartida, Date fecha,
+                  int anyo, float duracionEstimada, String tematica, float coste) {
         this.cod = cod;
-        this.empleado = empleado;
+        this.guia = guia;
         this.nombre = nombre;
         this.numMaxClientes = numMaxClientes;
         this.puntoPartida = puntoPartida;
@@ -38,13 +40,9 @@ public class Visita {
         this.cod = cod;
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
-    }
+    public Empleado getGuia() { return guia; }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
-    }
+    public void setGuia(Empleado guia) { this.guia = guia; }
 
     public String getNombre() {
         return nombre;

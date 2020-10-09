@@ -1,4 +1,6 @@
-package com.company;
+package com.company.Modelo;
+
+import java.sql.Date;
 
 public class RegistroEmpleado {
 
