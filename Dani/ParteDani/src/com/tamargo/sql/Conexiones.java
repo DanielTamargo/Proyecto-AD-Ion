@@ -43,7 +43,7 @@ public class Conexiones {
 
         Connection conexion = null;
         try {
-            Class.forName("org.sqlite.JDBC");
+            Class.forName("org.sqlite.JDBC"); // TODO hay que cambiar esta conexión
             conexion = DriverManager.getConnection("jdbc:sqlite:sqlite.db");
         } catch (SQLException | ClassNotFoundException throwables) {
             mostrarErrorAlConectar(2);
@@ -69,7 +69,6 @@ public class Conexiones {
         }
         return conexion;
     }
-
 
     /**
      * Reutilizaremos este método con los 3 métodos de las conexiones
