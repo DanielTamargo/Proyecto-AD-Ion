@@ -6,18 +6,24 @@ Generador DNIs: https://generadordni.es/#dni
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// EMPLEADOS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-- Guías:
-INSERT INTO empleados VALUES ('54907646E', 'Andrea', 'González', 10/01/1997, 23/09/1995, 'Española', 'Guía', 'test'); 
 
-- ????
+INSERT INTO empleados VALUES ('54907646E', 'Andrea', 'González', '1997-03-05', '2019-09-23', 'Española', 'Guía', 'test');
+INSERT INTO empleados VALUES ('60563277E', 'Chris', 'Heria', '1999-05-21', '2019-09-25', 'Española', 'Guía', 'test'); 
+INSERT INTO empleados VALUES ('77484057R', 'Paula', 'Moreno', '2000-01-01', '2019-10-10', 'Colombiana', 'Guía', 'test'); 
+INSERT INTO empleados VALUES ('84084189F', 'Elena', 'Moreno', '2000-01-01', '2019-10-10', 'Colombiana', 'Guía', 'test'); 
+INSERT INTO empleados VALUES ('14679664Y', 'Iñigo', 'Orive', '1995-08-17', '2019-11-19', 'Española', 'Guía', 'test');
 
-- Admins:
+INSERT INTO empleados VALUES ('51298783C', 'Irune', 'Stavinski', '1997-01-02', '2019-08-20', 'Rusa', 'RRHH', 'test');
+INSERT INTO empleados VALUES ('90032473P', 'Ander', 'Zugasti', '1993-08-05', '2019-11-19', 'Española', 'RRHH', 'test');
+INSERT INTO empleados VALUES ('88139440J', 'Gorka', 'Alda', '1994-12-30', '2019-11-23', 'Española', 'RRHH', 'test');
 
+INSERT INTO empleados VALUES ('72831820C', 'Daniel', 'Tamargo', '1995-09-23', '2019-07-20', 'Española', 'Administrador', 'test');
+INSERT INTO empleados VALUES ('99613328Y', 'Verigis', 'Lena', '1995-02-01', '2019-09-14', 'Japonesa', 'Administrador', 'test');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// CLIENTES
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-INSERT INTO clientes VALUES (
+INSERT INTO clientes VALUES ('20993742D', 'Raúl
 
 
 
