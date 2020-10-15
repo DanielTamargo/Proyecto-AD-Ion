@@ -14,6 +14,7 @@ public class ventanaPrincipal {
     // TODO los listeners dentro del constructor vacío de la ventana
     public ventanaPrincipal() {
 
+
         oracleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,4 +70,6 @@ public class ventanaPrincipal {
         frame.setContentPane(new ventanaPrincipal().VentanaPrincipal);
         frame.pack();
         frame.setVisible(true);
-    }}
+    }
+
+}
