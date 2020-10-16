@@ -19,6 +19,13 @@ public class VentanaSecundaria {
     private JTextField textField6;
 
     public VentanaSecundaria(JFrame frame) {
+        añadirButton.setIcon(new ImageIcon("Assets/plus.png"));
+        editarButton.setIcon(new ImageIcon("Assets/edit.png"));
+        eliminarButton.setIcon(new ImageIcon("Assets/delete.png"));
+        clienteButton.setIcon(new ImageIcon("Assets/cliente.png"));
+        empleadoButton.setIcon(new ImageIcon("Assets/empleado.png"));
+
+
 
     }
 

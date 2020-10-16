@@ -13,12 +13,13 @@ public class ventanaPrincipal {
 
     // TODO los listeners dentro del constructor vacío de la ventana
     public ventanaPrincipal() {
-
+        oracleButton.setIcon(new ImageIcon("Assets/oracle.png"));
+        MYSQLButton.setIcon(new ImageIcon("Assets/mysql.png"));
+        SQLiteButton.setIcon(new ImageIcon("Assets/sqlite.png"));
 
         oracleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("hola");
                 JFrame frame = new JFrame("VentaSecundaria");
                 frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
                 frame.pack();
@@ -31,7 +32,6 @@ public class ventanaPrincipal {
         MYSQLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("hola");
                 JFrame frame = new JFrame("Venta Secundaria");
                 frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
                 frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

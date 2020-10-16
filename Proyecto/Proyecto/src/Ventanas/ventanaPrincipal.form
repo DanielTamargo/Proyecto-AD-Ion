@@ -68,7 +68,7 @@
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="SQLite"/>
+                          <text value=""/>
                         </properties>
                       </component>
                       <component id="e7885" class="javax.swing.JLabel">
@@ -76,7 +76,7 @@
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Label"/>
+                          <text value="SQLite Tours"/>
                         </properties>
                       </component>
                     </children>
@@ -94,7 +94,7 @@
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Oracle"/>
+                          <text value=""/>
                         </properties>
                       </component>
                       <component id="2c968" class="javax.swing.JLabel">
@@ -102,7 +102,7 @@
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Label"/>
+                          <text value="Oracle Tours"/>
                           <verticalAlignment value="0"/>
                         </properties>
                       </component>
@@ -129,7 +129,7 @@
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Label"/>
+                          <text value="DB4O Tours"/>
                         </properties>
                       </component>
                     </children>
@@ -147,7 +147,7 @@
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="MYSQL"/>
+                          <text value=""/>
                         </properties>
                       </component>
                       <component id="3f35c" class="javax.swing.JLabel">
@@ -155,7 +155,7 @@
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Label"/>
+                          <text value="MYSQL Tours"/>
                         </properties>
                       </component>
                     </children>
