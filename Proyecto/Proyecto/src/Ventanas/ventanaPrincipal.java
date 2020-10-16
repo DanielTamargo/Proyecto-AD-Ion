@@ -16,6 +16,7 @@ public class ventanaPrincipal {
         oracleButton.setIcon(new ImageIcon("Assets/oracle.png"));
         MYSQLButton.setIcon(new ImageIcon("Assets/mysql.png"));
         SQLiteButton.setIcon(new ImageIcon("Assets/sqlite.png"));
+        DB4OButton.setIcon(new ImageIcon("Assets/db4o.png"));
 
         oracleButton.addActionListener(new ActionListener() {
             @Override
