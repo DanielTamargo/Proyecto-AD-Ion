@@ -34,6 +34,9 @@ public class VentanaSecundaria {
     private JLabel AELLIDOlbl;
     private JLabel Contraseñalbl;
     private JLabel NombreListaLbl;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
 
     public VentanaSecundaria(JFrame frame) {
         añadirButton.setIcon(new ImageIcon("Assets/plus.png"));
