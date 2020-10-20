@@ -34,9 +34,34 @@ public class VentanaSecundaria {
     private JLabel AELLIDOlbl;
     private JLabel Contraseñalbl;
     private JLabel NombreListaLbl;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
+    private JButton nuevaButton;
+    private JButton editarButton1;
+    private JButton eliminarButton1;
+    private JList list1;
+    private JTextField textField1;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextField textField6;
+    private JTextField textField7;
+    private JTextField textField8;
+    private JComboBox comboBox1;
+    private JComboBox comboBox2;
+    private JButton guardarButton1;
+    private JButton eliminarButton2;
+    private JButton guardarButton;
+    private JButton eliminarButton3;
+    private JList list2;
+    private JTextField textField2;
+    private JTextField textField5;
+    private JTextField textField9;
+    private JTextField textField10;
+    private JTextField textField11;
+    private JTextField textField12;
+    private JTextField textField13;
+    private JTextField textField14;
+    private JButton realizarReservaButton;
+    private JTextField textField15;
+    private JButton aceptarButton;
 
     public VentanaSecundaria(JFrame frame) {
         añadirButton.setIcon(new ImageIcon("Assets/plus.png"));
