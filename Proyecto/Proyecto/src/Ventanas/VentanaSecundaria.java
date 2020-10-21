@@ -34,9 +34,9 @@ public class VentanaSecundaria {
     private JLabel AELLIDOlbl;
     private JLabel Contraseñalbl;
     private JLabel NombreListaLbl;
-    private JButton nuevaButton;
-    private JButton editarButton1;
-    private JButton eliminarButton1;
+    private JButton nuevaVisitaButton;
+    private JButton editarVisitaButton;
+    private JButton eliminarVisitaButton;
     private JList list1;
     private JTextField textField1;
     private JTextField textField3;
@@ -44,12 +44,7 @@ public class VentanaSecundaria {
     private JTextField textField6;
     private JTextField textField7;
     private JTextField textField8;
-    private JComboBox comboBox1;
     private JComboBox comboBox2;
-    private JButton guardarButton1;
-    private JButton eliminarButton2;
-    private JButton guardarButton;
-    private JButton eliminarButton3;
     private JList list2;
     private JTextField textField2;
     private JTextField textField5;
@@ -60,16 +55,19 @@ public class VentanaSecundaria {
     private JTextField textField13;
     private JTextField textField14;
     private JButton realizarReservaButton;
-    private JTextField textField15;
     private JButton aceptarButton;
+    private JSpinner spinner1;
+    private JButton misVisitasButton;
 
     public VentanaSecundaria(JFrame frame) {
-        añadirButton.setIcon(new ImageIcon("Assets/plus.png"));
-        editarButton.setIcon(new ImageIcon("Assets/edit.png"));
+        añadirButton.setIcon(new ImageIcon("Assets/añadir.png"));
+        editarButton.setIcon(new ImageIcon("Assets/save.png"));
         eliminarButton.setIcon(new ImageIcon("Assets/delete.png"));
         clienteButton.setIcon(new ImageIcon("Assets/cliente.png"));
         empleadoButton.setIcon(new ImageIcon("Assets/empleado.png"));
-//Ocultamos todos los campos
+        nuevaVisitaButton.setIcon(new ImageIcon("Assets/nuevaVisita.png"));
+
+//Ocultamos todos los campos ventana RRHH
         DNI.setVisible(false);
         EDAD.setVisible(false);
         PROFESION.setVisible(false);
@@ -90,9 +88,9 @@ public class VentanaSecundaria {
         NOMBRElbl.setVisible(false);
         AELLIDOlbl.setVisible(false);
         Contraseñalbl.setVisible(false);
-        listaList.setVisible(false);
-        NombreListaLbl.setVisible(false);
-
+        listaList.setVisible(true);
+        NombreListaLbl.setVisible(true);
+//Acciones ventana RRHH
         clienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -177,6 +175,8 @@ public class VentanaSecundaria {
 
             }
         });
+        //Acciones ventanas guía
+
 
     }
 

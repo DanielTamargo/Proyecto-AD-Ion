@@ -10,6 +10,16 @@ public class ventanaPrincipal {
     private JButton MYSQLButton;
     private JButton SQLiteButton;
     private JPanel VentanaPrincipal;
+    private JPanel informacion;
+    private JButton infoButton;
+    private JLabel telefonolbl;
+    private JLabel telefonolbl2;
+    private JLabel telefonolbl3;
+    private JLabel telefonolbl4;
+    private JLabel direccionlbl;
+    private JLabel direccionlbl2;
+    private JLabel direccionlbl3;
+    private JLabel direccionlbl4;
 
     // TODO los listeners dentro del constructor vacío de la ventana
     public ventanaPrincipal() {
@@ -17,6 +27,16 @@ public class ventanaPrincipal {
         MYSQLButton.setIcon(new ImageIcon("Assets/mysql.png"));
         SQLiteButton.setIcon(new ImageIcon("Assets/sqlite.png"));
         DB4OButton.setIcon(new ImageIcon("Assets/db4o.png"));
+        infoButton.setIcon(new ImageIcon("Assets/info.png"));
+        telefonolbl.setIcon(new ImageIcon("Assets/telefono.png"));
+        telefonolbl2.setIcon(new ImageIcon("Assets/telefono.png"));
+        telefonolbl3.setIcon(new ImageIcon("Assets/telefono.png"));
+        telefonolbl4.setIcon(new ImageIcon("Assets/telefono.png"));
+        direccionlbl.setIcon(new ImageIcon("Assets/direccion.png"));
+        direccionlbl2.setIcon(new ImageIcon("Assets/direccion.png"));
+        direccionlbl3.setIcon(new ImageIcon("Assets/direccion.png"));
+        direccionlbl4.setIcon(new ImageIcon("Assets/direccion.png"));
+        informacion.setVisible(false);
 
         oracleButton.addActionListener(new ActionListener() {
             @Override
@@ -62,6 +82,12 @@ public class ventanaPrincipal {
                 frame.setVisible(true);
             }
         });
+        infoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                informacion.setVisible(true);
+            }
+        });
 
     }
 
@@ -73,4 +99,7 @@ public class ventanaPrincipal {
         frame.setVisible(true);
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
