@@ -28,7 +28,7 @@ public class Empleado {
         this.contrasenya = contrasenya;
     }
 
-    @Override
+    @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
     public String toString() {
         return "Empleado{" +
                 "dni='" + dni + '\'' +

@@ -1,0 +1,54 @@
+
+
+Bueno, para esta explicación voy a dividir el vídeo en 4 partes: 1- idea y desarrollo del conceptobase, 2- mostrar código del programa, algunos métodos y su utilidad o curiosidades, 3- funcionamiento del programa y 4- dar mi opinión de la práctica
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Empezando por el punto 1, aquí es donde empecé a complicarme mucho yo solito, quería hacer algo original dando uso a los distintos tipos de ficheros que habíamos ido viendo
+
+Obviamente desarrollar el programa ha sido bastante locura y complicado, pero darle vueltas al concepto base y conseguir darle una forma aceptable para empezar a construir el programa también me ha costado bastante, está claro que tener ideas originales o distintas no es algo sencillo
+
+Finalmente, a grandes rasgos, opté por diseñar un juego tipo RPG donde seleccionas a tus personajes y vas combatiendo contra los enemigos por rondas
+
+Como puedes ver, realizo el concepto base de la mayoría de ventanas en el photoshop, voy añadiendo elementos hasta diseñarlas de una forma que yo pueda entender bien lo que quiero
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Después, pasamos al punto 2, el código, he decidido mostrarte los dos ficheros que realmente tienen que ver con la práctica, lugares donde los uso y algunos otros métodos que puedan ser interesantes
+
+Por una parte tenemos el fichero EscribirDatosBase, aquí tenemos todos esos métodos que plasmarán en distintos ficheros los datos base de los cuales tirará la aplicación, como puedes ver por los comentarios sobre cada método, he utilizado los distintos tipos de ficheros que hemos ido aprendiendo en esta evaluación.
+
+Y por el otro lado, tenemos a su acompañante el fichero LeerDatosBase, donde tendremos los mismos métodos que realizarán el proceso opuesto, en vez de escribir, leer. De esta manera ya tendremos una serie de ficheros con todos los datos base que la aplicación necesitará, y la forma de acceder a ellos.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Ya entramos en el punto 3, cómo funciona el programa. Esto podría llevarme mucho tiempo así que intentaré resumirlo nivel dios
+
+[Leer rápido]
+En la ventana de inicio de la aplicación puedes optar por continuar una partida existente accediendo a la ventana continuar partida para seleccior una partida entre aquellas que no hayan sido acabadas, o puedes optar por iniciar una nueva partida pasando a la ventana nueva partida seleccionando a los 3 personajes que formarán tu grupo
+
+Hayas continuado una partida existente o iniciado una nueva, pasarás a la ventana de partida donde tendrás 3 tabs por las que podrás moverte, en la tab sonido podremos controlar qué canción escuchar y a qué volumen (lo cual podíamos hacer también desde la ventana inicio), 
+
+en la tab personajes podremos ver todos los datos de cada personaje de nuestro grupo, y en caso de haber subido uno o varios niveles con alguno de los personajes, podremos subirle sus atributos para así fortalecerle, también podremos ver su arma y cambiarla por otra mejor en caso de tenerla
+
+en la tab juego veremos cuantas rondas hemos superado y podremos empezar una nueva ronda, pasando a la ventana ronda
+
+en esta ventana tenemos los datos de nuestro grupo, y del grupo enemigo, si hacemos clic en la foto de cualquier personaje o enemigo podremos ver información más detallada, en la parte inferior tenemos un registro donde se irá plasmando toda la información de lo que ocurra en cada turno, el cual ejecutaremos haciendo clic en el botón siguiente turno
+
+una vez acabe el combate, si hemos ganado existe la posibilidad de que hayamos encontrado un nuevo arma, en caso de encontrarla saldrá una notificación, después podremos finalizar ronda, haciendo que volvamos a la ventana de la partida, donde si algún personaje ha subido de nivel durante la ronda, también se nos notificará para que vayamos a mejorar a dicho personaje
+
+en cambio, si hemos perdido, haremos clic en finalizar ronda y nos llevará a la ventana partida, pero habrá un fondo distinto, y solo nos dejará volver al menú, guardando la partida como finalizada
+
+
+Extras, como ya habrás visto el programa tiene diferentes canciones entre las cuales puedes ir seleccionando una u otra, aunque entres en partida y vuelvas al menú la canción seguirá puesta, solo cambiará cuando estés en combate para, a través de la música de combate, meterte más en el juego.
+
+También tenemos el historial, donde podremos ver el historial de partidas con sus datos, podemos verlo en vista normal, donde através de un bucle he construido un código que genere un panel por cada partida, o verlo en vista XML para ver el XML puro donde se han guardado las partidas.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Por último, el punto 4, mi opinión
+
+Creo que me he complicado infinito para lo que era la práctica, pero era una forma de desafiarme a mí mismo y de aprender más sobre las Ventanas de Java a la par que trabajaba un poco con los ficheros, aunque realmente hacer los métodos de escribir y leer los ficheros era lo primero y lo más directo y sencillo, el resto ha sido todo un torbellino de mis ideas intentando convergir en una aplicación decente y llamativa
+
+El dejar el proyecto abierto es lo que tiene, hay locos como yo que nos venimos arriba

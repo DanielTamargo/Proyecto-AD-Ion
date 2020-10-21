@@ -1,0 +1,37 @@
+
+
+
+
+	Una aplicación es un tipo de programa informático, diseñado como
+	herramienta para resolver de manera automática un problema específico
+	del usuario.
+
+	Un ejecutable es un fichero que contiene el código binario o interpretado
+	que será ejecutado en un ordenador.
+
+	Un proceso es un programa en ejecución.
+
+	Un servicio es un proceso que, normalmente, es cargado durante el
+	arranque del sistema operativo
+
+	Concurrencia: Cuando existe solapamiento en la ejecución de instrucciones.
+
+	Programación concurrente: ejecutar diferentes acciones a la vez
+
+	Programación paralela: es la programación concurrente enfocada a
+	ejecutarse en un sistema con más de un procesador, de esta manera cada
+	procesador podrá encargarse de una tarea
+
+	Programación distribuida: programación concurrente/paralela diferenciada en
+	máquinas distintas (cliente servidor)
+
+	Posibles problemas:
+	Exclusión mutua o condición de sincronización. Ambas pueden llevar a:
+	Interbloqueo (los hilos se bloquean mutuamente) y este a inanición (ningún
+	proceso consigue su fin y es el administrador quien debe finalizarlo).
+
+
+	Scanner teclado = new Scanner (System.in);
+	teclado.nextLine();
+
+

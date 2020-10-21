@@ -21,6 +21,18 @@ public class Cliente {
         this.contrasenya = contrasenya;
     }
 
+    @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
+    public String toString() {
+        return "Cliente{" +
+                "dni='" + dni + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", edad=" + edad +
+                ", profesion='" + profesion + '\'' +
+                ", contrasenya='" + contrasenya + '\'' +
+                '}';
+    }
+
     public String getDni() {
         return dni;
     }

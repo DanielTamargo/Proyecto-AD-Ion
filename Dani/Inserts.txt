@@ -23,19 +23,39 @@ INSERT INTO empleados VALUES ('99613328Y', 'Verigis', 'Lena', '1995-02-01', '201
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// CLIENTES
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-INSERT INTO clientes VALUES ('20993742D', 'Raúl
 
-
-
+INSERT INTO clientes VALUES ('20993742D', 'Raúl', 'Géminis Riccio', 21, 'Estudiante', 'test');
+INSERT INTO clientes VALUES ('69905367H', 'Ángel', 'López del Norte', 42, 'Productor', 'test');
+INSERT INTO clientes VALUES ('12336603R', 'Laura', 'Saenz de Urturi', 19, 'Estudiante', 'test'); 
+INSERT INTO clientes VALUES ('17927085B', 'Ángel', 'López del Norte', 36, 'Artista', 'test'); 
+INSERT INTO clientes VALUES ('73871496G', 'Virginia', 'López Zarate', 18, 'Cantante', 'test'); 
+INSERT INTO clientes VALUES ('69839663W', 'Miriam', 'Kaneki Kun', 34, 'Arquitecta', 'test'); 
+INSERT INTO clientes VALUES ('82060676B', 'Jon', 'Larreina Hermosa', 34, 'Médico', 'test'); 
+INSERT INTO clientes VALUES ('81358766S', 'Nekane', 'Martínez Saiz', 20, 'Estudiante', 'test'); 
+INSERT INTO clientes VALUES ('88195988G', 'Josué', 'Campo Abecia', 22, 'Estudiante', 'test'); 
+INSERT INTO clientes VALUES ('69922951F', 'Rakel', 'Ubierna Martínez', 32, 'Profesora', 'test'); 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// VISITAS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('77484057R', 'Visita al parque de Salburua', 5, 'Salburua', '01-09-2020', 2020, 2.5, "Paseo por el parque", 58.5); 
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// VISITASCLIENTES
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+INSERT INTO visitasclientes VALUES ('20993742D', 1);
+INSERT INTO visitasclientes VALUES ('69905367H', 1);
+INSERT INTO visitasclientes VALUES ('17927085B', 1);
+INSERT INTO visitasclientes VALUES ('81358766S', 1);
+
+
+
+
+
+
+

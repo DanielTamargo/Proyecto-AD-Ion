@@ -1,6 +1,8 @@
 package com.tamargo.sql;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -89,10 +91,20 @@ public class Conexiones {
         else if (bbdd == 3)
             nombreBBDD = "Oracle";
 
-        JOptionPane.showMessageDialog(null,
-                "Error al conectar con la BBDD '" + nombreBBDD + "'",
-                "Error al conectar",
-                JOptionPane.ERROR_MESSAGE);
+        JButton okButton = new JButton("Ok");
+        okButton.setFocusPainted(false);
+        Object[] options = {okButton};
+        final JOptionPane pane = new JOptionPane("Error al conectar con la BBDD '" + nombreBBDD + "'", JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, options);
+        JDialog dialog = pane.createDialog("Error al conectar");
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
+        dialog.setVisible(true);
+
+
 
     }
 

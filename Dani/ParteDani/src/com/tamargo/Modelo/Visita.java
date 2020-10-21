@@ -31,6 +31,23 @@ public class Visita {
         this.coste = coste;
     }
 
+
+    @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
+    public String toString() {
+        return "Visita{" +
+                "cod=" + cod +
+                ", guia=" + guia.getDni() + "(" + guia.getNombre() + ")" +
+                ", nombre='" + nombre + '\'' +
+                ", numMaxClientes=" + numMaxClientes +
+                ", puntoPartida='" + puntoPartida + '\'' +
+                ", fecha=" + fecha +
+                ", anyo=" + anyo +
+                ", duracionEstimada=" + duracionEstimada +
+                ", tematica='" + tematica + '\'' +
+                ", coste=" + coste +
+                '}';
+    }
+
     public int getCod() {
         return cod;
     }

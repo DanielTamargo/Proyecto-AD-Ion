@@ -71,3 +71,5 @@ fecha DATE NOT NULL,
 registro VARCHAR(100) NOT NULL,
 CONSTRAINT 'fk_regisEmpl_empleado' FOREIGN KEY (empleado) REFERENCES EMPLEADOS (dni) ON DELETE CASCADE
 );
+
+PRAGMA foreign_keys = ON;
