@@ -1,5 +1,6 @@
-package com.tamargo.Modelo;
-import java.sql.Date;
+package com.company.Modelo;
+
+import java.time.LocalDateTime;
 
 public class Visita {
 
@@ -8,7 +9,7 @@ public class Visita {
     private String nombre;
     private int numMaxClientes;
     private String puntoPartida;
-    private Date fecha;
+    private LocalDateTime fecha;
     private int anyo;
     private float duracionEstimada;
     private String tematica;
@@ -17,7 +18,7 @@ public class Visita {
     public Visita() {
     }
 
-    public Visita(int cod, Empleado guia, String nombre, int numMaxClientes, String puntoPartida, Date fecha,
+    public Visita(int cod, Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
                   int anyo, float duracionEstimada, String tematica, float coste) {
         this.cod = cod;
         this.guia = guia;
@@ -84,11 +85,11 @@ public class Visita {
         this.puntoPartida = puntoPartida;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 

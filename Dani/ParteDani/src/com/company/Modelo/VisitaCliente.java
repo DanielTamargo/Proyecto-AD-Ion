@@ -1,4 +1,4 @@
-package com.tamargo.Modelo;
+package com.company.Modelo;
 
 public class VisitaCliente {
 

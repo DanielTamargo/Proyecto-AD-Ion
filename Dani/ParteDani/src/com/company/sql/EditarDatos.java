@@ -1,4 +1,4 @@
-package com.tamargo.sql;
+package com.company.sql;
 
 public class EditarDatos {
 }

@@ -1,18 +1,18 @@
-package com.tamargo.Modelo;
+package com.company.Modelo;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class RegistroCliente {
 
     private int cod;
     private Cliente cliente;
-    private Date fecha;
+    private LocalDateTime fecha;
     private String registro;
 
     public RegistroCliente() {
     }
 
-    public RegistroCliente(int cod, Cliente cliente, Date fecha, String registro) {
+    public RegistroCliente(int cod, Cliente cliente, LocalDateTime fecha, String registro) {
         this.cod = cod;
         this.cliente = cliente;
         this.fecha = fecha;
@@ -35,11 +35,11 @@ public class RegistroCliente {
         this.cliente = cliente;
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 

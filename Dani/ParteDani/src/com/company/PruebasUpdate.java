@@ -1,4 +1,4 @@
-package com.tamargo;
+package com.company;
 
 public class PruebasUpdate {
 

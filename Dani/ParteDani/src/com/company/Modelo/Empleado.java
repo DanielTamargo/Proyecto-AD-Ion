@@ -1,4 +1,4 @@
-package com.tamargo.Modelo;
+package com.company.Modelo;
 
 import java.sql.Date;
 
