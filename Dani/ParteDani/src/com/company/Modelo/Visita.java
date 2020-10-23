@@ -18,6 +18,19 @@ public class Visita {
     public Visita() {
     }
 
+    public Visita(Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
+                  int anyo, float duracionEstimada, String tematica, float coste) {
+        this.guia = guia;
+        this.nombre = nombre;
+        this.numMaxClientes = numMaxClientes;
+        this.puntoPartida = puntoPartida;
+        this.fecha = fecha;
+        this.anyo = anyo;
+        this.duracionEstimada = duracionEstimada;
+        this.tematica = tematica;
+        this.coste = coste;
+    }
+
     public Visita(int cod, Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
                   int anyo, float duracionEstimada, String tematica, float coste) {
         this.cod = cod;

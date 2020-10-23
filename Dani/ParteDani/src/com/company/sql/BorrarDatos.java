@@ -55,27 +55,30 @@ public class BorrarDatos {
                 if (sentencia.executeUpdate("DELETE FROM empleados WHERE dni='" + dni + "'") <= 0)
                     eliminado = false;// Ejecutamos la sentencia
 
+                if (bbdd == 1) {
+                    borrarRegistrosEmpleado(conexion, dni);
+                    borrarVisitasEmpleado(conexion, dni);
+                }
+
                 conexion.close();
             } catch (SQLException throwables) {
                 eliminado = false;
             }
-        } else {
-            eliminado = false;
+
+            String mensajeJOptionPane;
+            String tituloJOptionPane = "Error";
+            int tipoJOptionPane = 0; // 0 = error, 1 = información
+
+            if (eliminado) {
+                tituloJOptionPane = "Empleado eliminado";
+                mensajeJOptionPane = "Empleado '" + dni + "' eliminado con éxito.";
+                tipoJOptionPane = 1;
+            }
+            else
+                mensajeJOptionPane = "Error al eliminar al empleado '" + dni + "'.";
+
+            mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
         }
-
-        String mensajeJOptionPane;
-        String tituloJOptionPane = "Error";
-        int tipoJOptionPane = 0; // 0 = error, 1 = información
-
-        if (eliminado) {
-            tituloJOptionPane = "Empleado eliminado";
-            mensajeJOptionPane = "Empleado '" + dni + "' eliminado con éxito.";
-            tipoJOptionPane = 1;
-        }
-        else
-            mensajeJOptionPane = "Error al eliminar al empleado '" + dni + "'.";
-
-        mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
     }
 
     /**
@@ -93,27 +96,30 @@ public class BorrarDatos {
                 if (sentencia.executeUpdate("DELETE FROM clientes WHERE dni='" + dni + "'") <= 0)
                     eliminado = false;// Ejecutamos la sentencia
 
+                if (bbdd == 1) {
+                    borrarRegistrosCliente(conexion, dni);
+                    borrarVisitasCliente(conexion, dni);
+                }
+
                 conexion.close();
             } catch (SQLException throwables) {
                 eliminado = false;
             }
-        } else {
-            eliminado = false;
+
+            String mensajeJOptionPane;
+            String tituloJOptionPane = "Error";
+            int tipoJOptionPane = 0; // 0 = error, 1 = información
+
+            if (eliminado) {
+                tituloJOptionPane = "Cliente eliminado";
+                mensajeJOptionPane = "Cliente '" + dni + "' eliminado con éxito.";
+                tipoJOptionPane = 1;
+            }
+            else
+                mensajeJOptionPane = "Error al eliminar al cliente '" + dni + "'.";
+
+            mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
         }
-
-        String mensajeJOptionPane;
-        String tituloJOptionPane = "Error";
-        int tipoJOptionPane = 0; // 0 = error, 1 = información
-
-        if (eliminado) {
-            tituloJOptionPane = "Cliente eliminado";
-            mensajeJOptionPane = "Cliente '" + dni + "' eliminado con éxito.";
-            tipoJOptionPane = 1;
-        }
-        else
-            mensajeJOptionPane = "Error al eliminar al cliente '" + dni + "'.";
-
-        mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
     }
 
 
@@ -132,30 +138,31 @@ public class BorrarDatos {
                 if (sentencia.executeUpdate("DELETE FROM visitas WHERE cod=" + codigo) <= 0)
                     eliminado = false;// Ejecutamos la sentencia
 
+                if (bbdd == 1) {
+                    borrarVisitasEmpleadoPorVisita(conexion, codigo);
+                    borrarVisitasClientePorVisita(conexion, codigo);
+                }
+
                 conexion.close();
             } catch (SQLException throwables) {
                 eliminado = false;
             }
-        } else {
-            eliminado = false;
+
+            String mensajeJOptionPane;
+            String tituloJOptionPane = "Error";
+            int tipoJOptionPane = 0; // 0 = error, 1 = información
+
+            if (eliminado) {
+                tituloJOptionPane = "Visita eliminada";
+                mensajeJOptionPane = "Visita eliminada con éxito.";
+                tipoJOptionPane = 1;
+            }
+            else
+                mensajeJOptionPane = "Error al eliminar la visita '" + codigo + "'.";
+
+            mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
         }
-
-        String mensajeJOptionPane;
-        String tituloJOptionPane = "Error";
-        int tipoJOptionPane = 0; // 0 = error, 1 = información
-
-        if (eliminado) {
-            tituloJOptionPane = "Visita eliminada";
-            mensajeJOptionPane = "Visita '" + codigo + "' eliminada con éxito.";
-            tipoJOptionPane = 1;
-        }
-        else
-            mensajeJOptionPane = "Error al eliminar la visita '" + codigo + "'.";
-
-        mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
     }
-
-
 
 
 
@@ -163,69 +170,67 @@ public class BorrarDatos {
     ////// SIMULACIÓN ON DELETE CASCADE PARA SQLITE
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void borrarVisitasEmpleado(int bbdd, String dni) {
-        Connection conexion = realizarConexion(bbdd);
+    /*
+        Los siguientes métodos serán utilizados para simular en SQLite la parte ON DELETE CASCADE de las FK
+     */
+
+    public void borrarVisitasEmpleado(Connection conexion, String dni) {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 sentencia.executeUpdate("DELETE FROM visitasempleados WHERE dni='" + dni + "'");
                 conexion.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException | NullPointerException ignored) { }
         }
     }
 
-    public void borrarVisitasEmpleadoPorVisita(int bbdd, int codigo) {
-        Connection conexion = realizarConexion(bbdd);
+    public void borrarVisitasEmpleadoPorVisita(Connection conexion, int codigo) {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                sentencia.executeUpdate("DELETE FROM visitasempleados WHERE codigo=" + codigo);
+                sentencia.executeUpdate("DELETE FROM visitasempleados WHERE visita=" + codigo);
                 conexion.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException | NullPointerException ignored) { }
         }
     }
 
-    public void borrarVisitasCliente(int bbdd, String dni) {
-        Connection conexion = realizarConexion(bbdd);
+    public void borrarVisitasCliente(Connection conexion, String dni) {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                sentencia.executeUpdate("DELETE FROM visitasclientes WHERE dni='" + dni + "'");
+                sentencia.executeUpdate("DELETE FROM visitasclientes WHERE cliente='" + dni + "'");
                 conexion.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException | NullPointerException ignored) { }
         }
     }
 
-    public void borrarVisitasClientePorVisita(int bbdd, int codigo) {
-        Connection conexion = realizarConexion(bbdd);
+    public void borrarVisitasClientePorVisita(Connection conexion, int codigo) {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                sentencia.executeUpdate("DELETE FROM visitasclientes WHERE codigo=" + codigo);
+                sentencia.executeUpdate("DELETE FROM visitasclientes WHERE visita=" + codigo);
                 conexion.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException | NullPointerException ignored) { }
         }
     }
 
-    public void borrarRegistrosEmpleado(int bbdd, String dni) {
-        Connection conexion = realizarConexion(bbdd);
+    public void borrarRegistrosEmpleado(Connection conexion, String dni) {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                sentencia.executeUpdate("DELETE FROM registrosempleados WHERE dni='" + dni + "'");
+                sentencia.executeUpdate("DELETE FROM registrosempleados WHERE empleado='" + dni + "'");
                 conexion.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException | NullPointerException ignored) { }
         }
     }
 
-    public void borrarRegistrosCliente(int bbdd, String dni) {
-        Connection conexion = realizarConexion(bbdd);
+    public void borrarRegistrosCliente(Connection conexion, String dni) {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                sentencia.executeUpdate("DELETE FROM registrosclientes WHERE dni='" + dni + "'");
+                sentencia.executeUpdate("DELETE FROM registrosclientes WHERE cliente='" + dni + "'");
                 conexion.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException | NullPointerException ignored) { }
         }
     }
 

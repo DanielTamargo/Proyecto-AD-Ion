@@ -477,4 +477,54 @@ public class CargarDatos {
         }
     }
 
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////// MISCELÁNEA (VARIOS)
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Método particular para realizar las pruebas de funcionamiento, recibiremos un Objeto visita entero donde el
+     * único dato que le falta es el código, por lo que buscaremos ese objeto y obtendremos su código
+     *
+     * @param bbdd <- recibe un int que determinará a qué BBDD nos conectaremos
+     * @param vis <- el objeto que usaremos para recoger su código
+     * @return <- el código que necesitamos
+     */
+    public int cargarCodigoVisita(int bbdd, Visita vis) {
+        int codigo = 0;
+        Connection conexion = realizarConexion(bbdd);
+        boolean datos = false;
+
+        if (conexion != null) {
+            try {
+                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                ResultSet r = sentencia.executeQuery("SELECT cod FROM visitas WHERE " +
+                        "guia='" + vis.getGuia().getDni() + "' AND " +
+                        "nombre='" + vis.getNombre() + "' AND " +
+                        "numMaxClientes=" + vis.getNumMaxClientes() + " AND " +
+                        "puntoPartida='" + vis.getPuntoPartida() + "' AND " +
+                        "fecha='" + vis.getFecha() + "' AND " +
+                        "anyo=" + vis.getAnyo() + " AND " +
+                        "duracionEstimada=" + vis.getDuracionEstimada() + " AND " +
+                        "tematica='" + vis.getTematica() + "' AND " +
+                        "coste=" + vis.getCoste()); // Ejecutamos la sentencia
+                while (r.next()) { // Recorremos los datos
+                    datos = true;
+                    codigo = r.getInt(1);
+                }
+                r.close(); // Cerrar ResultSet
+                sentencia.close();// Cerrar Statement
+                conexion.close(); // Cerrar Conexión
+
+                if (!datos)
+                    System.out.println("No se ha encontrado la visita en cuestión");
+
+            } catch (SQLException throwables) {
+                System.out.println("Error al cargar el código concreto");
+                throwables.printStackTrace();
+            }
+        }
+        return codigo;
+    }
+
 }
