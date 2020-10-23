@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CargarDatos {
 
@@ -69,6 +70,31 @@ public class CargarDatos {
     public LocalDateTime stringToLocalDateTime(String fechaStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime fecha = null;
+        try {
+            fecha = LocalDateTime.parse(fechaStr, formatter);
+        } catch (Exception e) {
+            System.out.println("Error al convertir la fecha.");
+        }
+        return fecha;
+    }
+
+    public LocalDateTime oracleStringToLocalDateTime(String fechaStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fecha = null;
+        if (new Random().nextInt(10) > 4)
+            fechaStr += " 17:00:00";
+        else if (new Random().nextInt(10) > 4)
+            fechaStr += " 18:00:00";
+        else if (new Random().nextInt(10) > 4)
+            fechaStr += " 19:30:00";
+        else if (new Random().nextInt(10) > 4)
+            fechaStr += " 17:30:00";
+        else if (new Random().nextInt(10) > 4)
+            fechaStr += " 20:00:00";
+        else if (new Random().nextInt(10) > 4)
+            fechaStr += " 19:30:00";
+        else
+            fechaStr += " 18:30:00";
         try {
             fecha = LocalDateTime.parse(fechaStr, formatter);
         } catch (Exception e) {
@@ -286,9 +312,12 @@ public class CargarDatos {
                 ResultSet r = sentencia.executeQuery("SELECT * FROM visitas"); // Ejecutamos la sentencia
                 while (r.next()) { // Recorremos los datos
 
+                    //TODO fecha en MySQL?
                     LocalDateTime fecha = null;
-                    if (bbdd == 1)
+                    if (bbdd != 3)
                         fecha = stringToLocalDateTime(r.getString(6));
+                    else
+                        fecha = oracleStringToLocalDateTime(r.getString(6));
 
 
                     visitas.add(new Visita(r.getInt(1),
@@ -332,7 +361,11 @@ public class CargarDatos {
                 ResultSet r = sentencia.executeQuery("SELECT * FROM visitas WHERE guia='" + dni + "'"); // Ejecutamos la sentencia
                 while (r.next()) { // Recorremos los datos
 
-                    LocalDateTime fecha = stringToLocalDateTime(r.getString(6));
+                    LocalDateTime fecha = null;
+                    if (bbdd == 1)
+                        fecha = stringToLocalDateTime(r.getString(6));
+                    else if (bbdd == 3)
+                        fecha = oracleStringToLocalDateTime(r.getString(6));
 
                     visitas.add(new Visita(r.getInt(1),
                             cargarEmpleado(bbdd, conexion, r.getString(2)),
@@ -499,13 +532,13 @@ public class CargarDatos {
             try {
                 String sql;
                 if (bbdd == 3) {
-                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                     sql = "SELECT cod FROM visitas WHERE " +
                             "guia='" + vis.getGuia().getDni() + "' AND " +
                             "nombre='" + vis.getNombre() + "' AND " +
                             "numMaxClientes=" + vis.getNumMaxClientes() + " AND " +
                             "puntoPartida='" + vis.getPuntoPartida() + "' AND " +
-                            "fecha=TO_DATE('" + fecha + "', 'yyyy-mm-dd hh24:mm:ss') AND " +
+                            "fecha=TO_DATE('" + fecha + "', 'yyyy-mm-dd') AND " +
                             "anyo=" + vis.getAnyo() + " AND " +
                             "duracionEstimada=" + vis.getDuracionEstimada() + " AND " +
                             "tematica='" + vis.getTematica() + "' AND " +
