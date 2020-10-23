@@ -64,8 +64,8 @@ public class Conexiones {
 
         Connection conexion = null;
         try {
-            Class.forName("org.sqlite.JDBC"); // TODO hay que cambiar esta conexión
-            conexion = DriverManager.getConnection("jdbc:sqlite:sqlite.db");
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "grupo3", "grupo3");
         } catch (SQLException | ClassNotFoundException throwables) {
             mostrarErrorAlConectar(3);
             //throwables.printStackTrace();
