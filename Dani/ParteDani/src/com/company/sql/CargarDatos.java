@@ -114,9 +114,6 @@ public class CargarDatos {
                 ResultSet r = sentencia.executeQuery("SELECT * FROM empleados"); // Ejecutamos la sentencia
                 while (r.next()) {
 
-                    if (bbdd == 3)
-                        System.out.println("Leyendo empleado");
-                    
                     Date fechaNac;
                     Date fechaContratacion;
 
@@ -506,7 +503,7 @@ public class CargarDatos {
                         "nombre='" + vis.getNombre() + "' AND " +
                         "numMaxClientes=" + vis.getNumMaxClientes() + " AND " +
                         "puntoPartida='" + vis.getPuntoPartida() + "' AND " +
-                        "fecha='" + vis.getFecha() + "' AND " +
+                        "fecha='" + vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "' AND " +
                         "anyo=" + vis.getAnyo() + " AND " +
                         "duracionEstimada=" + vis.getDuracionEstimada() + " AND " +
                         "tematica='" + vis.getTematica() + "' AND " +

@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.format.DateTimeFormatter;
 
 public class EditarDatos {
 
@@ -65,22 +66,35 @@ public class EditarDatos {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                if (sentencia.executeUpdate("UPDATE empleados SET dni='" + emple.getDni() + "', " +
-                        "nombre='" + emple.getNombre() + "', " +
-                        "primerApellido='" + emple.getPrimerapellido() + "', " +
-                        "fechaNac='" + emple.getFechaNac() + "', " +
-                        "fechaContratacion='" + emple.getFechaContratacion() + "', " +
-                        "nacionalidad='" + emple.getNacionalidad() + "', " +
-                        "cargo='" + emple.getCargo() + "', " +
-                        "contrasenya='" + emple.getContrasenya() + "' " +
-                        "WHERE dni='" + emple.getDni() + "';") <= 0)
-                    editado = false;// Ejecutamos la sentencia
+                if (bbdd == 3) {
+                    if (sentencia.executeUpdate("UPDATE empleados SET dni='" + emple.getDni() + "', " +
+                            "nombre='" + emple.getNombre() + "', " +
+                            "primerApellido='" + emple.getPrimerapellido() + "', " +
+                            "fechaNac=TO_DATE('" + emple.getFechaNac() + "', 'yyyy-mm-dd'), " +
+                            "fechaContratacion=TO_DATE('" + emple.getFechaContratacion() + "', 'yyyy-mm-dd'), " +
+                            "nacionalidad='" + emple.getNacionalidad() + "', " +
+                            "cargo='" + emple.getCargo() + "', " +
+                            "contrasenya='" + emple.getContrasenya() + "' " +
+                            "WHERE dni='" + emple.getDni() + "';") <= 0)
+                        editado = false;// Ejecutamos la sentencia
+                } else {
+                    if (sentencia.executeUpdate("UPDATE empleados SET dni='" + emple.getDni() + "', " +
+                            "nombre='" + emple.getNombre() + "', " +
+                            "primerApellido='" + emple.getPrimerapellido() + "', " +
+                            "fechaNac='" + emple.getFechaNac() + "', " +
+                            "fechaContratacion='" + emple.getFechaContratacion() + "', " +
+                            "nacionalidad='" + emple.getNacionalidad() + "', " +
+                            "cargo='" + emple.getCargo() + "', " +
+                            "contrasenya='" + emple.getContrasenya() + "' " +
+                            "WHERE dni='" + emple.getDni() + "';") <= 0)
+                        editado = false;// Ejecutamos la sentencia
+                }
+
                 conexion.close();
             } catch (SQLException throwables) {
                 editado = false;
             }
-
-
+            
             String mensajeJOptionPane;
             String tituloJOptionPane = "Error";
             int tipoJOptionPane = 0; // 0 = error, 1 = información
@@ -148,18 +162,33 @@ public class EditarDatos {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                if (sentencia.executeUpdate("UPDATE visitas SET cod=" + visita.getCod() + ", " +
-                        "guia='" + visita.getGuia().getDni() + "', " +
-                        "nombre='" + visita.getNombre() + "', " +
-                        "numMaxClientes=" + visita.getNumMaxClientes() + ", " +
-                        "puntoPartida='" + visita.getPuntoPartida() + "', " +
-                        "fecha='" + visita.getFecha() + "', " +
-                        "anyo=" + visita.getAnyo() + ", " +
-                        "duracionEstimada=" + visita.getDuracionEstimada() + ", " +
-                        "tematica='" + visita.getTematica() + "', " +
-                        "coste=" + visita.getCoste() + " " +
-                        "WHERE cod=" + visita.getCod() + ";") <= 0)
-                    editado = false;// Ejecutamos la sentencia
+                if (bbdd == 3) {
+                    if (sentencia.executeUpdate("UPDATE visitas SET cod=" + visita.getCod() + ", " +
+                            "guia='" + visita.getGuia().getDni() + "', " +
+                            "nombre='" + visita.getNombre() + "', " +
+                            "numMaxClientes=" + visita.getNumMaxClientes() + ", " +
+                            "puntoPartida='" + visita.getPuntoPartida() + "', " +
+                            "fecha=TO_DATE('" + visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', 'yyyy-mm-dd hh24:mi:ss'), " +
+                            "anyo=" + visita.getAnyo() + ", " +
+                            "duracionEstimada=" + visita.getDuracionEstimada() + ", " +
+                            "tematica='" + visita.getTematica() + "', " +
+                            "coste=" + visita.getCoste() + " " +
+                            "WHERE cod=" + visita.getCod() + ";") <= 0)
+                        editado = false;// Ejecutamos la sentencia
+                } else {
+                    if (sentencia.executeUpdate("UPDATE visitas SET cod=" + visita.getCod() + ", " +
+                            "guia='" + visita.getGuia().getDni() + "', " +
+                            "nombre='" + visita.getNombre() + "', " +
+                            "numMaxClientes=" + visita.getNumMaxClientes() + ", " +
+                            "puntoPartida='" + visita.getPuntoPartida() + "', " +
+                            "fecha='" + visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', " +
+                            "anyo=" + visita.getAnyo() + ", " +
+                            "duracionEstimada=" + visita.getDuracionEstimada() + ", " +
+                            "tematica='" + visita.getTematica() + "', " +
+                            "coste=" + visita.getCoste() + " " +
+                            "WHERE cod=" + visita.getCod() + ";") <= 0)
+                        editado = false;// Ejecutamos la sentencia
+                }
                 conexion.close();
             } catch (SQLException throwables) {
                 editado = false;

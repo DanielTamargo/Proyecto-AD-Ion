@@ -169,7 +169,7 @@ public class InsertarDatos {
                             "visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) " +
                             "VALUES('" + vis.getGuia().getDni() + "', " +
                             "'" + vis.getNombre() + "', " + vis.getNumMaxClientes() + ", " +
-                            "'" + vis.getPuntoPartida() + "', TO_DATE('" + vis.getFecha() + "', 'yyyy-mm-dd hh24:mi:ss'), " +
+                            "'" + vis.getPuntoPartida() + "', TO_DATE('" + vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', 'yyyy-mm-dd hh24:mi:ss'), " +
                             "" + vis.getAnyo() + ", " + vis.getDuracionEstimada() + ", " +
                             "'" + vis.getTematica() + "', " + vis.getCoste() + ")";
                 } else {
@@ -177,7 +177,7 @@ public class InsertarDatos {
                             "visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) " +
                             "VALUES('" + vis.getGuia().getDni() + "', " +
                             "'" + vis.getNombre() + "', " + vis.getNumMaxClientes() + ", " +
-                            "'" + vis.getPuntoPartida() + "', '" + vis.getFecha() + "', " +
+                            "'" + vis.getPuntoPartida() + "', '" + vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', " +
                             "" + vis.getAnyo() + ", " + vis.getDuracionEstimada() + ", " +
                             "'" + vis.getTematica() + "', " + vis.getCoste() + ")";
                 }
