@@ -497,17 +497,33 @@ public class CargarDatos {
 
         if (conexion != null) {
             try {
+                String sql;
+                if (bbdd == 3) {
+                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    sql = "SELECT cod FROM visitas WHERE " +
+                            "guia='" + vis.getGuia().getDni() + "' AND " +
+                            "nombre='" + vis.getNombre() + "' AND " +
+                            "numMaxClientes=" + vis.getNumMaxClientes() + " AND " +
+                            "puntoPartida='" + vis.getPuntoPartida() + "' AND " +
+                            "fecha=TO_DATE('" + fecha + "', 'yyyy-mm-dd hh24:mm:ss') AND " +
+                            "anyo=" + vis.getAnyo() + " AND " +
+                            "duracionEstimada=" + vis.getDuracionEstimada() + " AND " +
+                            "tematica='" + vis.getTematica() + "' AND " +
+                            "coste=" + vis.getCoste();
+                } else {
+                    sql = "SELECT cod FROM visitas WHERE " +
+                            "guia='" + vis.getGuia().getDni() + "' AND " +
+                            "nombre='" + vis.getNombre() + "' AND " +
+                            "numMaxClientes=" + vis.getNumMaxClientes() + " AND " +
+                            "puntoPartida='" + vis.getPuntoPartida() + "' AND " +
+                            "fecha='" + vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "' AND " +
+                            "anyo=" + vis.getAnyo() + " AND " +
+                            "duracionEstimada=" + vis.getDuracionEstimada() + " AND " +
+                            "tematica='" + vis.getTematica() + "' AND " +
+                            "coste=" + vis.getCoste();
+                }
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                ResultSet r = sentencia.executeQuery("SELECT cod FROM visitas WHERE " +
-                        "guia='" + vis.getGuia().getDni() + "' AND " +
-                        "nombre='" + vis.getNombre() + "' AND " +
-                        "numMaxClientes=" + vis.getNumMaxClientes() + " AND " +
-                        "puntoPartida='" + vis.getPuntoPartida() + "' AND " +
-                        "fecha='" + vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "' AND " +
-                        "anyo=" + vis.getAnyo() + " AND " +
-                        "duracionEstimada=" + vis.getDuracionEstimada() + " AND " +
-                        "tematica='" + vis.getTematica() + "' AND " +
-                        "coste=" + vis.getCoste()); // Ejecutamos la sentencia
+                ResultSet r = sentencia.executeQuery(sql); // Ejecutamos la sentencia
                 while (r.next()) { // Recorremos los datos
                     datos = true;
                     codigo = r.getInt(1);

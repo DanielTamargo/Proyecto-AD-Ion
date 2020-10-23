@@ -94,7 +94,7 @@ public class EditarDatos {
             } catch (SQLException throwables) {
                 editado = false;
             }
-            
+
             String mensajeJOptionPane;
             String tituloJOptionPane = "Error";
             int tipoJOptionPane = 0; // 0 = error, 1 = información
@@ -163,12 +163,13 @@ public class EditarDatos {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (bbdd == 3) {
+                    String fecha = visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     if (sentencia.executeUpdate("UPDATE visitas SET cod=" + visita.getCod() + ", " +
                             "guia='" + visita.getGuia().getDni() + "', " +
                             "nombre='" + visita.getNombre() + "', " +
                             "numMaxClientes=" + visita.getNumMaxClientes() + ", " +
                             "puntoPartida='" + visita.getPuntoPartida() + "', " +
-                            "fecha=TO_DATE('" + visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', 'yyyy-mm-dd hh24:mi:ss'), " +
+                            "fecha=TO_DATE('" + fecha + "', 'yyyy-mm-dd hh24:mi:ss'), " +
                             "anyo=" + visita.getAnyo() + ", " +
                             "duracionEstimada=" + visita.getDuracionEstimada() + ", " +
                             "tematica='" + visita.getTematica() + "', " +

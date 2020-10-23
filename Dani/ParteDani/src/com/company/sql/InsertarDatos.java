@@ -165,11 +165,12 @@ public class InsertarDatos {
             try {
                 String sql;
                 if (bbdd == 3) {
+                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     sql = "INSERT INTO " +
                             "visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) " +
                             "VALUES('" + vis.getGuia().getDni() + "', " +
                             "'" + vis.getNombre() + "', " + vis.getNumMaxClientes() + ", " +
-                            "'" + vis.getPuntoPartida() + "', TO_DATE('" + vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', 'yyyy-mm-dd hh24:mi:ss'), " +
+                            "'" + vis.getPuntoPartida() + "', TO_DATE('" + fecha + "', 'yyyy-mm-dd hh24:mi:ss'), " +
                             "" + vis.getAnyo() + ", " + vis.getDuracionEstimada() + ", " +
                             "'" + vis.getTematica() + "', " + vis.getCoste() + ")";
                 } else {
