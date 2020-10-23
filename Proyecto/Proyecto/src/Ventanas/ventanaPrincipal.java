@@ -82,12 +82,17 @@ public class ventanaPrincipal {
                 frame.setVisible(true);
             }
         });
-        infoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                informacion.setVisible(true);
-            }
-        });
+
+
+infoButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        informacion.setVisible(true);
+    }
+});
+
+
+
 
     }
 

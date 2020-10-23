@@ -53,19 +53,23 @@ public class VentanaSecundaria {
     private JTextField textField11;
     private JTextField textField12;
     private JTextField textField13;
-    private JTextField textField14;
     private JButton realizarReservaButton;
-    private JButton aceptarButton;
     private JSpinner spinner1;
     private JButton misVisitasButton;
+    private JButton misVisitasButton2;
 
     public VentanaSecundaria(JFrame frame) {
         añadirButton.setIcon(new ImageIcon("Assets/añadir.png"));
         editarButton.setIcon(new ImageIcon("Assets/save.png"));
+        editarVisitaButton.setIcon(new ImageIcon("Assets/save.png"));
         eliminarButton.setIcon(new ImageIcon("Assets/delete.png"));
+        eliminarVisitaButton.setIcon(new ImageIcon("Assets/delete.png"));
         clienteButton.setIcon(new ImageIcon("Assets/cliente.png"));
         empleadoButton.setIcon(new ImageIcon("Assets/empleado.png"));
         nuevaVisitaButton.setIcon(new ImageIcon("Assets/nuevaVisita.png"));
+        misVisitasButton.setIcon(new ImageIcon("Assets/mis.png"));
+        misVisitasButton2.setIcon(new ImageIcon("Assets/mis.png"));
+        realizarReservaButton.setIcon(new ImageIcon("Assets/pedido.png"));
 
 //Ocultamos todos los campos ventana RRHH
         DNI.setVisible(false);
