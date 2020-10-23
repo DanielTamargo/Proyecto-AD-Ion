@@ -30,9 +30,6 @@ public class PruebasFuncionamiento {
                 LocalDateTime.parse("2020-10-23 11:30:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 2020, 2.5f, "Testmática", 12.5f);
 
-        String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        System.out.println(fecha);
-
         System.out.println("- CARGAR DATOS");
 
         ArrayList<Empleado> empleados = new CargarDatos().cargarEmpleados(bbdd);
