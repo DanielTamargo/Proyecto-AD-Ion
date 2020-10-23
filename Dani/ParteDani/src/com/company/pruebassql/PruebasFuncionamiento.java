@@ -76,7 +76,8 @@ public class PruebasFuncionamiento {
         // Borrar Datos
         new BorrarDatos().borrarEmpleado(bbdd, emp.getDni());
         new BorrarDatos().borrarCliente(bbdd, cli.getDni());
-        new BorrarDatos().borrarVisita(bbdd, vis.getCod());
+        if (bbdd == 1)
+            new BorrarDatos().borrarVisita(bbdd, vis.getCod());
 
     }
 

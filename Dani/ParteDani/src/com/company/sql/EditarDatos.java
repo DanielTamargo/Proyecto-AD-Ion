@@ -66,29 +66,19 @@ public class EditarDatos {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                if (bbdd == 3) {
-                    if (sentencia.executeUpdate("UPDATE empleados SET dni='" + emple.getDni() + "', " +
-                            "nombre='" + emple.getNombre() + "', " +
-                            "primerApellido='" + emple.getPrimerapellido() + "', " +
-                            "fechaNac=TO_DATE('" + emple.getFechaNac() + "', 'yyyy-mm-dd'), " +
-                            "fechaContratacion=TO_DATE('" + emple.getFechaContratacion() + "', 'yyyy-mm-dd'), " +
-                            "nacionalidad='" + emple.getNacionalidad() + "', " +
-                            "cargo='" + emple.getCargo() + "', " +
-                            "contrasenya='" + emple.getContrasenya() + "' " +
-                            "WHERE dni='" + emple.getDni() + "';") <= 0)
-                        editado = false;// Ejecutamos la sentencia
-                } else {
-                    if (sentencia.executeUpdate("UPDATE empleados SET dni='" + emple.getDni() + "', " +
-                            "nombre='" + emple.getNombre() + "', " +
-                            "primerApellido='" + emple.getPrimerapellido() + "', " +
-                            "fechaNac='" + emple.getFechaNac() + "', " +
-                            "fechaContratacion='" + emple.getFechaContratacion() + "', " +
-                            "nacionalidad='" + emple.getNacionalidad() + "', " +
-                            "cargo='" + emple.getCargo() + "', " +
-                            "contrasenya='" + emple.getContrasenya() + "' " +
-                            "WHERE dni='" + emple.getDni() + "';") <= 0)
-                        editado = false;// Ejecutamos la sentencia
-                }
+                String fechaNac = emple.getFechaNac().toString();
+                String fechaContr = emple.getFechaContratacion().toString();
+
+                if (sentencia.executeUpdate("UPDATE empleados SET dni='" + emple.getDni() + "', " +
+                        "nombre='" + emple.getNombre() + "', " +
+                        "primerApellido='" + emple.getPrimerapellido() + "', " +
+                        "fechaNac='" + fechaNac + "', " +
+                        "fechaContratacion='" + fechaContr + "', " +
+                        "nacionalidad='" + emple.getNacionalidad() + "', " +
+                        "cargo='" + emple.getCargo() + "', " +
+                        "contrasenya='" + emple.getContrasenya() + "' " +
+                        "WHERE dni='" + emple.getDni() + "';") <= 0)
+                    editado = false;// Ejecutamos la sentencia
 
                 conexion.close();
             } catch (SQLException throwables) {
@@ -153,7 +143,7 @@ public class EditarDatos {
     /**
      * Método para editar una visita concreta, recibirá el codiog para editarla a través de su clave
      *
-     * @param bbdd    <- int que controlará a que bbdd se conectará
+     * @param bbdd   <- int que controlará a que bbdd se conectará
      * @param visita <- codigo que usará como clave para editar a la visita deseada
      */
     public void editarVisitas(int bbdd, Visita visita) {
@@ -162,8 +152,8 @@ public class EditarDatos {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                String fecha = visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 if (bbdd == 3) {
-                    String fecha = visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     if (sentencia.executeUpdate("UPDATE visitas SET cod=" + visita.getCod() + ", " +
                             "guia='" + visita.getGuia().getDni() + "', " +
                             "nombre='" + visita.getNombre() + "', " +
@@ -182,7 +172,7 @@ public class EditarDatos {
                             "nombre='" + visita.getNombre() + "', " +
                             "numMaxClientes=" + visita.getNumMaxClientes() + ", " +
                             "puntoPartida='" + visita.getPuntoPartida() + "', " +
-                            "fecha='" + visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "', " +
+                            "fecha='" + fecha + "', " +
                             "anyo=" + visita.getAnyo() + ", " +
                             "duracionEstimada=" + visita.getDuracionEstimada() + ", " +
                             "tematica='" + visita.getTematica() + "', " +

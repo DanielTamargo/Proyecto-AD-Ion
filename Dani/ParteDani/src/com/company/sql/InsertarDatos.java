@@ -80,7 +80,8 @@ public class InsertarDatos {
 
                 conexion.close();
             } catch (SQLException throwables) {
-                if (throwables.getLocalizedMessage().contains("dni is not unique"))
+                if (throwables.getLocalizedMessage().contains("dni is not unique") || throwables.getLocalizedMessage().contains("Duplicate")
+                        || throwables.getLocalizedMessage().contains("única"))
                     unico = false;
                 insertado = false;
             }
@@ -128,7 +129,8 @@ public class InsertarDatos {
 
                 conexion.close();
             } catch (SQLException throwables) {
-                if (throwables.getLocalizedMessage().contains("dni is not unique"))
+                if (throwables.getLocalizedMessage().contains("dni is not unique") || throwables.getLocalizedMessage().contains("Duplicate")
+                        || throwables.getLocalizedMessage().contains("única"))
                     unico = false;
                 insertado = false;
             }

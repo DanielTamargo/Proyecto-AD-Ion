@@ -11,7 +11,11 @@ public class PruebasVarias {
     public static void main(String[] args) {
 
         ArrayList<Empleado> empleados = new CargarDatos().cargarEmpleados(1);
-        System.out.println(empleados.get(0).getFechaNac());
+        Empleado emple = empleados.get(0);
+        String fechaNac = emple.getFechaNac().toString();
+        String fechaContr = emple.getFechaContratacion().toString();
+        System.out.println(fechaNac);
+        System.out.println(fechaContr);
 
     }
 

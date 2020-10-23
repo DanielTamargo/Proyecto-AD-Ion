@@ -53,7 +53,7 @@ public class BorrarDatos {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (sentencia.executeUpdate("DELETE FROM empleados WHERE dni='" + dni + "'") <= 0)
-                    eliminado = false;// Ejecutamos la sentencia
+                    eliminado = false;
 
                 if (bbdd == 1) {
                     borrarRegistrosEmpleado(conexion, dni);
@@ -94,7 +94,7 @@ public class BorrarDatos {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (sentencia.executeUpdate("DELETE FROM clientes WHERE dni='" + dni + "'") <= 0)
-                    eliminado = false;// Ejecutamos la sentencia
+                    eliminado = false;
 
                 if (bbdd == 1) {
                     borrarRegistrosCliente(conexion, dni);
@@ -136,7 +136,7 @@ public class BorrarDatos {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (sentencia.executeUpdate("DELETE FROM visitas WHERE cod=" + codigo) <= 0)
-                    eliminado = false;// Ejecutamos la sentencia
+                    eliminado = false;
 
                 if (bbdd == 1) {
                     borrarVisitasClientePorVisita(conexion, codigo);
@@ -157,7 +157,7 @@ public class BorrarDatos {
                 tipoJOptionPane = 1;
             }
             else
-                mensajeJOptionPane = "Error al eliminar la visita '" + codigo + "'.";
+                mensajeJOptionPane = "Error al eliminar la visita.";
 
             mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
         }
@@ -176,7 +176,7 @@ public class BorrarDatos {
     public void borrarVisitasEmpleado(Connection conexion, String dni) {
         if (conexion != null) {
             try {
-                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                Statement sentencia = conexion.createStatement();
                 sentencia.executeUpdate("DELETE FROM visitasempleados WHERE dni='" + dni + "'");
             } catch (SQLException | NullPointerException ignored) { }
         }
@@ -185,7 +185,7 @@ public class BorrarDatos {
     public void borrarVisitasCliente(Connection conexion, String dni) {
         if (conexion != null) {
             try {
-                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                Statement sentencia = conexion.createStatement();
                 sentencia.executeUpdate("DELETE FROM visitasclientes WHERE cliente='" + dni + "'");
             } catch (SQLException | NullPointerException ignored) {  }
         }
@@ -194,7 +194,7 @@ public class BorrarDatos {
     public void borrarVisitasClientePorVisita(Connection conexion, int codigo) {
         if (conexion != null) {
             try {
-                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                Statement sentencia = conexion.createStatement();
                 sentencia.executeUpdate("DELETE FROM visitasclientes WHERE visita=" + codigo);
             } catch (SQLException | NullPointerException ignored) { }
         }
@@ -203,7 +203,7 @@ public class BorrarDatos {
     public void borrarRegistrosEmpleado(Connection conexion, String dni) {
         if (conexion != null) {
             try {
-                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                Statement sentencia = conexion.createStatement();
                 sentencia.executeUpdate("DELETE FROM registrosempleados WHERE empleado='" + dni + "'");
             } catch (SQLException | NullPointerException ignored) { }
         }
@@ -212,7 +212,7 @@ public class BorrarDatos {
     public void borrarRegistrosCliente(Connection conexion, String dni) {
         if (conexion != null) {
             try {
-                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                Statement sentencia = conexion.createStatement();
                 sentencia.executeUpdate("DELETE FROM registrosclientes WHERE cliente='" + dni + "'");
             } catch (SQLException | NullPointerException ignored) { }
         }
