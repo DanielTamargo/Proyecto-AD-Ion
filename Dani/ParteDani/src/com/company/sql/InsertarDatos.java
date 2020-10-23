@@ -62,10 +62,18 @@ public class InsertarDatos {
         Connection conexion = realizarConexion(bbdd);
         if (conexion != null) {
             try {
-                String sql = String.format(
-                        "INSERT INTO empleados VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                        emp.getDni(), emp.getNombre(), emp.getPrimerapellido(), emp.getFechaNac(),
-                        emp.getFechaContratacion(), emp.getNacionalidad(), emp.getCargo(), emp.getContrasenya());
+                String sql;
+                if (bbdd == 3) {
+                    sql = String.format(
+                            "INSERT INTO empleados VALUES('%s', '%s', '%s', TO_DATE('%s', 'yyyy-mm-dd'), TO_DATE('%s', 'yyyy-mm-dd'), '%s', '%s', '%s')",
+                            emp.getDni(), emp.getNombre(), emp.getPrimerapellido(), emp.getFechaNac(),
+                            emp.getFechaContratacion(), emp.getNacionalidad(), emp.getCargo(), emp.getContrasenya());
+                } else {
+                    sql = String.format(
+                            "INSERT INTO empleados VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                            emp.getDni(), emp.getNombre(), emp.getPrimerapellido(), emp.getFechaNac(),
+                            emp.getFechaContratacion(), emp.getNacionalidad(), emp.getCargo(), emp.getContrasenya());
+                }
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (sentencia.executeUpdate(sql) <= 0)
                     insertado = false;// Ejecutamos la sentencia
@@ -155,13 +163,24 @@ public class InsertarDatos {
         Connection conexion = realizarConexion(bbdd);
         if (conexion != null) {
             try {
-                String sql = "INSERT INTO " +
-                                "visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) " +
-                                "VALUES('" + vis.getGuia().getDni() + "', " +
-                                "'" + vis.getNombre() + "', " + vis.getNumMaxClientes() + ", " +
-                                "'" + vis.getPuntoPartida() + "', '" + vis.getFecha() + "', " +
-                                "" + vis.getAnyo() + ", " + vis.getDuracionEstimada() + ", " +
-                                "'" + vis.getTematica() + "', " + vis.getCoste() + ")";
+                String sql;
+                if (bbdd == 3) {
+                    sql = "INSERT INTO " +
+                            "visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) " +
+                            "VALUES('" + vis.getGuia().getDni() + "', " +
+                            "'" + vis.getNombre() + "', " + vis.getNumMaxClientes() + ", " +
+                            "'" + vis.getPuntoPartida() + "', TO_DATE('" + vis.getFecha() + "', 'yyyy-mm-dd hh24:mi:ss'), " +
+                            "" + vis.getAnyo() + ", " + vis.getDuracionEstimada() + ", " +
+                            "'" + vis.getTematica() + "', " + vis.getCoste() + ")";
+                } else {
+                    sql = "INSERT INTO " +
+                            "visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) " +
+                            "VALUES('" + vis.getGuia().getDni() + "', " +
+                            "'" + vis.getNombre() + "', " + vis.getNumMaxClientes() + ", " +
+                            "'" + vis.getPuntoPartida() + "', '" + vis.getFecha() + "', " +
+                            "" + vis.getAnyo() + ", " + vis.getDuracionEstimada() + ", " +
+                            "'" + vis.getTematica() + "', " + vis.getCoste() + ")";
+                }
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (sentencia.executeUpdate(sql) <= 0)
                     insertado = false;// Ejecutamos la sentencia
@@ -169,6 +188,7 @@ public class InsertarDatos {
                 conexion.close();
             } catch (SQLException throwables) {
                 insertado = false;
+                throwables.printStackTrace();
             }
 
             String mensajeJOptionPane;
@@ -238,11 +258,20 @@ public class InsertarDatos {
         LocalDateTime fecha = LocalDateTime.now();
         if (conexion != null) {
             try {
-                String sql = "INSERT INTO registrosempleados" +
-                        "(empleado, fecha, registro) " +
-                        "VALUES('" + dni + "', '" +
-                        fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) +
-                        "', '" + registro + "')";
+                String sql;
+                if (bbdd == 3) {
+                    sql = "INSERT INTO registrosempleados" +
+                            "(empleado, fecha, registro) " +
+                            "VALUES('" + dni + "', TO_DATE('" +
+                            fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
+                            "', 'yyyy-mm-dd hh24:mi:ss'), '" + registro + "')";
+                } else {
+                    sql = "INSERT INTO registrosempleados" +
+                            "(empleado, fecha, registro) " +
+                            "VALUES('" + dni + "', '" +
+                            fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
+                            "', '" + registro + "')";
+                }
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (sentencia.executeUpdate(sql) <= 0)
                     insertado = false;// Ejecutamos la sentencia

@@ -114,6 +114,9 @@ public class CargarDatos {
                 ResultSet r = sentencia.executeQuery("SELECT * FROM empleados"); // Ejecutamos la sentencia
                 while (r.next()) {
 
+                    if (bbdd == 3)
+                        System.out.println("Leyendo empleado");
+                    
                     Date fechaNac;
                     Date fechaContratacion;
 
