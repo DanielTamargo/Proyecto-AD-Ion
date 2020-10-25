@@ -18,7 +18,7 @@ public class PruebasFuncionamiento {
     public static void main(String[] args) {
 
         // TODO importante cambiar el valor para que se conecte a tu BBDD
-        int bbdd = 1; //1 = SQLite, 2 = MySQL, 3 = Oracle
+        int bbdd = 3; //1 = SQLite, 2 = MySQL, 3 = Oracle
 
         //Datos que insertará, modificará, y luego eliminará
         Empleado emp = new Empleado("99999999X", "Prueba", "Test",
@@ -36,20 +36,22 @@ public class PruebasFuncionamiento {
         ArrayList<Cliente> clientes = new CargarDatos().cargarClientes(bbdd);
         ArrayList<Visita> visitas = new CargarDatos().cargarVisitas(bbdd);
 
-        System.out.println("\n\tEMPLEADOS:");
+        if (empleados.size() > 0)
+            System.out.println("\n\tEMPLEADOS:");
         for (Empleado e: empleados)
             System.out.println(e);
 
-        System.out.println("\n\tCLIENTES:");
+        if (clientes.size() > 0)
+            System.out.println("\n\tCLIENTES:");
         for (Cliente c: clientes)
             System.out.println(c);
 
-        System.out.println("\n\tVISITAS:");
+        if (visitas.size() > 0)
+            System.out.println("\n\tVISITAS:");
         for (Visita v: visitas)
             System.out.println(v);
 
-        System.out.println("\n------------------------------------------------------------------------------");
-        System.out.println("- INSERTAR DATOS\n");
+        System.out.println();
 
         new InsertarDatos().insertarEmpleado(bbdd, emp);
         new InsertarDatos().insertarCliente(bbdd, cli);
@@ -58,8 +60,8 @@ public class PruebasFuncionamiento {
         vis.setCod(new CargarDatos().cargarCodigoVisita(bbdd, vis));
         new InsertarDatos().insertarVisitaCliente(bbdd, vis.getCod(), cli.getDni());
 
-        new InsertarDatos().insertarRegistroEmpleado(1, emp.getDni(), "Prueba Empleado");
-        new InsertarDatos().insertarRegistroCliente(1, cli.getDni(), "Prueba Cliente");
+        new InsertarDatos().insertarRegistroEmpleado(bbdd, emp.getDni(), "Prueba Empleado");
+        new InsertarDatos().insertarRegistroCliente(bbdd, cli.getDni(), "Prueba Cliente");
 
         // Modificar Datos
         emp.setNombre("Prueba Modificada");

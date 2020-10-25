@@ -79,8 +79,10 @@ public class CargarDatos {
     }
 
     public LocalDateTime oracleStringToLocalDateTime(String fechaStr) {
+        System.out.println(fechaStr);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime fecha = null;
+        if (fechaStr.length() < 11)
         if (new Random().nextInt(10) > 4)
             fechaStr += " 17:00:00";
         else if (new Random().nextInt(10) > 4)
@@ -95,6 +97,7 @@ public class CargarDatos {
             fechaStr += " 19:30:00";
         else
             fechaStr += " 18:30:00";
+        System.out.println(fechaStr);
         try {
             fecha = LocalDateTime.parse(fechaStr, formatter);
         } catch (Exception e) {
@@ -532,13 +535,12 @@ public class CargarDatos {
             try {
                 String sql;
                 if (bbdd == 3) {
-                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
                     sql = "SELECT cod FROM visitas WHERE " +
                             "guia='" + vis.getGuia().getDni() + "' AND " +
                             "nombre='" + vis.getNombre() + "' AND " +
                             "numMaxClientes=" + vis.getNumMaxClientes() + " AND " +
                             "puntoPartida='" + vis.getPuntoPartida() + "' AND " +
-                            "fecha=TO_DATE('" + fecha + "', 'yyyy-mm-dd') AND " +
                             "anyo=" + vis.getAnyo() + " AND " +
                             "duracionEstimada=" + vis.getDuracionEstimada() + " AND " +
                             "tematica='" + vis.getTematica() + "' AND " +

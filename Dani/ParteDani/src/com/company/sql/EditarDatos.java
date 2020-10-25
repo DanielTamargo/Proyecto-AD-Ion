@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 
 public class EditarDatos {
@@ -69,20 +71,39 @@ public class EditarDatos {
                 String fechaNac = emple.getFechaNac().toString();
                 String fechaContr = emple.getFechaContratacion().toString();
 
-                if (sentencia.executeUpdate("UPDATE empleados SET dni='" + emple.getDni() + "', " +
-                        "nombre='" + emple.getNombre() + "', " +
-                        "primerApellido='" + emple.getPrimerapellido() + "', " +
-                        "fechaNac='" + fechaNac + "', " +
-                        "fechaContratacion='" + fechaContr + "', " +
-                        "nacionalidad='" + emple.getNacionalidad() + "', " +
-                        "cargo='" + emple.getCargo() + "', " +
-                        "contrasenya='" + emple.getContrasenya() + "' " +
-                        "WHERE dni='" + emple.getDni() + "';") <= 0)
+                String sql;
+                if (bbdd == 3) {
+                    DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+                    fechaNac = df.format(emple.getFechaNac());
+                    fechaContr = df.format(emple.getFechaContratacion());
+                    sql = "UPDATE empleados SET dni='" + emple.getDni() + "', " +
+                            "nombre='" + emple.getNombre() + "', " +
+                            "primerApellido='" + emple.getPrimerapellido() + "', " +
+                            "fechaNac=TO_DATE('" + fechaNac + "', 'yyyy/mm/dd'), " +
+                            "fechaContratacion=TO_DATE('" + fechaContr + "', 'yyyy/mm/dd'), " +
+                            "nacionalidad='" + emple.getNacionalidad() + "', " +
+                            "cargo='" + emple.getCargo() + "', " +
+                            "contrasenya='" + emple.getContrasenya() + "' " +
+                            "WHERE dni='" + emple.getDni() + "'";
+                } else {
+                    sql = "UPDATE empleados SET dni='" + emple.getDni() + "', " +
+                            "nombre='" + emple.getNombre() + "', " +
+                            "primerApellido='" + emple.getPrimerapellido() + "', " +
+                            "fechaNac='" + fechaNac + "', " +
+                            "fechaContratacion='" + fechaContr + "', " +
+                            "nacionalidad='" + emple.getNacionalidad() + "', " +
+                            "cargo='" + emple.getCargo() + "', " +
+                            "contrasenya='" + emple.getContrasenya() + "' " +
+                            "WHERE dni='" + emple.getDni() + "'";
+                }
+
+                if (sentencia.executeUpdate(sql) <= 0)
                     editado = false;// Ejecutamos la sentencia
 
                 conexion.close();
             } catch (SQLException throwables) {
                 editado = false;
+                throwables.printStackTrace();
             }
 
             String mensajeJOptionPane;
@@ -118,7 +139,7 @@ public class EditarDatos {
                         "edad=" + cliente.getEdad() + ", " +
                         "profesion='" + cliente.getProfesion() + "', " +
                         "contrasenya='" + cliente.getContrasenya() + "' " +
-                        "WHERE dni='" + cliente.getDni() + "';") <= 0)
+                        "WHERE dni='" + cliente.getDni() + "'") <= 0)
                     editado = false;// Ejecutamos la sentencia
                 conexion.close();
             } catch (SQLException throwables) {
@@ -152,21 +173,23 @@ public class EditarDatos {
         if (conexion != null) {
             try {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
-                String fecha = visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                String fecha;
                 if (bbdd == 3) {
+                    fecha = visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                     if (sentencia.executeUpdate("UPDATE visitas SET cod=" + visita.getCod() + ", " +
                             "guia='" + visita.getGuia().getDni() + "', " +
                             "nombre='" + visita.getNombre() + "', " +
                             "numMaxClientes=" + visita.getNumMaxClientes() + ", " +
                             "puntoPartida='" + visita.getPuntoPartida() + "', " +
-                            "fecha=TO_DATE('" + fecha + "', 'yyyy-mm-dd hh24:mi:ss'), " +
+                            "fecha=TO_DATE('" + fecha + "', 'yyyy/mm/dd hh24:mi:ss'), " +
                             "anyo=" + visita.getAnyo() + ", " +
                             "duracionEstimada=" + visita.getDuracionEstimada() + ", " +
                             "tematica='" + visita.getTematica() + "', " +
                             "coste=" + visita.getCoste() + " " +
-                            "WHERE cod=" + visita.getCod() + ";") <= 0)
+                            "WHERE cod=" + visita.getCod() + "") <= 0)
                         editado = false;// Ejecutamos la sentencia
                 } else {
+                    fecha = visita.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     if (sentencia.executeUpdate("UPDATE visitas SET cod=" + visita.getCod() + ", " +
                             "guia='" + visita.getGuia().getDni() + "', " +
                             "nombre='" + visita.getNombre() + "', " +
@@ -177,7 +200,7 @@ public class EditarDatos {
                             "duracionEstimada=" + visita.getDuracionEstimada() + ", " +
                             "tematica='" + visita.getTematica() + "', " +
                             "coste=" + visita.getCoste() + " " +
-                            "WHERE cod=" + visita.getCod() + ";") <= 0)
+                            "WHERE cod=" + visita.getCod() + "") <= 0)
                         editado = false;// Ejecutamos la sentencia
                 }
                 conexion.close();

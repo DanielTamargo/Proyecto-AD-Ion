@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -64,10 +66,13 @@ public class InsertarDatos {
             try {
                 String sql;
                 if (bbdd == 3) {
+                    DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+                    String fechaNac = df.format(emp.getFechaNac());
+                    String fechaContratacion = df.format(emp.getFechaContratacion());
                     sql = String.format(
-                            "INSERT INTO empleados VALUES('%s', '%s', '%s', TO_DATE('%s', 'yyyy-mm-dd'), TO_DATE('%s', 'yyyy-mm-dd'), '%s', '%s', '%s')",
-                            emp.getDni(), emp.getNombre(), emp.getPrimerapellido(), emp.getFechaNac(),
-                            emp.getFechaContratacion(), emp.getNacionalidad(), emp.getCargo(), emp.getContrasenya());
+                            "INSERT INTO empleados VALUES('%s', '%s', '%s', TO_DATE('%s', 'yyyy/mm/dd'), TO_DATE('%s', 'yyyy/mm/dd'), '%s', '%s', '%s')",
+                            emp.getDni(), emp.getNombre(), emp.getPrimerapellido(), fechaNac,
+                            fechaContratacion, emp.getNacionalidad(), emp.getCargo(), emp.getContrasenya());
                 } else {
                     sql = String.format(
                             "INSERT INTO empleados VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
@@ -81,7 +86,7 @@ public class InsertarDatos {
                 conexion.close();
             } catch (SQLException throwables) {
                 if (throwables.getLocalizedMessage().contains("dni is not unique") || throwables.getLocalizedMessage().contains("Duplicate")
-                        || throwables.getLocalizedMessage().contains("única"))
+                        || throwables.getLocalizedMessage().contains("única") || throwables.getLocalizedMessage().contains("unique constraint"))
                     unico = false;
                 insertado = false;
             }
@@ -130,7 +135,7 @@ public class InsertarDatos {
                 conexion.close();
             } catch (SQLException throwables) {
                 if (throwables.getLocalizedMessage().contains("dni is not unique") || throwables.getLocalizedMessage().contains("Duplicate")
-                        || throwables.getLocalizedMessage().contains("única"))
+                        || throwables.getLocalizedMessage().contains("única") || throwables.getLocalizedMessage().contains("unique constraint"))
                     unico = false;
                 insertado = false;
             }
@@ -167,12 +172,12 @@ public class InsertarDatos {
             try {
                 String sql;
                 if (bbdd == 3) {
-                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    String fecha = vis.getFecha().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                     sql = "INSERT INTO " +
                             "visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) " +
                             "VALUES('" + vis.getGuia().getDni() + "', " +
                             "'" + vis.getNombre() + "', " + vis.getNumMaxClientes() + ", " +
-                            "'" + vis.getPuntoPartida() + "', TO_DATE('" + fecha + "', 'yyyy-mm-dd hh24:mi:ss'), " +
+                            "'" + vis.getPuntoPartida() + "', TO_DATE('" + fecha + "', 'yyyy/mm/dd hh24:mi:ss'), " +
                             "" + vis.getAnyo() + ", " + vis.getDuracionEstimada() + ", " +
                             "'" + vis.getTematica() + "', " + vis.getCoste() + ")";
                 } else {
@@ -266,8 +271,8 @@ public class InsertarDatos {
                     sql = "INSERT INTO registrosempleados" +
                             "(empleado, fecha, registro) " +
                             "VALUES('" + dni + "', TO_DATE('" +
-                            fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
-                            "', 'yyyy-mm-dd hh24:mi:ss'), '" + registro + "')";
+                            fecha.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
+                            "', 'yyyy/mm/dd'), '" + registro + "')";
                 } else {
                     sql = "INSERT INTO registrosempleados" +
                             "(empleado, fecha, registro) " +
@@ -305,11 +310,20 @@ public class InsertarDatos {
         LocalDateTime fecha = LocalDateTime.now();
         if (conexion != null) {
             try {
-                String sql = "INSERT INTO registrosclientes" +
-                        "(cliente, fecha, registro) " +
-                        "VALUES('" + dni + "', '" +
-                        fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) +
-                        "', '" + registro + "')";
+                String sql;
+                if (bbdd == 3) {
+                    sql = "INSERT INTO registrosclientes" +
+                            "(cliente, fecha, registro) " +
+                            "VALUES('" + dni + "', TO_DATE('" +
+                            fecha.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
+                            "', 'yyyy/mm/dd'), '" + registro + "')";
+                } else {
+                    sql = "INSERT INTO registrosclientes" +
+                            "(cliente, fecha, registro) " +
+                            "VALUES('" + dni + "', '" +
+                            fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) +
+                            "', '" + registro + "')";
+                }
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 if (sentencia.executeUpdate(sql) <= 0)
                     insertado = false;// Ejecutamos la sentencia
