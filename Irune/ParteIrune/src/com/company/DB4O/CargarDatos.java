@@ -17,11 +17,11 @@ public class CargarDatos {
      *
      */
     public void mostrarEmpleados() {
-        ObjectContainer db = new Conexion().conectarBD();
+        ObjectContainer bd = new Conexion().conectarBD();
 
         System.out.println("\n ---- EMPLEADOS ---- ");
         Empleado emp = new Empleado();
-        ObjectSet<Empleado> resultadoEmp = db.queryByExample(emp);
+        ObjectSet<Empleado> resultadoEmp = bd.queryByExample(emp);
 
         if (resultadoEmp.size() == 0) {
             System.out.println("No hay empleados en la BD");
@@ -30,6 +30,7 @@ public class CargarDatos {
             Empleado empl = resultadoEmp.next();
             System.out.println(empl); //txtArea.setText(empl);
         }
+        bd.close();
     }
 
     /**
@@ -38,9 +39,9 @@ public class CargarDatos {
      * @param emple <- recibe un empleado para luego mostrar sus datos
      */
     public void mostrarEmpleado(Empleado emple){
-        ObjectContainer db = new Conexion().conectarBD();
+        ObjectContainer bd = new Conexion().conectarBD();
 
-        ObjectSet<Empleado> resultadoEmp = db.queryByExample(emple);
+        ObjectSet<Empleado> resultadoEmp = bd.queryByExample(emple);
 
         if (resultadoEmp.size() == 0) {
             System.out.println("No existe ese empleado en la BD");
@@ -49,6 +50,7 @@ public class CargarDatos {
             Empleado empl = resultadoEmp.next();
             System.out.println(empl); //txtArea.setText(empl);
         }
+        bd.close();
     }
 
     /**
@@ -56,11 +58,11 @@ public class CargarDatos {
      *
      */
     public void mostrarClientes() {
-        ObjectContainer db = new Conexion().conectarBD();
+        ObjectContainer bd = new Conexion().conectarBD();
 
         System.out.println("\n ---- CLIENTES ---- ");
         Cliente cli = new Cliente();
-        ObjectSet<Cliente> resultadoCli = db.queryByExample(cli);
+        ObjectSet<Cliente> resultadoCli = bd.queryByExample(cli);
 
         if (resultadoCli.size() == 0) {
             System.out.println("No hay clientes en la BD");
@@ -69,6 +71,8 @@ public class CargarDatos {
             Cliente cliente = resultadoCli.next();
             System.out.println(cliente);
         }
+        bd.close();
+
     }
 
     /**
@@ -77,9 +81,9 @@ public class CargarDatos {
      * @param cli <- recibe un empleado para luego mostrar sus datos
      */
     public void mostrarCliente(Cliente cli) {
-        ObjectContainer db = new Conexion().conectarBD();
+        ObjectContainer bd = new Conexion().conectarBD();
 
-        ObjectSet<Cliente> resultadoCli = db.queryByExample(cli);
+        ObjectSet<Cliente> resultadoCli = bd.queryByExample(cli);
 
         if (resultadoCli.size() == 0) {
             System.out.println("No existe ese cliente en la BD");
@@ -88,6 +92,7 @@ public class CargarDatos {
             Cliente cliente = resultadoCli.next();
             System.out.println(cliente);
         }
+        bd.close();
     }
 
     /**
@@ -95,11 +100,11 @@ public class CargarDatos {
      *
      */
     public void mostrarVisitas() {
-        ObjectContainer db = new Conexion().conectarBD();
+        ObjectContainer bd = new Conexion().conectarBD();
 
         System.out.println("\n ---- VISITAS ---- ");
         Visita visita = new Visita();
-        ObjectSet<Visita> resultadoVisita = db.queryByExample(visita);
+        ObjectSet<Visita> resultadoVisita = bd.queryByExample(visita);
 
         if (resultadoVisita.size() == 0) {
             System.out.println("No hay visitas en la BD");
@@ -108,6 +113,7 @@ public class CargarDatos {
             Visita visit = resultadoVisita.next();
             System.out.println(visit);
         }
+        bd.close();
     }
 
     /**
@@ -115,11 +121,11 @@ public class CargarDatos {
      *
      */
     public void mostrarVisitasClientes() {
-        ObjectContainer db = new Conexion().conectarBD();
+        ObjectContainer bd = new Conexion().conectarBD();
 
         System.out.println("\n ---- VISITAS CLIENTES ---- ");
         VisitaCliente visitaCliente = new VisitaCliente();
-        ObjectSet<VisitaCliente> resultadoVisitaCliente = db.queryByExample(visitaCliente);
+        ObjectSet<VisitaCliente> resultadoVisitaCliente = bd.queryByExample(visitaCliente);
 
         if (resultadoVisitaCliente.size() == 0) {
             System.out.println("No hay visitas de clientes en la BD");
@@ -128,5 +134,6 @@ public class CargarDatos {
             VisitaCliente visitCli = resultadoVisitaCliente.next();
             System.out.println(visitCli);
         }
+        bd.close();
     }
 }

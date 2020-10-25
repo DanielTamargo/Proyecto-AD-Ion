@@ -5,10 +5,22 @@ import com.db4o.ObjectContainer;
 
 public class Conexion {
 
+    public String BDAgencia = "Agencia.yap";
+    public ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), BDAgencia);
+
     public Conexion(){}
 
     public ObjectContainer conectarBD(){
+
+        /*ObjectContainer rootContainer = db;
+        ObjectContainer session = rootContainer.ext().openSession();
+
+
+        return session;*/
+
         String BDAgencia = "Agencia.yap";
-        return Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), BDAgencia);
+        ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), BDAgencia);
+
+        return db;
     }
 }

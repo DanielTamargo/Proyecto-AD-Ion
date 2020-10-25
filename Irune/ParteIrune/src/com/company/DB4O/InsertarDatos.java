@@ -34,6 +34,7 @@ public class InsertarDatos {
         ObjectContainer bd = new Conexion().conectarBD();
         new InsertarDatosBase().clientes.add(cli);
         bd.store(cli);
+        bd.close();
     }
 
     /**
@@ -46,6 +47,7 @@ public class InsertarDatos {
         ObjectContainer bd = new Conexion().conectarBD();
         new InsertarDatosBase().visitas.add(visita);
         bd.store(visita);
+        bd.close();
     }
 
     /**
@@ -58,5 +60,7 @@ public class InsertarDatos {
         ObjectContainer bd = new Conexion().conectarBD();
         new InsertarDatosBase().visitasClientes.add(visitaCliente);
         bd.store(visitaCliente);
+        bd.close();
+
     }
 }

@@ -191,27 +191,28 @@ public class InsertarDatosBase {
 
     public void insertarDatosBase(){
 
-        ObjectContainer db = new Conexion().conectarBD();
+        ObjectContainer bd = new Conexion().conectarBD();
 
         insertarEmpleadosBase();
         for (Empleado empleado : empleados) {
-            db.store(empleado);
+            bd.store(empleado);
         }
 
         insertarClientesBase();
         for (Cliente cliente : clientes) {
-            db.store(cliente);
+            bd.store(cliente);
         }
 
         insertarVisitasBase();
         for (Visita visita : visitas) {
-            db.store(visita);
+            bd.store(visita);
         }
 
         insertarVisitasClientesBase();
         for (VisitaCliente visitaCliente : visitasClientes) {
-            db.store(visitaCliente);
+            bd.store(visitaCliente);
         }
+        bd.close();
     }
 
     /**
