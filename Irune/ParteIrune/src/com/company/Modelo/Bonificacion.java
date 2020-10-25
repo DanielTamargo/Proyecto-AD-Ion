@@ -1,5 +1,7 @@
 package com.company.Modelo;
 
+import java.util.Objects;
+
 public class Bonificacion {
 
     private int cod;
@@ -15,6 +17,19 @@ public class Bonificacion {
         this.cliente = cliente;
         this.nombre = nombre;
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bonificacion that = (Bonificacion) o;
+        return cod == that.cod;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cod);
     }
 
     public int getCod() {

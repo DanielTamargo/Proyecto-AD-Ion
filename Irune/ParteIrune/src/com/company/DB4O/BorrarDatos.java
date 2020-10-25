@@ -10,13 +10,7 @@ import java.util.ArrayList;
 
 public class BorrarDatos {
 
-    //public static ObjectContainer db = new Conexion().conectarBD();
-
-    public static void main(String[] args) {
-
-    }
-
-    public BorrarDatos(){}
+    public BorrarDatos() { }
 
     /**
      * Método utilizado para eliminar un cliente
@@ -24,7 +18,7 @@ public class BorrarDatos {
      *
      * @param emple <- objeto de tipo Visita con todos los datos a insertar
      */
-    public void eliminarEmpleado(Empleado emple){
+    public void eliminarEmpleado(Empleado emple) {
 
         ObjectContainer bd = new Conexion().conectarBD();
 
@@ -45,7 +39,8 @@ public class BorrarDatos {
 
         bd.close();
     }
-    public void eliminarCliente(Cliente cliente){
+
+    public void eliminarCliente(Cliente cliente) {
 
         ObjectContainer bd = new Conexion().conectarBD();
 
@@ -66,7 +61,7 @@ public class BorrarDatos {
         bd.close();
     }
 
-    public void eliminarVisita(Visita visita){
+    public void eliminarVisita(Visita visita) {
         //Conectamos con la DB .yap
 
         ObjectContainer bd = new Conexion().conectarBD();

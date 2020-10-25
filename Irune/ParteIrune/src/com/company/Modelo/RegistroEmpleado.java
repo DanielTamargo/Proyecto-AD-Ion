@@ -1,6 +1,7 @@
 package com.company.Modelo;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class RegistroEmpleado {
 
@@ -17,6 +18,19 @@ public class RegistroEmpleado {
         this.empleado = empleado;
         this.fecha = fecha;
         this.registro = registro;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RegistroEmpleado that = (RegistroEmpleado) o;
+        return cod == that.cod;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cod);
     }
 
     public int getCod() {

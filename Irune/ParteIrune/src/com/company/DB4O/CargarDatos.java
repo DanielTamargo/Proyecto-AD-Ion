@@ -55,7 +55,6 @@ public class CargarDatos {
 
     /**
      * Método que devuelve todos los clientes
-     *
      */
     public void mostrarClientes() {
         ObjectContainer bd = new Conexion().conectarBD();
@@ -97,7 +96,6 @@ public class CargarDatos {
 
     /**
      * Método que devuelve todas las visitas
-     *
      */
     public void mostrarVisitas() {
         ObjectContainer bd = new Conexion().conectarBD();
@@ -118,7 +116,6 @@ public class CargarDatos {
 
     /**
      * Método que devuelve todas las visitas de los clientes
-     *
      */
     public void mostrarVisitasClientes() {
         ObjectContainer bd = new Conexion().conectarBD();
