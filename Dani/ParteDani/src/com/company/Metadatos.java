@@ -7,12 +7,13 @@ import java.util.ArrayList;
 
 public class Metadatos {
 
-    public String nombresTablas = "empleados clientes visitas visitasclientes bonificaciones bonificacionesclientes registrosempleados registrosclientes" ;
+    public String nombresTablas = "empleados clientes visitas visitasclientes bonificacionesvisitas registrosempleados registrosclientes" ;
+    public String nombresTablasOracleAObviar = "pfv";
 
     public Metadatos() { }
 
     public static void main(String[] args) {
-        new Metadatos().generarMetadatos(1);
+        new Metadatos().generarMetadatos(3);
     }
 
     /**
@@ -66,8 +67,7 @@ public class Metadatos {
                     String esquema = resul.getString(2); //columna 2
                     String tabla = resul.getString(3);  //nombre de la tabla
                     String tipo = resul.getString(4);  //tipo
-                    if (nombresTablas.contains(tabla.toLowerCase()) && !tabla.equalsIgnoreCase("f")
-                            && !tabla.equalsIgnoreCase("p") && !tabla.equalsIgnoreCase("v")) {
+                    if (nombresTablas.contains(tabla.toLowerCase()) && !nombresTablasOracleAObviar.contains(tabla.toLowerCase())) {
                         System.out.println("======================================================================");
                         System.out.println(tipo + " - Catalogo: " + catalogo + ", Esquema : " + esquema + ", Tabla : " + tabla);
                         System.out.println();
