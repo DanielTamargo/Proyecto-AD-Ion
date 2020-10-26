@@ -12,7 +12,7 @@ public class Metadatos {
     public Metadatos() { }
 
     public static void main(String[] args) {
-        new Metadatos().generarMetadatos(3);
+        new Metadatos().generarMetadatos(1);
     }
 
     /**
@@ -62,26 +62,26 @@ public class Metadatos {
                 resul = dbmd.getTables("grupo3", null, null, null);
 
                 while (resul.next()) {
-                    String catalogo = resul.getString(1);//columna 1 que devuelve ResulSet
+                    String catalogo = resul.getString(1); //columna 1 que devuelve ResulSet
                     String esquema = resul.getString(2); //columna 2
-                    String tabla = resul.getString(3);   //nombre de la tabla
+                    String tabla = resul.getString(3);  //nombre de la tabla
                     String tipo = resul.getString(4);  //tipo
                     if (nombresTablas.contains(tabla.toLowerCase()) && !tabla.equalsIgnoreCase("f")
                             && !tabla.equalsIgnoreCase("p") && !tabla.equalsIgnoreCase("v")) {
-                        System.out.println("===================================================================");
+                        System.out.println("======================================================================");
                         System.out.println(tipo + " - Catalogo: " + catalogo + ", Esquema : " + esquema + ", Tabla : " + tabla);
                         System.out.println();
+
                         ArrayList<String> clavesPrimarias = new ArrayList<>();
                         try {
                             //Devuelve las PK de cada tabla de la BBDD
                             ResultSet rsp = dbmd.getPrimaryKeys(null, null, tabla);
-
                             while (rsp.next())
                                 clavesPrimarias.add(rsp.getObject(4).toString());
-                            //System.out.println("PK (clave primaria): " + rsp.getObject(4));
                             rsp.close();
-                        } catch (SQLException ignored) {
-                        }
+                        } catch (SQLException ignored) { }
+
+                        // Mostramos clave(s) primaria(s)
                         if (clavesPrimarias.size() > 1) {
                             System.out.print("PKs (claves primarias): ");
                             boolean primero = true;
@@ -95,6 +95,7 @@ public class Metadatos {
                             System.out.println();
                         } else if (clavesPrimarias.size() == 1)
                             System.out.println("PK (clave primaria): " + clavesPrimarias.get(0));
+
                         //Mostramos el nombre de las columnas y su tipo de dato
                         rsColumnas = dbmd.getColumns(null, null, tabla, null);
                         System.out.println("Columnas " + tabla);
