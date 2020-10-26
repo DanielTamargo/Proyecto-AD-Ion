@@ -1,16 +1,31 @@
 package com.company.Modelo;
 
+import java.util.Objects;
+
 public class VisitaCliente {
 
     private Cliente cliente;
     private Visita visita;
 
-    public VisitaCliente() {
-    }
+    public VisitaCliente() { }
 
     public VisitaCliente(Cliente cliente, Visita visita) {
         this.cliente = cliente;
         this.visita = visita;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VisitaCliente that = (VisitaCliente) o;
+        return cliente.equals(that.cliente) &&
+                visita.equals(that.visita);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cliente, visita);
     }
 
     public Cliente getCliente() {

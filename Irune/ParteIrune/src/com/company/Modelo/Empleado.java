@@ -1,6 +1,7 @@
 package com.company.Modelo;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Empleado {
 
@@ -26,6 +27,19 @@ public class Empleado {
         this.nacionalidad = nacionalidad;
         this.cargo = cargo;
         this.contrasenya = contrasenya;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Empleado empleado = (Empleado) o;
+        return dni.equals(empleado.dni);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dni);
     }
 
     public String getDni() {

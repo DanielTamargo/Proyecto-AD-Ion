@@ -16,7 +16,8 @@ public class Conexiones {
     /**
      * Es una línea muy larga, para dejar el código más claro creamos una variable con dicha línea y luego la llamamos
      */
-    String driverMySQL = "jdbc:mysql://localhost/tema2?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=EET";
+    String driverMySQL = "jdbc:mysql://localhost/grupo3?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true" +
+            "&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=EET";
 
     /**
      * Constructor vacío, sólo nos interesa llamar a sus métodos para obtener las conexiones a la BBDD
@@ -48,7 +49,7 @@ public class Conexiones {
         Connection conexion = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            DriverManager.getConnection(driverMySQL, "grupo3", "grupo3");
+            conexion = DriverManager.getConnection(driverMySQL, "grupo3", "grupo3");
         } catch (SQLException | ClassNotFoundException throwables) {
             mostrarErrorAlConectar(2);
             //throwables.printStackTrace();
@@ -63,8 +64,8 @@ public class Conexiones {
 
         Connection conexion = null;
         try {
-            Class.forName("org.sqlite.JDBC"); // TODO hay que cambiar esta conexión
-            conexion = DriverManager.getConnection("jdbc:sqlite:sqlite.db");
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            conexion = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "grupo3", "grupo3");
         } catch (SQLException | ClassNotFoundException throwables) {
             mostrarErrorAlConectar(3);
             //throwables.printStackTrace();
