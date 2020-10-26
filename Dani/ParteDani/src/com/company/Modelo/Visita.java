@@ -1,6 +1,7 @@
 package com.company.Modelo;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Visita {
 
@@ -16,6 +17,14 @@ public class Visita {
     private float coste;
 
     public Visita() {
+    }
+
+    public Visita(int cod) {
+        this.cod = cod;
+    }
+
+    public Visita(Empleado guia) {
+        this.guia = guia;
     }
 
     public Visita(Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
@@ -43,6 +52,18 @@ public class Visita {
         this.duracionEstimada = duracionEstimada;
         this.tematica = tematica;
         this.coste = coste;
+    }
+
+    public void cambiarDatosDB4O(Visita vis) {
+        this.guia = vis.getGuia();
+        this.nombre = vis.getNombre();
+        this.numMaxClientes = vis.getNumMaxClientes();
+        this.puntoPartida = vis.getPuntoPartida();
+        this.fecha = vis.getFecha();
+        this.anyo = vis.getAnyo();
+        this.duracionEstimada = vis.getDuracionEstimada();
+        this.tematica = vis.getTematica();
+        this.coste = vis.getCoste();
     }
 
     @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
@@ -74,6 +95,19 @@ public class Visita {
                     ", coste=" + coste +
                     '}';
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Visita visita = (Visita) o;
+        return cod == visita.cod;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cod);
     }
 
     public int getCod() {

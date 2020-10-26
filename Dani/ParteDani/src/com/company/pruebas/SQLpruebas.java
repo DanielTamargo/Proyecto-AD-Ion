@@ -1,4 +1,4 @@
-package com.company.pruebassql;
+package com.company.pruebas;
 
 import com.company.Modelo.Cliente;
 import com.company.Modelo.Empleado;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class PruebasFuncionamiento {
+public class SQLpruebas {
 
     public static void main(String[] args) {
 

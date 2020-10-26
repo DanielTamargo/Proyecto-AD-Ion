@@ -1,5 +1,7 @@
 package com.company.Modelo;
 
+import java.util.Objects;
+
 public class Cliente {
 
     private String dni;
@@ -12,6 +14,10 @@ public class Cliente {
     public Cliente() {
     }
 
+    public Cliente(String dni) {
+        this.dni = dni;
+    }
+
     public Cliente(String dni, String nombre, String apellidos, int edad, String profesion, String contrasenya) {
         this.dni = dni;
         this.nombre = nombre;
@@ -19,6 +25,14 @@ public class Cliente {
         this.edad = edad;
         this.profesion = profesion;
         this.contrasenya = contrasenya;
+    }
+
+    public void cambiarDatosDB4O(Cliente cli) {
+        this.nombre = cli.getNombre();
+        this.apellidos = cli.getApellidos();
+        this.edad = cli.getEdad();
+        this.profesion = cli.getProfesion();
+        this.contrasenya = cli.getContrasenya();
     }
 
     @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
@@ -31,6 +45,19 @@ public class Cliente {
                 ", profesion='" + profesion + '\'' +
                 ", contrasenya='" + contrasenya + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return dni.equals(cliente.dni);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dni);
     }
 
     public String getDni() {

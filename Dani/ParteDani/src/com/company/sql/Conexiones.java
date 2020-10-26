@@ -92,7 +92,7 @@ public class Conexiones {
         else if (bbdd == 3)
             nombreBBDD = "Oracle";
 
-        JButton okButton = new JButton("Ok");
+        JButton okButton = new JButton("Entendido");
         okButton.setFocusPainted(false);
         Object[] options = {okButton};
         final JOptionPane pane = new JOptionPane("Error al conectar con la BBDD '" + nombreBBDD + "'", JOptionPane.ERROR_MESSAGE, JOptionPane.YES_NO_OPTION, null, options);

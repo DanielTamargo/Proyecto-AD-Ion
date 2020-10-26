@@ -322,7 +322,6 @@ public class CargarDatos {
                     else
                         fecha = oracleStringToLocalDateTime(r.getString(6));
 
-
                     visitas.add(new Visita(r.getInt(1),
                             cargarEmpleado(bbdd, conexion, r.getString(2)),
                             r.getString(3), r.getInt(4),

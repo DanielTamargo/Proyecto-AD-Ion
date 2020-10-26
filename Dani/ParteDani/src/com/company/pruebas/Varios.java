@@ -1,12 +1,6 @@
-package com.company.pruebassql;
+package com.company.pruebas;
 
-import com.company.Modelo.Empleado;
-import com.company.sql.CargarDatos;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-
-public class PruebasVarias {
+public class Varios {
 
     public static void main(String[] args) {
 
