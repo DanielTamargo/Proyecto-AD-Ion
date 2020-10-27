@@ -1,15 +1,23 @@
 package Ventanas;
 
+import com.company.DB4O.CargarDatosDB4O;
+import com.company.Modelo.Cliente;
+import com.company.Modelo.Empleado;
+import com.company.Modelo.Visita;
+import com.company.sql.CargarDatos;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class VentanaSecundaria {
     private JTabbedPane tabbedPane1;
     private JPanel ventanaSecundaria;
     private JButton editarButton;
     private JButton eliminarButton;
-    private JList listaList;
+    private JList listEmpleadosOClientes;
     private JTextField DNI;
     private JTextField CARGO;
     private JTextField NOMBRE;
@@ -37,7 +45,7 @@ public class VentanaSecundaria {
     private JButton nuevaVisitaButton;
     private JButton editarVisitaButton;
     private JButton eliminarVisitaButton;
-    private JList list1;
+    private JList listVisitasEmp;
     private JTextField textField1;
     private JTextField textField3;
     private JTextField textField4;
@@ -45,7 +53,7 @@ public class VentanaSecundaria {
     private JTextField textField7;
     private JTextField textField8;
     private JComboBox comboBox2;
-    private JList list2;
+    private JList listVisitasCli;
     private JTextField textField2;
     private JTextField textField5;
     private JTextField textField9;
@@ -58,7 +66,14 @@ public class VentanaSecundaria {
     private JButton misVisitasButton;
     private JButton misVisitasButton2;
 
-    public VentanaSecundaria(JFrame frame) {
+    private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+    private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+    private ArrayList<Visita> visitas = new ArrayList<Visita>();
+
+    private int bbdd = 1;
+    private JFrame ventanaPrincipal;
+
+    public VentanaSecundaria() {
         añadirButton.setIcon(new ImageIcon("Assets/añadir.png"));
         editarButton.setIcon(new ImageIcon("Assets/save.png"));
         editarVisitaButton.setIcon(new ImageIcon("Assets/save.png"));
@@ -71,7 +86,7 @@ public class VentanaSecundaria {
         misVisitasButton2.setIcon(new ImageIcon("Assets/mis.png"));
         realizarReservaButton.setIcon(new ImageIcon("Assets/pedido.png"));
 
-//Ocultamos todos los campos ventana RRHH
+        //Ocultamos todos los campos ventana RRHH
         DNI.setVisible(false);
         EDAD.setVisible(false);
         PROFESION.setVisible(false);
@@ -92,9 +107,10 @@ public class VentanaSecundaria {
         NOMBRElbl.setVisible(false);
         AELLIDOlbl.setVisible(false);
         Contraseñalbl.setVisible(false);
-        listaList.setVisible(true);
+        //listEmpleadosOClientes.setVisible(true);
         NombreListaLbl.setVisible(true);
-//Acciones ventana RRHH
+
+        //Acciones ventana RRHH
         clienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,9 +134,7 @@ public class VentanaSecundaria {
                 NOMBRElbl.setVisible(true);
                 AELLIDOlbl.setVisible(true);
                 Contraseñalbl.setVisible(true);
-
-
-
+                cargarClientesEnLista();
             }
         });
 
@@ -147,14 +161,14 @@ public class VentanaSecundaria {
                 NOMBRElbl.setVisible(true);
                 AELLIDOlbl.setVisible(true);
                 Contraseñalbl.setVisible(true);
-
+                cargarEmpleadosEnLista();
             }
         });
 
         añadirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listaList.setVisible(false);
+                listEmpleadosOClientes.setVisible(false);
                 NombreListaLbl.setVisible(false);
 
 
@@ -164,7 +178,7 @@ public class VentanaSecundaria {
         eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listaList.setVisible(true);
+                listEmpleadosOClientes.setVisible(true);
                 NombreListaLbl.setVisible(true);
 
 
@@ -173,7 +187,7 @@ public class VentanaSecundaria {
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listaList.setVisible(true);
+                listEmpleadosOClientes.setVisible(true);
                 NombreListaLbl.setVisible(true);
 
 
@@ -184,6 +198,88 @@ public class VentanaSecundaria {
 
     }
 
+    public void cargarClientesEnLista() {
+        DefaultListModel<Cliente> modeloCli = new DefaultListModel<>();
+        for (Cliente e: clientes)
+            modeloCli.addElement(e);
+        listEmpleadosOClientes.setModel(modeloCli);
+    }
+
+    public void cargarEmpleadosEnLista() {
+        DefaultListModel<Empleado> modeloEmp = new DefaultListModel<>();
+        for (Empleado e: empleados)
+            modeloEmp.addElement(e);
+        listEmpleadosOClientes.setModel(modeloEmp);
+    }
+
+    public void cargarDatos() {
+        cargarListas();
+        actualizarListas();
+        actualizarDatosEmpleado();
+    }
+
+    public void cargarListas() {
+        if (bbdd == 4) { //BD4O
+            empleados = new CargarDatosDB4O().cargarEmpleados();
+            clientes = new CargarDatosDB4O().cargarClientes();
+            visitas = new CargarDatosDB4O().cargarVisitas();
+        } else { //SQL
+            empleados = new CargarDatos().cargarEmpleados(bbdd);
+            clientes = new CargarDatos().cargarClientes(bbdd);
+            visitas = new CargarDatos().cargarVisitas(bbdd);
+        }
+    }
+
+    public void actualizarListas() {
+        DefaultListModel<Empleado> modeloEmp = new DefaultListModel<>();
+        for (Empleado e: empleados)
+            modeloEmp.addElement(e);
+        listEmpleadosOClientes.setModel(modeloEmp);
+
+        // TODO comprobar si es cliente o empleado y filtrar las listas
+        DefaultListModel<Visita> modeloVisEmp = new DefaultListModel<>();
+        for (Visita v: visitas)
+            modeloVisEmp.addElement(v);
+        listVisitasEmp.setModel(modeloVisEmp);
+
+        // TODO filtrar la lista en base a las visitas disponibles
+        DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
+        for (Visita v: visitas) {
+            if (v.getFecha().isAfter(LocalDateTime.now()))
+            modeloVisCli.addElement(v);
+        }
+        listVisitasCli.setModel(modeloVisCli);
+
+        try {
+            listEmpleadosOClientes.setSelectedIndex(0);
+        } catch (NullPointerException ignored) {}
+        try {
+            listVisitasEmp.setSelectedIndex(0);
+        } catch (NullPointerException ignored) {}
+        try {
+            listVisitasCli.setSelectedIndex(0);
+        } catch (NullPointerException ignored) {}
+
+    }
+
+    public void actualizarDatosEmpleado() {
+        Empleado e = (Empleado) listEmpleadosOClientes.getSelectedValue();
+        DNI.setText(e.getDni());
+        NOMBRE.setText(e.getNombre());
+        APELLIDO.setText(e.getPrimerapellido());
+        FECHNAC.setText(e.getFechaNac().toString());
+        FECHACONTR.setText(e.getFechaContratacion().toString());
+        CARGO.setText(e.getCargo());
+        CONTRASEÑA.setText(e.getContrasenya());
+    }
+
+    public void setVentanaPrincipal(JFrame ventanaPrincipal) {
+        this.ventanaPrincipal = ventanaPrincipal;
+    }
+
+    public void setBbdd(int bbdd) {
+        this.bbdd = bbdd;
+    }
 
     public JPanel getPanelSecundario() {return ventanaSecundaria;}
 

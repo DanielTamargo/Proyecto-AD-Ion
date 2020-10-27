@@ -21,6 +21,9 @@ public class ventanaPrincipal {
     private JLabel direccionlbl3;
     private JLabel direccionlbl4;
 
+    private JFrame frameVentanaPrincipal;
+    private int bbdd = 1;
+
     // TODO los listeners dentro del constructor vacío de la ventana
     public ventanaPrincipal() {
         oracleButton.setIcon(new ImageIcon("Assets/oracle.png"));
@@ -36,64 +39,65 @@ public class ventanaPrincipal {
         direccionlbl2.setIcon(new ImageIcon("Assets/direccion.png"));
         direccionlbl3.setIcon(new ImageIcon("Assets/direccion.png"));
         direccionlbl4.setIcon(new ImageIcon("Assets/direccion.png"));
-        informacion.setVisible(false);
+        //informacion.setVisible(false);
 
         oracleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("VentaSecundaria");
-                frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
-                frame.pack();
-                frame.setVisible(true);
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+                bbdd = 3;
+                abrirVentanaSecundaria();
             }
         });
 
         MYSQLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("Venta Secundaria");
-                frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.pack();
-                frame.setVisible(true);
+                bbdd = 2;
+                abrirVentanaSecundaria();
             }
         });
 
         DB4OButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("Venta Secundaria");
-                frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.pack();
-                frame.setVisible(true);
+                bbdd = 4;
+                abrirVentanaSecundaria();
             }
         });
 
         SQLiteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame();
-                frame.setContentPane(new VentanaSecundaria(frame).getPanelSecundario());
-                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                frame.pack();
-                frame.setVisible(true);
+                bbdd = 1;
+                abrirVentanaSecundaria();
+            }
+        });
+
+        infoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (informacion.isVisible())
+                    informacion.setVisible(false);
+                else
+                    informacion.setVisible(true);
             }
         });
 
 
-infoButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        informacion.setVisible(true);
     }
-});
 
+    public void abrirVentanaSecundaria() {
+        JFrame frame = new JFrame("VentaSecundaria");
+        VentanaSecundaria vs = new VentanaSecundaria();
+        frame.setContentPane(vs.getPanelSecundario());
+        vs.setBbdd(bbdd);
+        vs.cargarDatos();
+        frame.pack();
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-
-
+        frameVentanaPrincipal.dispose();
     }
 
     public static void main(String[] args) {
@@ -104,7 +108,11 @@ infoButton.addActionListener(new ActionListener() {
         frame.setVisible(true);
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+    public void setFrameVentanaPrincipal(JFrame frameVentanaPrincipal) {
+        this.frameVentanaPrincipal = frameVentanaPrincipal;
+    }
+
+    public JPanel getVentanaPrincipal() {
+        return VentanaPrincipal;
     }
 }

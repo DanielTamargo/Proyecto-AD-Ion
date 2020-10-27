@@ -40,8 +40,9 @@ INSERT INTO clientes VALUES ('69922951F', 'Rakel', 'Ubierna Martínez', 32, 'Pro
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
-VALUES ('77484057R', 'Visita al parque de Salburua', 5, 'Salburua', '01-09-2020', 2020, 2.5, "Paseo por el parque", 58.5); 
-
+VALUES ('77484057R', 'Visita al parque de Salburua', 5, 'Salburua', '2020-12-08 17:00:00', 2020, 2.5, "Paseo por el parque", 58.5); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('77484057R', 'Visita al parque de Salburua', 5, 'Salburua', '2020-12-08 17:00:00', 2020, 2.5, "Paseo por el parque", 58.5); 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
