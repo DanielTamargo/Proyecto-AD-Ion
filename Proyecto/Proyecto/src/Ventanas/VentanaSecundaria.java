@@ -1,11 +1,13 @@
 package Ventanas;
 
+import com.company.DB4O.BorrarDatosDB4O;
 import com.company.DB4O.CargarDatosDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
 import com.company.Modelo.Cliente;
 import com.company.Modelo.Empleado;
 import com.company.Modelo.RegistroEmpleado;
 import com.company.Modelo.Visita;
+import com.company.sql.BorrarDatos;
 import com.company.sql.CargarDatos;
 import com.company.sql.EditarDatos;
 import com.company.sql.InsertarDatos;
@@ -29,7 +31,6 @@ public class VentanaSecundaria {
     private JButton eliminarButton;
     private JList listEmpleadosOClientes;
     private JTextField DNI;
-    private JTextField CARGO;
     private JTextField NOMBRE;
     private JTextField NACIONALIDAD;
     private JTextField FECHNAC;
@@ -82,6 +83,7 @@ public class VentanaSecundaria {
     private JPanel panelDatos;
     private JTextField DINERO;
     private JLabel DINEROlbl;
+    private JComboBox CARGO;
 
     private Empleado empleado;
     private Cliente cliente;
@@ -92,6 +94,9 @@ public class VentanaSecundaria {
 
     private boolean verEmpleados = true;
     private double dineroRecGan = 0.0;
+
+    private int selectedEmpleado = 0;
+    private int selectedCliente = 0;
 
     private int bbdd = 1;
     private JFrame frameVentanaPrincipal;
@@ -105,6 +110,7 @@ public class VentanaSecundaria {
         clienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                terminarAnyadirEmpleadoCliente();
                 mostrarLabelsYTextFieldsCliente();
                 cargarClientesEnLista();
                 verEmpleados = false;
@@ -115,6 +121,7 @@ public class VentanaSecundaria {
         empleadoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                terminarAnyadirEmpleadoCliente();
                 mostrarLabelsYTextFieldsEmpleado();
                 cargarEmpleadosEnLista();
                 verEmpleados = true;
@@ -128,7 +135,10 @@ public class VentanaSecundaria {
                 listEmpleadosOClientes.setEnabled(false);
                 listEmpleadosOClientes.clearSelection();
                 vaciarDatos();
-                DNI.setEnabled(true);
+                eliminarButton.setText("Cancelar");
+                eliminarButton.setIcon(new ImageIcon("assets/cancel.png"));
+                editarButton.setText("Añadir");
+                editarButton.setIcon(new ImageIcon("assets/save.png"));
                 DNI.setEditable(true);
                 //TODO cuando le demos a volver o guardemos volver a deshabilitar DNI
 
@@ -137,100 +147,17 @@ public class VentanaSecundaria {
         eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listEmpleadosOClientes.setVisible(true);
-                NombreListaLbl.setVisible(true);
-
+                if (eliminarButton.getText().equalsIgnoreCase("Cancelar")) {
+                    terminarAnyadirEmpleadoCliente();
+                } else {
+                    eliminarPresionado();
+                }
             }
         });
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean error = false;
-                java.util.Date fechaNacUtil = null;
-                java.util.Date fechaContrUtil = null;
-
-                if (verEmpleados) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    try {
-                        fechaNacUtil = sdf.parse(FECHNAC.getText());
-                        fechaContrUtil = sdf.parse(FECHACONTR.getText());
-                    } catch (ParseException pe) {
-                        error = true;
-                    }
-                }
-
-                if (error) {
-                    mostrarJOPtionPane("Error con las fechas", "Debes insertar la fecha con \n" +
-                            "el formato: dd/mm/yyyy\n" +
-                            "Ejemplo: 23/09/1995", 0);
-                } else {
-                    Empleado emp = null;
-                    Cliente cli = null;
-                    String registro = "";
-
-                    if (verEmpleados) {
-                        if (bbdd == 4) {
-                            emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
-                                    fechaNacUtil, fechaContrUtil, NACIONALIDAD.getText(), CARGO.getText(),
-                                    String.valueOf(CONTRASEÑA.getPassword()));
-                        } else {
-                            java.sql.Date fechaNacSQL = new java.sql.Date(fechaNacUtil.getTime());
-                            java.sql.Date fechaContrSQL = new java.sql.Date(fechaContrUtil.getTime());;
-                            emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
-                                    fechaNacSQL, fechaContrSQL, NACIONALIDAD.getText(), CARGO.getText(),
-                                    String.valueOf(CONTRASEÑA.getPassword()));
-                        }
-                    } else {
-                        cli = new Cliente(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(), Integer.parseInt(EDAD.getText()),
-                                PROFESION.getText(), String.valueOf(CONTRASEÑA.getPassword()));
-                    }
-
-                    if (listEmpleadosOClientes.isEnabled()) {
-                        if (verEmpleados) {
-                            registro = "Editado un empleado: " + emp.getDni();
-                            if (bbdd == 4) {
-                                new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
-                            } else {
-                                new EditarDatos().editarEmpleado(bbdd, emp);
-                            }
-                            empleados.set(listEmpleadosOClientes.getSelectedIndex(), emp);
-                        } else {
-                            registro = "Editado un cliente: " + cli.getDni();
-                            if (bbdd == 4) {
-                                new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
-                            } else {
-                                new EditarDatos().editarCliente(bbdd, cli);
-                            }
-                            clientes.set(listEmpleadosOClientes.getSelectedIndex(), cli);
-                        }
-                    } else {
-                        if (verEmpleados) {
-                            registro = "Creado un empleado: " + emp.getDni();
-                            if (bbdd == 4) {
-                                new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
-                            } else {
-                                new InsertarDatos().insertarEmpleado(bbdd, emp);
-                            }
-                            empleados.set(listEmpleadosOClientes.getSelectedIndex(), emp);
-                        } else {
-                            registro = "Creado un cliente: " + cli.getDni();
-                            if (bbdd == 4) {
-                                new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
-                            } else {
-                                new InsertarDatos().insertarCliente(bbdd, cli);
-                            }
-                            clientes.set(listEmpleadosOClientes.getSelectedIndex(), cli);
-                        }
-                    }
-                    if (bbdd == 4) {
-                        int cod = new CargarDatosDB4O().cargarRegistrosEmpleados().size() + 1;
-                        RegistroEmpleado re = new RegistroEmpleado(cod, empleado, registro);
-                        new InsertarEditarDatosDB4O().insertarEditarRegistroEmpleado(re);
-                    } else {
-                        new InsertarDatos().insertarRegistroEmpleado(bbdd, empleado.getDni(), registro);
-                    }
-                    actualizarListas();
-                }
+                editarInsertarEmpleadoCliente();
             }
         });
         listEmpleadosOClientes.addListSelectionListener(new ListSelectionListener() {
@@ -260,6 +187,76 @@ public class VentanaSecundaria {
 
 
 
+    }
+
+    public void eliminarPresionado() {
+        JButton noButton = new JButton("Mejor no");
+        JButton eliminarButton = new JButton("Eliminar");
+        noButton.setFocusPainted(false);
+        Object[] options = {noButton, eliminarButton};
+        final JOptionPane pane = new JOptionPane("¿Estás seguro?\n" +
+                "Una vez eliminados los datos no podrán recuperarse.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION, null, options);
+        JDialog dialog = pane.createDialog("Eliminando datos");
+        noButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                borrarClienteEmpleado();
+                dialog.dispose();
+            }
+        });
+        dialog.setVisible(true);
+    }
+
+    public void borrarClienteEmpleado() {
+        String registro = "";
+        if (verEmpleados) {
+            Empleado emp = (Empleado) listEmpleadosOClientes.getSelectedValue();
+            if (bbdd == 4) {
+                new BorrarDatosDB4O().borrarEmpleado(emp);
+            } else {
+                new BorrarDatos().borrarEmpleado(bbdd, emp.getDni());
+            }
+            selectedEmpleado = 0;
+            empleados.remove(emp);
+            registro = "Eliminado el empleado: " + emp.getDni();
+        } else {
+            Cliente cli = (Cliente) listEmpleadosOClientes.getSelectedValue();
+            if (bbdd == 4) {
+                new BorrarDatosDB4O().borrarCliente(cli);
+            } else {
+                new BorrarDatos().borrarCliente(bbdd, cli.getDni());
+            }
+            selectedCliente = 0;
+            clientes.remove(cli);
+            registro = "Eliminado el cliente: " + cli.getDni();
+        }
+        registroEmpleado(registro);
+
+        if (verEmpleados)
+            cargarEmpleadosEnLista();
+        else
+            cargarClientesEnLista();
+
+        terminarAnyadirEmpleadoCliente();
+    }
+
+    public void terminarAnyadirEmpleadoCliente() {
+        eliminarButton.setText("Eliminar");
+        eliminarButton.setIcon(new ImageIcon("assets/delete.png"));
+        editarButton.setText("Editar");
+        editarButton.setIcon(new ImageIcon("assets/edit.png"));
+        DNI.setEditable(false);
+        listEmpleadosOClientes.setEnabled(true);
+        if (verEmpleados)
+            listEmpleadosOClientes.setSelectedIndex(selectedEmpleado);
+        else
+            listEmpleadosOClientes.setSelectedIndex(selectedCliente);
     }
 
     public void mostrarLabelsYTextFieldsEmpleado() {
@@ -311,7 +308,7 @@ public class VentanaSecundaria {
     public void cargarImagenes() {
         añadirButton.setIcon(new ImageIcon("Assets/añadir.png"));
         editarButton.setIcon(new ImageIcon("Assets/save.png"));
-        editarVisitaButton.setIcon(new ImageIcon("Assets/save.png"));
+        editarVisitaButton.setIcon(new ImageIcon("Assets/edit.png"));
         eliminarButton.setIcon(new ImageIcon("Assets/delete.png"));
         eliminarVisitaButton.setIcon(new ImageIcon("Assets/delete.png"));
         clienteButton.setIcon(new ImageIcon("Assets/cliente.png"));
@@ -367,27 +364,114 @@ public class VentanaSecundaria {
 
     }
 
+
+    public void editarInsertarEmpleadoCliente() {
+        boolean error = false;
+        java.util.Date fechaNacUtil = null;
+        java.util.Date fechaContrUtil = null;
+
+        if (verEmpleados) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                fechaNacUtil = sdf.parse(FECHNAC.getText());
+                fechaContrUtil = sdf.parse(FECHACONTR.getText());
+            } catch (ParseException pe) {
+                error = true;
+            }
+        }
+
+        if (error) {
+            mostrarJOPtionPane("Error con las fechas", "Debes insertar la fecha con \n" +
+                    "el formato: dd/mm/yyyy\n" +
+                    "Ejemplo: 23/09/1995", 0);
+        } else {
+            Empleado emp = null;
+            Cliente cli = null;
+            String registro = "";
+
+            if (verEmpleados) {
+                if (bbdd == 4) {
+                    emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
+                            fechaNacUtil, fechaContrUtil, NACIONALIDAD.getText(), (String) CARGO.getSelectedItem(),
+                            String.valueOf(CONTRASEÑA.getPassword()));
+                } else {
+                    java.sql.Date fechaNacSQL = new java.sql.Date(fechaNacUtil.getTime());
+                    java.sql.Date fechaContrSQL = new java.sql.Date(fechaContrUtil.getTime());;
+                    emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
+                            fechaNacSQL, fechaContrSQL, NACIONALIDAD.getText(), (String) CARGO.getSelectedItem(),
+                            String.valueOf(CONTRASEÑA.getPassword()));
+                }
+            } else {
+                cli = new Cliente(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(), Integer.parseInt(EDAD.getText()),
+                        PROFESION.getText(), String.valueOf(CONTRASEÑA.getPassword()));
+            }
+
+            if (listEmpleadosOClientes.isEnabled()) {
+                if (verEmpleados) {
+                    registro = "Editado el empleado: " + emp.getDni();
+                    if (bbdd == 4) {
+                        new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
+                    } else {
+                        new EditarDatos().editarEmpleado(bbdd, emp);
+                    }
+                    empleados.set(listEmpleadosOClientes.getSelectedIndex(), emp);
+                    selectedEmpleado = listEmpleadosOClientes.getSelectedIndex();
+                } else {
+                    registro = "Editado el cliente: " + cli.getDni();
+                    if (bbdd == 4) {
+                        new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
+                    } else {
+                        new EditarDatos().editarCliente(bbdd, cli);
+                    }
+                    clientes.set(listEmpleadosOClientes.getSelectedIndex(), cli);
+                    selectedCliente = listEmpleadosOClientes.getSelectedIndex();
+                }
+            } else {
+                if (verEmpleados) {
+                    registro = "Creado el empleado: " + emp.getDni();
+                    if (bbdd == 4) {
+                        new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
+                    } else {
+                        new InsertarDatos().insertarEmpleado(bbdd, emp);
+                    }
+                    empleados.add(emp);
+                    selectedEmpleado = empleados.size() - 1;
+                } else {
+                    registro = "Creado el cliente: " + cli.getDni();
+                    if (bbdd == 4) {
+                        new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
+                    } else {
+                        new InsertarDatos().insertarCliente(bbdd, cli);
+                    }
+                    clientes.add(cli);
+                    selectedCliente = clientes.size() - 1;
+                }
+            }
+            registroEmpleado(registro);
+
+            if (verEmpleados)
+                cargarEmpleadosEnLista();
+            else
+                cargarClientesEnLista();
+            terminarAnyadirEmpleadoCliente();
+        }
+    }
+
+    public void registroEmpleado(String registro) {
+        if (bbdd == 4) {
+            int cod = new CargarDatosDB4O().cargarRegistrosEmpleados().size() + 1;
+            RegistroEmpleado re = new RegistroEmpleado(cod, empleado, registro);
+            new InsertarEditarDatosDB4O().insertarEditarRegistroEmpleado(re);
+        } else {
+            new InsertarDatos().insertarRegistroEmpleado(bbdd, empleado.getDni(), registro);
+        }
+    }
+
     public void actualizarListas() {
 
-        DefaultListModel<Empleado> modeloEmp = new DefaultListModel<>();
-        for (Empleado e: empleados)
-            modeloEmp.addElement(e);
-        listEmpleadosOClientes.setModel(modeloEmp);
-
-        // TODO comprobar si es cliente o empleado y filtrar las listas
-        DefaultListModel<Visita> modeloVisEmp = new DefaultListModel<>();
-        for (Visita v: visitas)
-            if (v.getFecha().isAfter(LocalDateTime.now()))
-                modeloVisEmp.addElement(v);
-        listVisitasEmp.setModel(modeloVisEmp);
-
-        // TODO filtrar la lista en base a las visitas disponibles
-        DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
-        for (Visita v: visitas) {
-            if (v.getFecha().isAfter(LocalDateTime.now()))
-                modeloVisCli.addElement(v);
-        }
-        listVisitasCli.setModel(modeloVisCli);
+        actualizarListaEmpleados();
+        actualizarListaVisitasEmpleados();
+        actualizarListaVisitasClientes();
 
         try {
             listEmpleadosOClientes.setSelectedIndex(0);
@@ -398,7 +482,31 @@ public class VentanaSecundaria {
         try {
             listVisitasCli.setSelectedIndex(0);
         } catch (NullPointerException ignored) {}
+    }
 
+    public void actualizarListaVisitasClientes() {
+        DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
+        for (Visita v: visitas) {
+            if (v.getFecha().isAfter(LocalDateTime.now()))
+                modeloVisCli.addElement(v);
+        }
+        listVisitasCli.setModel(modeloVisCli);
+    }
+
+    public void actualizarListaVisitasEmpleados() {
+        DefaultListModel<Visita> modeloVisEmp = new DefaultListModel<>();
+        for (Visita v: visitas)
+            if (v.getFecha().isAfter(LocalDateTime.now()))
+                modeloVisEmp.addElement(v);
+        listVisitasEmp.setModel(modeloVisEmp);
+
+    }
+
+    public void actualizarListaEmpleados() {
+        DefaultListModel<Empleado> modeloEmp = new DefaultListModel<>();
+        for (Empleado e: empleados)
+            modeloEmp.addElement(e);
+        listEmpleadosOClientes.setModel(modeloEmp);
     }
 
     public void vaciarDatos() {
@@ -414,7 +522,7 @@ public class VentanaSecundaria {
         FECHNAC.setText("");
         FECHACONTR.setText("");
         NACIONALIDAD.setText("");
-        CARGO.setText("");
+        CARGO.setSelectedIndex(0);
 
         CONTRASEÑA.setText("");
     }
@@ -458,7 +566,14 @@ public class VentanaSecundaria {
             FECHACONTR.setText(fechaContr);
 
             NACIONALIDAD.setText(e.getNacionalidad());
-            CARGO.setText(e.getCargo());
+
+            if (e.getCargo().equalsIgnoreCase("RRHH"))
+                CARGO.setSelectedIndex(0);
+            else if (e.getCargo().equalsIgnoreCase("Guía"))
+                CARGO.setSelectedIndex(1);
+            else
+                CARGO.setSelectedIndex(2);
+
             CONTRASEÑA.setText(e.getContrasenya());
 
             DINERO.setText(String.valueOf(dineroRecGan));
