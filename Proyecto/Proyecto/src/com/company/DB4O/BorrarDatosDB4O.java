@@ -1,9 +1,6 @@
 package com.company.DB4O;
 
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
-import com.company.Modelo.VisitaCliente;
+import com.company.Modelo.*;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oException;
@@ -53,6 +50,7 @@ public class BorrarDatosDB4O {
                     while (result.hasNext()) {
                         Empleado e = result.next();
                         borrarVisitasEmpleado(bd, emple);
+                        borrarRegistrosEmpleado(bd, emple);
                         bd.delete(e);
                     }
                 }
@@ -94,6 +92,7 @@ public class BorrarDatosDB4O {
                     while (result.hasNext()) {
                         Cliente c = result.next();
                         borrarVisitasCliente(bd, c);
+                        borrarRegistrosCliente(bd, c);
                         bd.delete(c);
                     }
                 }
@@ -212,6 +211,36 @@ public class BorrarDatosDB4O {
                     while (result.hasNext()) {
                         VisitaCliente vc = result.next();
                         bd.delete(vc);
+                    }
+                }
+            } catch (Db4oException ignored) { }
+        }
+    }
+
+    public void borrarRegistrosEmpleado(ObjectContainer bd, Empleado emp) {
+        if (bd != null) {
+            try {
+                RegistroEmpleado regQuery = new RegistroEmpleado(emp); // Buscamos por la clave primaria única
+                ObjectSet<RegistroEmpleado> result = bd.queryByExample(regQuery);
+                if (result.size() > 0) {
+                    while (result.hasNext()) {
+                        RegistroEmpleado re = result.next();
+                        bd.delete(re);
+                    }
+                }
+            } catch (Db4oException ignored) { }
+        }
+    }
+
+    public void borrarRegistrosCliente(ObjectContainer bd, Cliente cli) {
+        if (bd != null) {
+            try {
+                RegistroCliente regQuery = new RegistroCliente(cli); // Buscamos por la clave primaria única
+                ObjectSet<RegistroCliente> result = bd.queryByExample(regQuery);
+                if (result.size() > 0) {
+                    while (result.hasNext()) {
+                        RegistroCliente rc = result.next();
+                        bd.delete(rc);
                     }
                 }
             } catch (Db4oException ignored) { }

@@ -13,6 +13,14 @@ public class RegistroCliente {
     public RegistroCliente() {
     }
 
+    public RegistroCliente(int cod) {
+        this.cod = cod;
+    }
+
+    public RegistroCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public RegistroCliente(int cod, Cliente cliente, LocalDateTime fecha, String registro) {
         this.cod = cod;
         this.cliente = cliente;

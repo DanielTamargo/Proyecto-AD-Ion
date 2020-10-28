@@ -13,6 +13,21 @@ public class RegistroEmpleado {
     public RegistroEmpleado() {
     }
 
+    public RegistroEmpleado(int cod) {
+        this.cod = cod;
+    }
+
+    public RegistroEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    public RegistroEmpleado(int cod, Empleado empleado, String registro) {
+        this.cod = cod;
+        this.empleado = empleado;
+        this.registro = registro;
+        this.fecha = LocalDateTime.now();
+    }
+
     public RegistroEmpleado(int cod, Empleado empleado, LocalDateTime fecha, String registro) {
         this.cod = cod;
         this.empleado = empleado;

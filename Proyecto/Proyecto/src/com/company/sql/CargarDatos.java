@@ -220,6 +220,52 @@ public class CargarDatos {
         return emp;
     }
 
+    /**
+     * Método que devuelve los datos de un empleado al iniciar sesión (solo si el usuario y contraseña son correctos
+     *
+     * @param dni <- dni del usuario
+     * @param contrasenya <- contraseña del usuario
+     * @return emp <- devuelve los datos del empleado si ha iniciado sesión correctamente
+     */
+    public Empleado iniciarSesionEmpleado(int bbdd, String dni, String contrasenya) {
+        Empleado emp = null;
+        Connection conexion = realizarConexion(bbdd);
+
+        if (conexion != null) {
+            try {
+                Statement sentencia = conexion.createStatement();
+                ResultSet r = sentencia.executeQuery("SELECT * FROM empleados " +
+                        "WHERE dni='" + dni + "' AND contrasenya='" + contrasenya + "'");
+
+                while (r.next()) {
+                    Date fechaNac;
+                    Date fechaContratacion;
+
+                    if (bbdd == 1) { // SQLite es tonto y no sabe leer con r.getDate
+                        fechaNac = reconstruirFechaSQLite(r.getString(4));
+                        fechaContratacion = reconstruirFechaSQLite(r.getString(5));
+                    } else {
+                        fechaNac = r.getDate(4);
+                        fechaContratacion = r.getDate(5);
+                    }
+                    emp = new Empleado(r.getString(1), r.getString(2),
+                            r.getString(3), fechaNac, fechaContratacion,
+                            r.getString(6), r.getString(7), r.getString(8));
+                }
+                r.close(); // Cerrar ResultSet
+                sentencia.close();// Cerrar Statement
+
+                if (emp == null)
+                    System.out.println("No se pudo encontrar el empleado: '" + dni + "'");
+
+            } catch (SQLException throwables) {
+                System.out.println("Error al cargar el empleado '" + dni + "'");
+            }
+        }
+
+        return emp;
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////// CLIENTES
@@ -294,6 +340,41 @@ public class CargarDatos {
         return cli;
     }
 
+    /**
+     * Método que devuelve los datos de un cliente al iniciar sesión (solo si el usuario y contraseña son correctos
+     *
+     * @param dni <- dni del usuario
+     * @param contrasenya <- contraseña del usuario
+     * @return cli <- devuelve los datos del cliente si ha iniciado sesión correctamente
+     */
+    public Cliente iniciarSesionCliente(int bbdd, String dni, String contrasenya) {
+        Cliente cli = null;
+        Connection conexion = realizarConexion(bbdd);
+
+        if (conexion != null) {
+            try {
+                Statement sentencia = conexion.createStatement();
+                ResultSet r = sentencia.executeQuery("SELECT * FROM clientes " +
+                        "WHERE dni='" + dni + "' AND contrasenya='" + contrasenya + "'");
+
+                while (r.next()) {
+                    cli = new Cliente(r.getString(1), r.getString(2),
+                            r.getString(3), r.getInt(4), r.getString(5),
+                            r.getString(6));
+                }
+                r.close(); // Cerrar ResultSet
+                sentencia.close();// Cerrar Statement
+
+                if (cli == null)
+                    System.out.println("No se pudo encontrar el cliente: '" + dni + "'");
+
+            } catch (SQLException throwables) {
+                System.out.println("Error al cargar el cliente: '" + dni + "'");
+            }
+        }
+
+        return cli;
+    }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////// VISITAS

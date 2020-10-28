@@ -26,26 +26,15 @@ public class ventanaPrincipal {
 
     // TODO los listeners dentro del constructor vacío de la ventana
     public ventanaPrincipal() {
-        oracleButton.setIcon(new ImageIcon("Assets/oracle.png"));
-        MYSQLButton.setIcon(new ImageIcon("Assets/mysql.png"));
-        SQLiteButton.setIcon(new ImageIcon("Assets/sqlite.png"));
-        DB4OButton.setIcon(new ImageIcon("Assets/db4o.png"));
-        infoButton.setIcon(new ImageIcon("Assets/info.png"));
-        telefonolbl.setIcon(new ImageIcon("Assets/telefono.png"));
-        telefonolbl2.setIcon(new ImageIcon("Assets/telefono.png"));
-        telefonolbl3.setIcon(new ImageIcon("Assets/telefono.png"));
-        telefonolbl4.setIcon(new ImageIcon("Assets/telefono.png"));
-        direccionlbl.setIcon(new ImageIcon("Assets/direccion.png"));
-        direccionlbl2.setIcon(new ImageIcon("Assets/direccion.png"));
-        direccionlbl3.setIcon(new ImageIcon("Assets/direccion.png"));
-        direccionlbl4.setIcon(new ImageIcon("Assets/direccion.png"));
+
         //informacion.setVisible(false);
+        cargarImagenes();
 
         oracleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 bbdd = 3;
-                abrirVentanaSecundaria();
+                abrirVentanaLogin();
             }
         });
 
@@ -53,7 +42,7 @@ public class ventanaPrincipal {
             @Override
             public void actionPerformed(ActionEvent e) {
                 bbdd = 2;
-                abrirVentanaSecundaria();
+                abrirVentanaLogin();
             }
         });
 
@@ -61,7 +50,7 @@ public class ventanaPrincipal {
             @Override
             public void actionPerformed(ActionEvent e) {
                 bbdd = 4;
-                abrirVentanaSecundaria();
+                abrirVentanaLogin();
             }
         });
 
@@ -69,7 +58,7 @@ public class ventanaPrincipal {
             @Override
             public void actionPerformed(ActionEvent e) {
                 bbdd = 1;
-                abrirVentanaSecundaria();
+                abrirVentanaLogin();
             }
         });
 
@@ -86,16 +75,33 @@ public class ventanaPrincipal {
 
     }
 
-    public void abrirVentanaSecundaria() {
-        JFrame frame = new JFrame("VentaSecundaria");
-        VentanaSecundaria vs = new VentanaSecundaria();
-        frame.setContentPane(vs.getPanelSecundario());
-        vs.setBbdd(bbdd);
-        vs.cargarDatos();
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+    public void cargarImagenes() {
+        oracleButton.setIcon(new ImageIcon("Assets/oracle.png"));
+        MYSQLButton.setIcon(new ImageIcon("Assets/mysql.png"));
+        SQLiteButton.setIcon(new ImageIcon("Assets/sqlite.png"));
+        DB4OButton.setIcon(new ImageIcon("Assets/db4o.png"));
+        infoButton.setIcon(new ImageIcon("Assets/info.png"));
+        telefonolbl.setIcon(new ImageIcon("Assets/telefono.png"));
+        telefonolbl2.setIcon(new ImageIcon("Assets/telefono.png"));
+        telefonolbl3.setIcon(new ImageIcon("Assets/telefono.png"));
+        telefonolbl4.setIcon(new ImageIcon("Assets/telefono.png"));
+        direccionlbl.setIcon(new ImageIcon("Assets/direccion.png"));
+        direccionlbl2.setIcon(new ImageIcon("Assets/direccion.png"));
+        direccionlbl3.setIcon(new ImageIcon("Assets/direccion.png"));
+        direccionlbl4.setIcon(new ImageIcon("Assets/direccion.png"));
+    }
+
+    public void abrirVentanaLogin() {
+        JFrame frame = new JFrame("Login");
+        Login login = new Login();
+        frame.setContentPane(login.getPanel());
+        login.setBbdd(bbdd);
+        login.setVentanaLogin(frame);
+        login.setVentanaPrincipal(frameVentanaPrincipal);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
         frameVentanaPrincipal.dispose();
     }

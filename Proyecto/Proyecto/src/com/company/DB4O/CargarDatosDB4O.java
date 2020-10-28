@@ -1,9 +1,6 @@
 package com.company.DB4O;
 
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
-import com.company.Modelo.VisitaCliente;
+import com.company.Modelo.*;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oException;
@@ -44,6 +41,33 @@ public class CargarDatosDB4O {
     }
 
     /**
+     * Método que devuelve los datos de un empleado al iniciar sesión (solo si el usuario y contraseña son correctos
+     *
+     * @param dni <- dni del usuario
+     * @param contrasenya <- contraseña del usuario
+     * @return emp <- devuelve los datos del empleado si ha iniciado sesión correctamente
+     */
+    public Empleado iniciarSesionEmpleado(String dni, String contrasenya) {
+        Empleado emp = null;
+
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            try {
+                Empleado empQuery = new Empleado(dni, contrasenya);
+                ObjectSet<Empleado> resultadoEmp = bd.queryByExample(empQuery);
+
+                while (resultadoEmp.hasNext()) {
+                    emp = resultadoEmp.next();
+                }
+
+            } catch (Db4oException ignored) { }
+            bd.close();
+        }
+
+        return emp;
+    }
+
+    /**
      * Método que devuelve todos los clientes
      *
      * @return <- devuelve un ArrayList con todos los clientes cargados
@@ -70,6 +94,34 @@ public class CargarDatosDB4O {
             bd.close();
         }
         return clientes;
+    }
+
+
+    /**
+     * Método que devuelve los datos de un cliente al iniciar sesión (solo si el usuario y contraseña son correctos
+     *
+     * @param dni <- dni del usuario
+     * @param contrasenya <- contraseña del usuario
+     * @return cli <- devuelve los datos del cliente si ha iniciado sesión correctamente
+     */
+    public Cliente iniciarSesionCliente(String dni, String contrasenya) {
+        Cliente cli = null;
+
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            try {
+                Cliente cliQuery = new Cliente(dni, contrasenya);
+                ObjectSet<Cliente> resultadoCli = bd.queryByExample(cliQuery);
+
+                while (resultadoCli.hasNext()) {
+                    cli = resultadoCli.next();
+                }
+
+            } catch (Db4oException ignored) { }
+            bd.close();
+        }
+
+        return cli;
     }
 
     /**
@@ -129,5 +181,46 @@ public class CargarDatosDB4O {
         }
         return visitasClientes;
     }
+
+
+
+    public ArrayList<RegistroEmpleado> cargarRegistrosEmpleados() {
+        ArrayList<RegistroEmpleado> registroEmpleados = new ArrayList<>();
+
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            try {
+                RegistroEmpleado regQuery = new RegistroEmpleado();
+                ObjectSet<RegistroEmpleado> result = bd.queryByExample(regQuery);
+
+                while (result.hasNext()) {
+                    RegistroEmpleado reg = result.next();
+                    registroEmpleados.add(reg);
+                }
+            } catch (Db4oException ignored) { }
+            bd.close();
+        }
+        return registroEmpleados;
+    }
+
+    public ArrayList<RegistroCliente> cargarRegistrosClientes() {
+        ArrayList<RegistroCliente> registroClientes = new ArrayList<>();
+
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            try {
+                RegistroCliente regQuery = new RegistroCliente();
+                ObjectSet<RegistroCliente> result = bd.queryByExample(regQuery);
+
+                while (result.hasNext()) {
+                    RegistroCliente reg = result.next();
+                    registroClientes.add(reg);
+                }
+            } catch (Db4oException ignored) { }
+            bd.close();
+        }
+        return registroClientes;
+    }
+
 }
 

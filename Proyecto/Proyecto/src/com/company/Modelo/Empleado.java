@@ -26,6 +26,11 @@ public class Empleado {
         this.dni = dni;
     }
 
+    public Empleado(String dni, String contrasenya) {
+        this.dni = dni;
+        this.contrasenya = contrasenya;
+    }
+
     public Empleado(String dni, String nombre, String primerapellido, java.util.Date fechaNac, java.util.Date fechaContratacion,
                     String nacionalidad, String cargo, String contrasenya) {
         this.dni = dni;

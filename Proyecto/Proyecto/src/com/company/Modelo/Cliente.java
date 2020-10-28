@@ -14,6 +14,11 @@ public class Cliente {
     public Cliente() {
     }
 
+    public Cliente(String dni, String contrasenya) {
+        this.dni = dni;
+        this.contrasenya = contrasenya;
+    }
+
     public Cliente(String dni) {
         this.dni = dni;
     }

@@ -1,14 +1,12 @@
 package com.company.DB4O;
 
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
-import com.company.Modelo.VisitaCliente;
+import com.company.Modelo.*;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oException;
 
 import javax.swing.*;
+import java.time.format.DateTimeFormatter;
 
 public class InsertarEditarDatosDB4O {
 
@@ -218,4 +216,53 @@ public class InsertarEditarDatosDB4O {
         }
         mostrarJOPtionPane(titulo, mensaje, tipo);
     }
+
+
+    public void insertarEditarRegistroEmpleado(RegistroEmpleado registroEmpleado) {
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+
+        if (bd != null) {
+            RegistroEmpleado regQuery = new RegistroEmpleado(registroEmpleado.getCod());
+            try {
+                ObjectSet<RegistroEmpleado> result = bd.queryByExample(regQuery);
+
+                if (result.size() == 0) {
+                    bd.store(registroEmpleado);
+                    System.out.println("Registro creado:" +
+                            "\n\tEmpleado '" + registroEmpleado.getEmpleado().getDni() + "' a las " +
+                            registroEmpleado.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+                            "\n\t" + registroEmpleado.getRegistro() + "\n");
+                } else {
+                    RegistroEmpleado existe = result.next();
+                    existe.setRegistro(registroEmpleado.getRegistro());
+                    bd.store(existe);
+                }
+
+            } catch (Db4oException ignored) { }
+            bd.close();
+        }
+    }
+
+    public void insertarEditarRegistroCliente(RegistroCliente registroCliente) {
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+
+        if (bd != null) {
+            RegistroCliente regQuery = new RegistroCliente(registroCliente.getCod());
+            try {
+                ObjectSet<RegistroCliente> result = bd.queryByExample(regQuery);
+
+                if (result.size() == 0) {
+                    bd.store(registroCliente);
+                    System.out.println("Registro creado: " + registroCliente);
+                } else {
+                    RegistroCliente existe = result.next();
+                    existe.setRegistro(registroCliente.getRegistro());
+                    bd.store(existe);
+                }
+
+            } catch (Db4oException ignored) { }
+            bd.close();
+        }
+    }
+
 }
