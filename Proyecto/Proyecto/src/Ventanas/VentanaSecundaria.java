@@ -3,10 +3,7 @@ package Ventanas;
 import com.company.DB4O.BorrarDatosDB4O;
 import com.company.DB4O.CargarDatosDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.RegistroEmpleado;
-import com.company.Modelo.Visita;
+import com.company.Modelo.*;
 import com.company.sql.BorrarDatos;
 import com.company.sql.CargarDatos;
 import com.company.sql.EditarDatos;
@@ -366,95 +363,124 @@ public class VentanaSecundaria {
 
 
     public void editarInsertarEmpleadoCliente() {
-        boolean error = false;
-        java.util.Date fechaNacUtil = null;
-        java.util.Date fechaContrUtil = null;
 
-        if (verEmpleados) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            try {
-                fechaNacUtil = sdf.parse(FECHNAC.getText());
-                fechaContrUtil = sdf.parse(FECHACONTR.getText());
-            } catch (ParseException pe) {
-                error = true;
-            }
-        }
-
-        if (error) {
-            mostrarJOPtionPane("Error con las fechas", "Debes insertar la fecha con \n" +
-                    "el formato: dd/mm/yyyy\n" +
-                    "Ejemplo: 23/09/1995", 0);
+        if (!comprobarDatosInsertados()) {
+            mostrarJOPtionPane("Faltan datos", "Debes rellenar todos los datos necesarios", 0);
         } else {
-            Empleado emp = null;
-            Cliente cli = null;
-            String registro = "";
+            boolean error = false;
+            java.util.Date fechaNacUtil = null;
+            java.util.Date fechaContrUtil = null;
 
             if (verEmpleados) {
-                if (bbdd == 4) {
-                    emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
-                            fechaNacUtil, fechaContrUtil, NACIONALIDAD.getText(), (String) CARGO.getSelectedItem(),
-                            String.valueOf(CONTRASEÑA.getPassword()));
-                } else {
-                    java.sql.Date fechaNacSQL = new java.sql.Date(fechaNacUtil.getTime());
-                    java.sql.Date fechaContrSQL = new java.sql.Date(fechaContrUtil.getTime());;
-                    emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
-                            fechaNacSQL, fechaContrSQL, NACIONALIDAD.getText(), (String) CARGO.getSelectedItem(),
-                            String.valueOf(CONTRASEÑA.getPassword()));
-                }
-            } else {
-                cli = new Cliente(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(), Integer.parseInt(EDAD.getText()),
-                        PROFESION.getText(), String.valueOf(CONTRASEÑA.getPassword()));
-            }
-
-            if (listEmpleadosOClientes.isEnabled()) {
-                if (verEmpleados) {
-                    registro = "Editado el empleado: " + emp.getDni();
-                    if (bbdd == 4) {
-                        new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
-                    } else {
-                        new EditarDatos().editarEmpleado(bbdd, emp);
-                    }
-                    empleados.set(listEmpleadosOClientes.getSelectedIndex(), emp);
-                    selectedEmpleado = listEmpleadosOClientes.getSelectedIndex();
-                } else {
-                    registro = "Editado el cliente: " + cli.getDni();
-                    if (bbdd == 4) {
-                        new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
-                    } else {
-                        new EditarDatos().editarCliente(bbdd, cli);
-                    }
-                    clientes.set(listEmpleadosOClientes.getSelectedIndex(), cli);
-                    selectedCliente = listEmpleadosOClientes.getSelectedIndex();
-                }
-            } else {
-                if (verEmpleados) {
-                    registro = "Creado el empleado: " + emp.getDni();
-                    if (bbdd == 4) {
-                        new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
-                    } else {
-                        new InsertarDatos().insertarEmpleado(bbdd, emp);
-                    }
-                    empleados.add(emp);
-                    selectedEmpleado = empleados.size() - 1;
-                } else {
-                    registro = "Creado el cliente: " + cli.getDni();
-                    if (bbdd == 4) {
-                        new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
-                    } else {
-                        new InsertarDatos().insertarCliente(bbdd, cli);
-                    }
-                    clientes.add(cli);
-                    selectedCliente = clientes.size() - 1;
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    fechaNacUtil = sdf.parse(FECHNAC.getText());
+                    fechaContrUtil = sdf.parse(FECHACONTR.getText());
+                } catch (ParseException pe) {
+                    error = true;
                 }
             }
-            registroEmpleado(registro);
+            if (error) {
+                mostrarJOPtionPane("Error con las fechas", "Debes insertar la fecha con \n" +
+                        "el formato: dd/mm/yyyy\n" +
+                        "Ejemplo: 23/09/1995", 0);
+            } else {
+                Empleado emp = null;
+                Cliente cli = null;
+                String registro = "";
 
-            if (verEmpleados)
-                cargarEmpleadosEnLista();
-            else
-                cargarClientesEnLista();
-            terminarAnyadirEmpleadoCliente();
+                if (verEmpleados) {
+                    if (bbdd == 4) {
+                        emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
+                                fechaNacUtil, fechaContrUtil, NACIONALIDAD.getText(), (String) CARGO.getSelectedItem(),
+                                String.valueOf(CONTRASEÑA.getPassword()));
+                    } else {
+                        java.sql.Date fechaNacSQL = new java.sql.Date(fechaNacUtil.getTime());
+                        java.sql.Date fechaContrSQL = new java.sql.Date(fechaContrUtil.getTime());
+                        ;
+                        emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
+                                fechaNacSQL, fechaContrSQL, NACIONALIDAD.getText(), (String) CARGO.getSelectedItem(),
+                                String.valueOf(CONTRASEÑA.getPassword()));
+                    }
+                } else {
+                    cli = new Cliente(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(), Integer.parseInt(EDAD.getText()),
+                            PROFESION.getText(), String.valueOf(CONTRASEÑA.getPassword()));
+                }
+
+                if (listEmpleadosOClientes.isEnabled()) {
+                    if (verEmpleados) {
+                        registro = "Editado el empleado: " + emp.getDni();
+                        if (bbdd == 4) {
+                            new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
+                        } else {
+                            new EditarDatos().editarEmpleado(bbdd, emp);
+                        }
+                        empleados.set(listEmpleadosOClientes.getSelectedIndex(), emp);
+                        selectedEmpleado = listEmpleadosOClientes.getSelectedIndex();
+                    } else {
+                        registro = "Editado el cliente: " + cli.getDni();
+                        if (bbdd == 4) {
+                            new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
+                        } else {
+                            new EditarDatos().editarCliente(bbdd, cli);
+                        }
+                        clientes.set(listEmpleadosOClientes.getSelectedIndex(), cli);
+                        selectedCliente = listEmpleadosOClientes.getSelectedIndex();
+                    }
+                } else {
+                    if (verEmpleados) {
+                        registro = "Creado el empleado: " + emp.getDni();
+                        if (bbdd == 4) {
+                            new InsertarEditarDatosDB4O().insertarEditarEmpleado(emp);
+                        } else {
+                            new InsertarDatos().insertarEmpleado(bbdd, emp);
+                        }
+                        empleados.add(emp);
+                        selectedEmpleado = empleados.size() - 1;
+                    } else {
+                        registro = "Creado el cliente: " + cli.getDni();
+                        if (bbdd == 4) {
+                            new InsertarEditarDatosDB4O().insertarEditarCliente(cli);
+                        } else {
+                            new InsertarDatos().insertarCliente(bbdd, cli);
+                        }
+                        clientes.add(cli);
+                        selectedCliente = clientes.size() - 1;
+                    }
+                }
+                registroEmpleado(registro);
+
+                if (verEmpleados)
+                    cargarEmpleadosEnLista();
+                else
+                    cargarClientesEnLista();
+                terminarAnyadirEmpleadoCliente();
+            }
         }
+    }
+
+    public boolean comprobarDatosInsertados() {
+        boolean datosInsertados = true;
+
+        ArrayList<JTextField> textos = new ArrayList<>();
+        textos.add(DNI); textos.add(NOMBRE); textos.add(APELLIDO);
+
+        if (verEmpleados) {
+            textos.add(FECHNAC); textos.add(FECHACONTR); textos.add(NACIONALIDAD);
+        } else {
+            textos.add(EDAD); textos.add(PROFESION);
+        }
+
+        for (JTextField texto: textos){
+            if (texto.getText().equalsIgnoreCase(""))
+                datosInsertados = false;
+        }
+
+        if (datosInsertados)
+            if (String.valueOf(CONTRASEÑA.getPassword()).equalsIgnoreCase(""))
+                datosInsertados = false;
+
+        return datosInsertados;
     }
 
     public void registroEmpleado(String registro) {
@@ -537,7 +563,11 @@ public class VentanaSecundaria {
             PROFESION.setText(c.getProfesion());
             CONTRASEÑA.setText(c.getContrasenya());
 
-            DINERO.setText(String.valueOf(dineroRecGan));
+            calcularDineroRecaudadoGastado();
+            if (dineroRecGan <= 0)
+                DINERO.setText("Nada");
+            else
+                DINERO.setText(String.valueOf(dineroRecGan));
 
             DINERO.setVisible(true);
             DINEROlbl.setVisible(true);
@@ -575,8 +605,11 @@ public class VentanaSecundaria {
                 CARGO.setSelectedIndex(2);
 
             CONTRASEÑA.setText(e.getContrasenya());
-
-            DINERO.setText(String.valueOf(dineroRecGan));
+            calcularDineroRecaudadoGastado();
+            if (dineroRecGan <= 0)
+                DINERO.setText("Nada");
+            else
+                DINERO.setText(String.valueOf(dineroRecGan));
 
             DINERO.setVisible(true);
             DINEROlbl.setVisible(true);
@@ -585,6 +618,39 @@ public class VentanaSecundaria {
 
 
     public void calcularDineroRecaudadoGastado() {
+        dineroRecGan = 0;
+        ArrayList<Visita> visitasEmpCli = new ArrayList<>();
+        if (verEmpleados) {
+            Empleado emp = (Empleado) listEmpleadosOClientes.getSelectedValue();
+            if (bbdd == 4) {
+                visitasEmpCli = new CargarDatosDB4O().cargarVisitasEmpleado(emp);
+            } else {
+                visitasEmpCli = new CargarDatos().cargarVisitasEmpleado(bbdd, emp.getDni());
+            }
+            for (Visita v: visitasEmpCli) {
+                int numClientes = 0;
+                if (bbdd == 4)
+                    numClientes = 0; //TODO FALTA METODO DB4O
+                else
+                    numClientes = new CargarDatos().numClientesApuntados(bbdd, v.getCod());
+                dineroRecGan += (v.getCoste() * numClientes);
+            }
+        } else {
+            Cliente cli = (Cliente) listEmpleadosOClientes.getSelectedValue();
+            if (bbdd == 4) {
+                ArrayList<VisitaCliente> visitaCliente = new CargarDatosDB4O().cargarVisitasClientes();
+                for (VisitaCliente vc: visitaCliente) {
+                    if (vc.getCliente().getDni().equalsIgnoreCase(cli.getDni()))
+                        visitasEmpCli.add(vc.getVisita());
+                }
+            } else {
+                visitasEmpCli = new CargarDatos().cargarVisitasCliente(bbdd, cli.getDni());
+                // TODO mirar por que no carga mas de una visita
+            }
+            for (Visita v: visitasEmpCli) {
+                dineroRecGan += v.getCoste();
+            }
+        }
 
     }
 

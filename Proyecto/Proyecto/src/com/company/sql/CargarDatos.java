@@ -445,9 +445,9 @@ public class CargarDatos {
                 while (r.next()) { // Recorremos los datos
 
                     LocalDateTime fecha = null;
-                    if (bbdd == 1)
+                    if (bbdd != 3)
                         fecha = stringToLocalDateTime(r.getString(6));
-                    else if (bbdd == 3)
+                    else
                         fecha = oracleStringToLocalDateTime(r.getString(6));
 
                     visitas.add(new Visita(r.getInt(1),
@@ -495,11 +495,14 @@ public class CargarDatos {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 ResultSet r = sentencia.executeQuery("SELECT * FROM visitasclientes WHERE cliente='" + dni + "'"); // Ejecutamos la sentencia
                 while (r.next()) { // Recorremos los datos
-
-                    ResultSet r2 = sentencia.executeQuery("SELECT * FROM visitas WHERE codigo=" + r.getInt(1));
+                    ResultSet r2 = sentencia.executeQuery("SELECT * FROM visitas WHERE cod=" + r.getInt(2));
                     while (r2.next()) {
 
-                        LocalDateTime fecha = stringToLocalDateTime(r.getString(6));
+                        LocalDateTime fecha = null;
+                        if (bbdd != 3)
+                            fecha = stringToLocalDateTime(r2.getString(6));
+                        else
+                            fecha = oracleStringToLocalDateTime(r2.getString(6));
 
                         visitasCliente.add(new Visita(r2.getInt(1),
                                 cargarEmpleado(bbdd, conexion, r2.getString(2)),
@@ -520,9 +523,34 @@ public class CargarDatos {
 
             } catch (SQLException throwables) {
                 System.out.println("Error al cargar las visitas en las que ha participado '" + dni + "'");
+                throwables.printStackTrace();
             }
         }
         return visitasCliente;
+    }
+
+
+    public int numClientesApuntados(int bbdd, int cod) {
+        int numClientes = 0;
+        Connection conexion = realizarConexion(bbdd);
+        if (conexion != null) {
+
+            try {
+                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                ResultSet r = sentencia.executeQuery("SELECT * FROM visitasclientes WHERE visita=" + cod); // Ejecutamos la sentencia
+                while (r.next()) { // Recorremos los datos
+                    numClientes++;
+                }
+                r.close(); // Cerrar ResultSet
+                sentencia.close();// Cerrar Statement
+                conexion.close(); // Cerrar Conexión
+
+            } catch (SQLException ignored) {
+                ignored.printStackTrace();
+            }
+        }
+        System.out.println(numClientes);
+        return numClientes;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -135,15 +135,44 @@ public class CargarDatosDB4O {
         ObjectContainer bd = new ConexionDB4O().conectarBD();
         if (bd != null) {
             try {
-                Visita emp = new Visita();
-                ObjectSet<Visita> resultadoVis = bd.queryByExample(emp);
+                Visita vis = new Visita();
+                ObjectSet<Visita> resultadoVis = bd.queryByExample(vis);
 
                 if (resultadoVis.size() == 0) {
                     System.out.println("No existen visitas en la BBDD");
                 }
                 while (resultadoVis.hasNext()) {
-                    Visita vis = resultadoVis.next();
-                    visitas.add(vis);
+                    Visita v = resultadoVis.next();
+                    visitas.add(v);
+                }
+            } catch (Db4oException ex) {
+                System.out.println("Error al cargar las visitas");
+            }
+            bd.close();
+        }
+        return visitas;
+    }
+
+    /**
+     * Método que devuelve todas las visitas de un empleado
+     *
+     * @return <- devuelve un ArrayList con todos las visitas de un empleado cargados
+     */
+    public ArrayList<Visita> cargarVisitasEmpleado(Empleado emp) {
+        ArrayList<Visita> visitas = new ArrayList<>();
+
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            try {
+                Visita vis = new Visita(emp);
+                ObjectSet<Visita> resultadoVis = bd.queryByExample(vis);
+
+                if (resultadoVis.size() == 0) {
+                    System.out.println("No existen visitas en la BBDD");
+                }
+                while (resultadoVis.hasNext()) {
+                    Visita v = resultadoVis.next();
+                    visitas.add(v);
                 }
             } catch (Db4oException ex) {
                 System.out.println("Error al cargar las visitas");
