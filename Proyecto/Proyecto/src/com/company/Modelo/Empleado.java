@@ -71,8 +71,14 @@ public class Empleado {
         return df.format(fecha);
     }
 
-    @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
+    @Override
     public String toString() {
+        String apellidoNombre = primerapellido + ", " + nombre;
+        String cargo = this.cargo;
+        if (cargo.equalsIgnoreCase("Administrador"))
+            cargo = "Admin";
+        return String.format("%-9s | %-20s | %s", dni, apellidoNombre, cargo);
+        /*
         if (fechaNacDB4O == null) {
             return "Empleado{" +
                     "dni='" + dni + '\'' +
@@ -95,7 +101,7 @@ public class Empleado {
                     ", cargo='" + cargo + '\'' +
                     ", contrasenya='" + contrasenya + '\'' +
                     '}';
-        }
+        }*/
     }
 
     @Override

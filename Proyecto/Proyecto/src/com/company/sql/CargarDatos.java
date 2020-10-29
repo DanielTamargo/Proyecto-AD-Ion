@@ -495,7 +495,8 @@ public class CargarDatos {
                 Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
                 ResultSet r = sentencia.executeQuery("SELECT * FROM visitasclientes WHERE cliente='" + dni + "'"); // Ejecutamos la sentencia
                 while (r.next()) { // Recorremos los datos
-                    ResultSet r2 = sentencia.executeQuery("SELECT * FROM visitas WHERE cod=" + r.getInt(2));
+                    Statement sentencia2 = conexion.createStatement();
+                    ResultSet r2 = sentencia2.executeQuery("SELECT * FROM visitas WHERE cod=" + r.getInt(2));
                     while (r2.next()) {
 
                         LocalDateTime fecha = null;
@@ -503,7 +504,7 @@ public class CargarDatos {
                             fecha = stringToLocalDateTime(r2.getString(6));
                         else
                             fecha = oracleStringToLocalDateTime(r2.getString(6));
-
+                        System.out.println(r2.getInt(1));
                         visitasCliente.add(new Visita(r2.getInt(1),
                                 cargarEmpleado(bbdd, conexion, r2.getString(2)),
                                 r2.getString(3), r2.getInt(4),
@@ -511,6 +512,8 @@ public class CargarDatos {
                                 r2.getFloat(8), r2.getString(9),
                                 r2.getFloat(10)));
                     }
+                    r2.close();
+                    sentencia2.close();
                 }
                 r.close(); // Cerrar ResultSet
                 sentencia.close();// Cerrar Statement

@@ -42,6 +42,9 @@ public class Cliente {
 
     @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
     public String toString() {
+        String apellidoNombre = apellidos + ", " + nombre;
+        return String.format("%-9s | %s", dni, apellidoNombre);
+        /*
         return "Cliente{" +
                 "dni='" + dni + '\'' +
                 ", nombre='" + nombre + '\'' +
@@ -49,7 +52,7 @@ public class Cliente {
                 ", edad=" + edad +
                 ", profesion='" + profesion + '\'' +
                 ", contrasenya='" + contrasenya + '\'' +
-                '}';
+                '}';*/
     }
 
     @Override

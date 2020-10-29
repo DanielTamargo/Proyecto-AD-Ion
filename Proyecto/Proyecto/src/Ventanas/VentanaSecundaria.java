@@ -111,6 +111,7 @@ public class VentanaSecundaria {
                 mostrarLabelsYTextFieldsCliente();
                 cargarClientesEnLista();
                 verEmpleados = false;
+                vaciarDatos();
                 listEmpleadosOClientes.setSelectedIndex(0);
                 NombreListaLbl.setText("Lista clientes");
             }
@@ -122,6 +123,7 @@ public class VentanaSecundaria {
                 mostrarLabelsYTextFieldsEmpleado();
                 cargarEmpleadosEnLista();
                 verEmpleados = true;
+                vaciarDatos();
                 listEmpleadosOClientes.setSelectedIndex(0);
                 NombreListaLbl.setText("Lista empleados");
             }
@@ -539,6 +541,7 @@ public class VentanaSecundaria {
         DNI.setText("");
         NOMBRE.setText("");
         APELLIDO.setText("");
+
         EDAD.setText("");
         PROFESION.setText("");
 
