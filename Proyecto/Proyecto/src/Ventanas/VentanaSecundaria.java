@@ -12,7 +12,6 @@ import com.company.sql.InsertarDatos;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -295,7 +294,7 @@ public class VentanaSecundaria {
         NACIONALIDADlbl.setVisible(false);
 
         AELLIDOlbl.setText("Apellidos");
-        DINEROlbl.setText("Total dinero gastado");
+        DINEROlbl.setText("Dinero gastado " + LocalDateTime.now().getYear());
 
         FECHACONTR.setVisible(false);
         FECHCONTRlbl.setVisible(false);
@@ -633,9 +632,9 @@ public class VentanaSecundaria {
             for (Visita v: visitasEmpCli) {
                 int numClientes = 0;
                 if (bbdd == 4)
-                    numClientes = 0; //TODO FALTA METODO DB4O
+                    numClientes = new CargarDatosDB4O().cargarNumClientesApuntadosAVisitaDelEmpleado(v);
                 else
-                    numClientes = new CargarDatos().numClientesApuntados(bbdd, v.getCod());
+                    numClientes = new CargarDatos().numClientesApuntadosAVisitaDelEmpleado(bbdd, v.getCod());
                 dineroRecGan += (v.getCoste() * numClientes);
             }
         } else {
@@ -648,10 +647,10 @@ public class VentanaSecundaria {
                 }
             } else {
                 visitasEmpCli = new CargarDatos().cargarVisitasCliente(bbdd, cli.getDni());
-                // TODO mirar por que no carga mas de una visita
             }
             for (Visita v: visitasEmpCli) {
-                dineroRecGan += v.getCoste();
+                if (v.getFecha().getYear() == LocalDateTime.now().getYear())
+                    dineroRecGan += v.getCoste(); // TODO SOLO SUMA LA CANTIDAD DE ESTE AÑO, ASÍ TENEMOS RECOGIDO EL DINERO ANUAL
             }
         }
 

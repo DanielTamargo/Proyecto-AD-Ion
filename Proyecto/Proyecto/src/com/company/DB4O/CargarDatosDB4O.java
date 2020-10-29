@@ -193,8 +193,8 @@ public class CargarDatosDB4O {
         ObjectContainer bd = new ConexionDB4O().conectarBD();
         if (bd != null) {
             try {
-                VisitaCliente emp = new VisitaCliente();
-                ObjectSet<VisitaCliente> resultadoVisCli = bd.queryByExample(emp);
+                VisitaCliente visCliQuery = new VisitaCliente();
+                ObjectSet<VisitaCliente> resultadoVisCli = bd.queryByExample(visCliQuery);
 
                 if (resultadoVisCli.size() == 0) {
                     System.out.println("No existen visitas de clientes en la BBDD");
@@ -211,6 +211,21 @@ public class CargarDatosDB4O {
         return visitasClientes;
     }
 
+
+    public int cargarNumClientesApuntadosAVisitaDelEmpleado(Visita v) {
+        int numClientes = 0;
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            VisitaCliente visCliQuery = new VisitaCliente(v);
+            ObjectSet<VisitaCliente> resultadoVisCli = bd.queryByExample(visCliQuery);
+            while (resultadoVisCli.hasNext()) {
+                numClientes++;
+            }
+            bd.close();
+        }
+
+        return numClientes;
+    }
 
 
     public ArrayList<RegistroEmpleado> cargarRegistrosEmpleados() {
