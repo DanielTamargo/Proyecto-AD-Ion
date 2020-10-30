@@ -504,7 +504,6 @@ public class CargarDatos {
                             fecha = stringToLocalDateTime(r2.getString(6));
                         else
                             fecha = oracleStringToLocalDateTime(r2.getString(6));
-                        System.out.println(r2.getInt(1));
                         visitasCliente.add(new Visita(r2.getInt(1),
                                 cargarEmpleado(bbdd, conexion, r2.getString(2)),
                                 r2.getString(3), r2.getInt(4),
@@ -552,7 +551,6 @@ public class CargarDatos {
                 ignored.printStackTrace();
             }
         }
-        System.out.println(numClientes);
         return numClientes;
     }
 

@@ -1,6 +1,7 @@
 package com.company.Modelo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Visita {
@@ -27,8 +28,9 @@ public class Visita {
         this.guia = guia;
     }
 
-    public Visita(Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
+    public Visita(int cod, Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
                   int anyo, float duracionEstimada, String tematica, float coste) {
+        this.cod = cod;
         this.guia = guia;
         this.nombre = nombre;
         this.numMaxClientes = numMaxClientes;
@@ -40,9 +42,8 @@ public class Visita {
         this.coste = coste;
     }
 
-    public Visita(int cod, Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
+    public Visita(Empleado guia, String nombre, int numMaxClientes, String puntoPartida, LocalDateTime fecha,
                   int anyo, float duracionEstimada, String tematica, float coste) {
-        this.cod = cod;
         this.guia = guia;
         this.nombre = nombre;
         this.numMaxClientes = numMaxClientes;
@@ -68,6 +69,10 @@ public class Visita {
 
     @Override //TODO habrá que dejar bien lindo el toString para que se muestre elegante en los JList
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String fechaFormateada = fecha.format(formatter);
+        return String.format("%3d | %s | %s", cod, fechaFormateada, tematica);
+        /*
         if (guia != null) {
             return "Visita{" +
                     "cod=" + cod +
@@ -94,7 +99,7 @@ public class Visita {
                     ", tematica='" + tematica + '\'' +
                     ", coste=" + coste +
                     '}';
-        }
+        }*/
     }
 
     @Override

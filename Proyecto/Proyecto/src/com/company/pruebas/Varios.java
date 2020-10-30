@@ -1,11 +1,29 @@
 package com.company.pruebas;
 
+import com.company.Modelo.Visita;
+import com.company.sql.CargarDatos;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Varios {
 
     public static void main(String[] args) {
 
+        ArrayList<Visita> visitas = new CargarDatos().cargarVisitas(1);
+        for (Visita v: visitas)
+            System.out.println(v);
+
+        System.out.println();
+
+        visitas.sort(Comparator.comparing(Visita::getFecha));
+
+        for (Visita v: visitas)
+            System.out.println(v);
+
+
+        /*
         LocalDateTime antes = LocalDateTime.now();
         try {
             Thread.sleep(200);
@@ -14,6 +32,8 @@ public class Varios {
         }
         if (antes.isBefore(LocalDateTime.now()))
             System.out.println("Si");
+
+         */
 
         //String xd = "UPDATE empleados SET dni='99999999X', nombre='Prueba Modificada', primerApellido='Test', fechaNac='2000/05/30', fechaContratacion='2020/10";
         //System.out.println(xd.substring(98));

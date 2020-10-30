@@ -10,6 +10,8 @@ import com.company.sql.EditarDatos;
 import com.company.sql.InsertarDatos;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
@@ -18,9 +20,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class VentanaSecundaria {
+
+    // GRAFICO
     private JTabbedPane tabbedPane1;
     private JPanel ventanaSecundaria;
     private JButton editarButton;
@@ -49,17 +55,16 @@ public class VentanaSecundaria {
     private JLabel AELLIDOlbl;
     private JLabel Contraseñalbl;
     private JLabel NombreListaLbl;
-    private JButton nuevaVisitaButton;
-    private JButton editarVisitaButton;
-    private JButton eliminarVisitaButton;
+    private JButton b_guiaVisNueva;
+    private JButton b_guiaVisEditar;
+    private JButton b_guiaVisEliminar;
     private JList listVisitasEmp;
-    private JTextField textField1;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField6;
-    private JTextField textField7;
-    private JTextField textField8;
-    private JComboBox comboBox2;
+    private JTextField t_guiaVisNOMBRE;
+    private JTextField t_guiaVisPUNTOPART;
+    private JTextField t_guiaVisFECHA;
+    private JTextField t_guiaVisDUREST;
+    private JTextField t_guiaVisTEMATICA;
+    private JTextField t_guiaVisCOSTE;
     private JList listVisitasCli;
     private JTextField textField2;
     private JTextField textField5;
@@ -69,9 +74,9 @@ public class VentanaSecundaria {
     private JTextField textField12;
     private JTextField textField13;
     private JButton realizarReservaButton;
-    private JSpinner spinner1;
+    private JSpinner spinnerMAXCLIENTES;
     private JButton misVisitasButton;
-    private JButton misVisitasButton2;
+    private JButton b_guiaVisMisVisitas;
     private JPanel tabRRHH;
     private JPanel tabGUIA;
     private JPanel tabCLIENTE;
@@ -80,7 +85,13 @@ public class VentanaSecundaria {
     private JTextField DINERO;
     private JLabel DINEROlbl;
     private JComboBox CARGO;
+    private JTextField t_guiaVisANYO;
+    private JTextField t_guiaVisGUIA;
 
+    // GENERALES
+    private int bbdd = 1;
+    private JFrame frameVentanaPrincipal;
+    private JFrame frameVentanaSecundaria;
     private Empleado empleado;
     private Cliente cliente;
 
@@ -88,15 +99,19 @@ public class VentanaSecundaria {
     private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
     private ArrayList<Visita> visitas = new ArrayList<Visita>();
 
+    private int selectedEmpleado = 0;
+    private int selectedCliente = 0;
+    private int selectedGuiaVisita = 0;
+
+    // RRHH
     private boolean verEmpleados = true;
     private double dineroRecGan = 0.0;
 
-    private int selectedEmpleado = 0;
-    private int selectedCliente = 0;
+    // GUIA
+    private boolean todasVisitas = true;
+    private int todasVisitasSize = 0;
+    private int misVisitasSize = 0;
 
-    private int bbdd = 1;
-    private JFrame frameVentanaPrincipal;
-    private JFrame frameVentanaSecundaria;
 
     public VentanaSecundaria() {
         cargarImagenes();
@@ -110,7 +125,7 @@ public class VentanaSecundaria {
                 mostrarLabelsYTextFieldsCliente();
                 cargarClientesEnLista();
                 verEmpleados = false;
-                vaciarDatos();
+                vaciarDatosListEmpCli();
                 listEmpleadosOClientes.setSelectedIndex(0);
                 NombreListaLbl.setText("Lista clientes");
             }
@@ -122,7 +137,7 @@ public class VentanaSecundaria {
                 mostrarLabelsYTextFieldsEmpleado();
                 cargarEmpleadosEnLista();
                 verEmpleados = true;
-                vaciarDatos();
+                vaciarDatosListEmpCli();
                 listEmpleadosOClientes.setSelectedIndex(0);
                 NombreListaLbl.setText("Lista empleados");
             }
@@ -132,7 +147,7 @@ public class VentanaSecundaria {
             public void actionPerformed(ActionEvent e) {
                 listEmpleadosOClientes.setEnabled(false);
                 listEmpleadosOClientes.clearSelection();
-                vaciarDatos();
+                vaciarDatosListEmpCli();
                 eliminarButton.setText("Cancelar");
                 eliminarButton.setIcon(new ImageIcon("assets/cancel.png"));
                 editarButton.setText("Añadir");
@@ -148,7 +163,7 @@ public class VentanaSecundaria {
                 if (eliminarButton.getText().equalsIgnoreCase("Cancelar")) {
                     terminarAnyadirEmpleadoCliente();
                 } else {
-                    eliminarPresionado();
+                    eliminarPresionado(1);
                 }
             }
         });
@@ -172,8 +187,73 @@ public class VentanaSecundaria {
 
 
         // Listeners Tab Guia
+        b_guiaVisEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO si es eliminar: eliminar | si es cancelar: volver a todas las visitas
+                //TODO desbloquear la lista
+                if (b_guiaVisEliminar.getText().equalsIgnoreCase("Cancelar")) {
+                    terminarAnyadirGuiaVisita();
+                } else {
+                    eliminarPresionado(2);
+                }
+            }
+        });
+        b_guiaVisEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editarInsertarGuiaVisita();
+            }
+        });
+        b_guiaVisMisVisitas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (todasVisitas) {
+                    todasVisitas = false;
+                    b_guiaVisMisVisitas.setText("Todas visitas");
+                    b_guiaVisMisVisitas.setIcon(new ImageIcon("assets/mis.png")); //TODO nuevo icono (?)
+                } else {
+                    todasVisitas = true;
+                    b_guiaVisMisVisitas.setText("Mis visitas");
+                    b_guiaVisMisVisitas.setIcon(new ImageIcon("assets/mis.png"));
+                }
+                actualizarListaGuia();
+                vaciarDatosGuiaVisita();
+                try {
+                    listVisitasEmp.setSelectedIndex(0);
+                    selectedGuiaVisita = 0;
+                } catch (NullPointerException ignored) { }
 
-
+                terminarAnyadirGuiaVisita();
+                //listVisitasEmp.setEnabled(true);
+            }
+        });
+        b_guiaVisNueva.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vaciarDatosGuiaVisita();
+                t_guiaVisGUIA.setText(empleado.getNombre() + " " + empleado.getPrimerapellido());
+                b_guiaVisEliminar.setText("Cancelar");
+                b_guiaVisEliminar.setIcon(new ImageIcon("assets/cancel.png"));
+                b_guiaVisEditar.setText("Añadir");
+                b_guiaVisEditar.setIcon(new ImageIcon("assets/save.png"));
+                listVisitasEmp.setEnabled(false);
+            }
+        });
+        listVisitasEmp.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedGuiaVisita = listVisitasEmp.getSelectedIndex();
+                actualizarDatosGuiaVisita();
+            }
+        });
+        spinnerMAXCLIENTES.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if ((int) spinnerMAXCLIENTES.getValue() < 5)
+                    spinnerMAXCLIENTES.setValue(5);
+            }
+        });
 
 
         // Listeners Tab Cliente
@@ -187,7 +267,107 @@ public class VentanaSecundaria {
 
     }
 
-    public void eliminarPresionado() {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MÉTODOS INICIALES
+    public void cargarDatos() {
+        cargarListas();
+        actualizarListas();
+        actualizarDatosEmpleado();
+    }
+
+    public void cargarListas() {
+        if (empleado != null) {
+            if (empleado.getCargo().equalsIgnoreCase("RRHH")) { //RRHH
+                cargarListasRRHH();
+                tabbedPane1.removeTabAt(3);
+                tabbedPane1.removeTabAt(2);
+                tabbedPane1.removeTabAt(1);
+            } else if (empleado.getCargo().equalsIgnoreCase("Guía")) { //GUIA
+                cargarListasGuia();
+                tabbedPane1.removeTabAt(3);
+                tabbedPane1.removeTabAt(2);
+                tabbedPane1.removeTabAt(0);
+            } else { //ADMINISTRADOR
+                cargarListasAdmin();
+            }
+        } else { // CLIENTE
+            cargarListasCliente();
+            tabbedPane1.removeTabAt(3);
+            tabbedPane1.removeTabAt(1);
+            tabbedPane1.removeTabAt(0);
+        }
+    }
+
+    public void actualizarListas() {
+        actualizarListaEmpleados();
+        actualizarListaGuiaTodasVisitas();
+        actualizarListaVisitasClientes();
+
+        try {
+            listEmpleadosOClientes.setSelectedIndex(0);
+        } catch (Exception ignored) {}
+        try {
+            listVisitasEmp.setSelectedIndex(0);
+        } catch (Exception ignored) {}
+        try {
+            listVisitasCli.setSelectedIndex(0);
+        } catch (Exception ignored) {}
+    }
+
+    public void cargarListasRRHH() {
+        if (bbdd == 4) { //BD4O
+            empleados = new CargarDatosDB4O().cargarEmpleados();
+            clientes = new CargarDatosDB4O().cargarClientes();
+        } else { //SQL
+            empleados = new CargarDatos().cargarEmpleados(bbdd);
+            clientes = new CargarDatos().cargarClientes(bbdd);
+        }
+    }
+
+    public void cargarListasGuia() {
+        if (bbdd == 4) { //BD4O
+            visitas = new CargarDatosDB4O().cargarVisitas();
+        } else { //SQL
+            visitas = new CargarDatos().cargarVisitas(bbdd);
+        }
+        visitas.sort(Comparator.comparing(Visita::getFecha));
+    }
+
+    public void cargarListasAdmin() {
+        if (bbdd == 4) { //BD4O
+            empleados = new CargarDatosDB4O().cargarEmpleados();
+            clientes = new CargarDatosDB4O().cargarClientes();
+            visitas = new CargarDatosDB4O().cargarVisitas();
+        } else { //SQL
+            empleados = new CargarDatos().cargarEmpleados(bbdd);
+            clientes = new CargarDatos().cargarClientes(bbdd);
+            visitas = new CargarDatos().cargarVisitas(bbdd);
+        }
+        visitas.sort(Comparator.comparing(Visita::getFecha));
+    }
+
+    public void cargarListasCliente() {
+        if (bbdd == 4) { //BD4O
+            visitas = new CargarDatosDB4O().cargarVisitas();
+        } else { //SQL
+            visitas = new CargarDatos().cargarVisitas(bbdd);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MÉTODOS COMUNES
+    public void mostrarJOPtionPane(String titulo, String mensaje, int tipo) {
+        JButton okButton = new JButton("Entendido");
+        okButton.setFocusPainted(false);
+        Object[] options = {okButton};
+        final JOptionPane pane = new JOptionPane(mensaje, tipo, JOptionPane.YES_NO_OPTION, null, options);
+        JDialog dialog = pane.createDialog(titulo);
+        okButton.addActionListener(e -> dialog.dispose());
+        dialog.setVisible(true);
+    }
+
+    public void eliminarPresionado(int tipo) {
         JButton noButton = new JButton("Mejor no");
         JButton eliminarButton = new JButton("Eliminar");
         noButton.setFocusPainted(false);
@@ -204,12 +384,269 @@ public class VentanaSecundaria {
         eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                borrarClienteEmpleado();
+                if (tipo == 1)
+                    borrarClienteEmpleado();
+                else if (tipo == 2)
+                    borrarGuiaVisita();
+                //TODO if tipo == 3 borrarCliVisita()
                 dialog.dispose();
             }
         });
         dialog.setVisible(true);
     }
+
+    public void registroEmpleado(String registro) {
+        if (bbdd == 4) {
+            int cod = new CargarDatosDB4O().cargarRegistrosEmpleados().size() + 1;
+            RegistroEmpleado re = new RegistroEmpleado(cod, empleado, registro);
+            new InsertarEditarDatosDB4O().insertarEditarRegistroEmpleado(re);
+        } else {
+            new InsertarDatos().insertarRegistroEmpleado(bbdd, empleado.getDni(), registro);
+        }
+    }
+
+    public void registroCliente(String registro) {
+        if (bbdd == 4) {
+            int cod = new CargarDatosDB4O().cargarRegistrosClientes().size() + 1;
+            RegistroCliente re = new RegistroCliente(cod, cliente, registro);
+            new InsertarEditarDatosDB4O().insertarEditarRegistroCliente(re);
+        } else {
+            new InsertarDatos().insertarRegistroCliente(bbdd, cliente.getDni(), registro);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MÉTODOS TAB GUIA
+    
+    public void actualizarDatosGuiaVisita() {
+        Visita visita = null;
+        try {
+            visita = (Visita) listVisitasEmp.getSelectedValue();
+        } catch (NullPointerException ignored) { }
+
+        if (visita != null) {
+            try {
+                t_guiaVisGUIA.setText(visita.getGuia().getNombre() + " " + visita.getGuia().getPrimerapellido());
+            } catch (NullPointerException ignored) {
+                t_guiaVisGUIA.setText("");
+            }
+            t_guiaVisNOMBRE.setText(visita.getNombre());
+            spinnerMAXCLIENTES.setValue(visita.getNumMaxClientes());
+            t_guiaVisPUNTOPART.setText(visita.getPuntoPartida());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String fechaFormateada = visita.getFecha().format(formatter);
+            t_guiaVisFECHA.setText(fechaFormateada);
+            try {
+                t_guiaVisANYO.setText(String.valueOf(visita.getFecha().getYear()));
+            } catch (Exception ignored) {
+                t_guiaVisANYO.setText(String.valueOf(visita.getAnyo()));
+            }
+            t_guiaVisDUREST.setText(String.valueOf(visita.getDuracionEstimada()));
+            t_guiaVisTEMATICA.setText(visita.getTematica());
+            t_guiaVisCOSTE.setText(String.valueOf(visita.getCoste()));
+        }
+    }
+
+    public void actualizarListaGuiaTodasVisitas() {
+        todasVisitasSize = 0;
+        DefaultListModel<Visita> modeloVisEmp = new DefaultListModel<>();
+        for (Visita v: visitas) {
+            if (v.getFecha().isAfter(LocalDateTime.now())) {
+                modeloVisEmp.addElement(v);
+                todasVisitasSize++;
+            }
+        }
+        listVisitasEmp.setModel(modeloVisEmp);
+    }
+
+    public void actualizarListaGuiaMisVisitas() {
+        misVisitasSize = 0;
+        DefaultListModel<Visita> modeloVisEmp = new DefaultListModel<>();
+        for (Visita v: visitas) {
+            try {
+                if (v.getGuia().getDni().equalsIgnoreCase(empleado.getDni())) {
+                    modeloVisEmp.addElement(v);
+                    misVisitasSize++;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        listVisitasEmp.setModel(modeloVisEmp);
+    }
+
+    public void actualizarListaGuia() {
+        if (todasVisitas)
+            actualizarListaGuiaTodasVisitas();
+        else
+            actualizarListaGuiaMisVisitas();
+    }
+
+    public void vaciarDatosGuiaVisita() {
+        t_guiaVisNOMBRE.setText("");
+        spinnerMAXCLIENTES.setValue(0);
+        t_guiaVisPUNTOPART.setText("");
+        t_guiaVisFECHA.setText("");
+        t_guiaVisANYO.setText("");
+        t_guiaVisDUREST.setText("");
+        t_guiaVisTEMATICA.setText("");
+        t_guiaVisCOSTE.setText("");
+    }
+
+    public void terminarAnyadirGuiaVisita() {
+        //t_guiaVisGUIA.setText("");
+        b_guiaVisEliminar.setText("Eliminar");
+        b_guiaVisEliminar.setIcon(new ImageIcon("assets/delete.png"));
+        b_guiaVisEditar.setText("Editar");
+        b_guiaVisEditar.setIcon(new ImageIcon("assets/edit.png"));
+        listVisitasEmp.setEnabled(true);
+        //listVisitasEmp.clearSelection();
+        if (selectedGuiaVisita < 0)
+            selectedGuiaVisita = 0;
+        else if (selectedGuiaVisita >= listVisitasEmp.getLastVisibleIndex())
+            selectedGuiaVisita = listVisitasEmp.getLastVisibleIndex();
+        listVisitasEmp.setSelectedIndex(selectedGuiaVisita);
+        actualizarDatosGuiaVisita();
+    }
+
+    public void borrarGuiaVisita() {
+        Visita visita = null;
+        try {
+            visita = (Visita) listVisitasEmp.getSelectedValue();
+        } catch (NullPointerException ignored) { }
+
+        if (visita != null) {
+            if (bbdd == 4) {
+                new BorrarDatosDB4O().borrarVisita(visita);
+            } else {
+                new BorrarDatos().borrarVisita(bbdd, visita.getCod());
+            }
+            Visita visitaEliminar = null;
+            for (Visita v: visitas) {
+                if (v.getCod() == visita.getCod())
+                    visitaEliminar = v;
+            }
+            if (visitaEliminar != null)
+                visitas.remove(visitaEliminar);
+
+            String registro = "Eliminado la visita " + visita.getCod();
+            registroEmpleado(registro);
+            actualizarListaGuia();
+            selectedGuiaVisita = 0;
+            terminarAnyadirGuiaVisita();
+
+        }
+
+    }
+
+    public void editarInsertarGuiaVisita() {
+        if (!comprobarDatosGuiaVisitaInsertados()) {
+            mostrarJOPtionPane("Faltan datos", "Debes rellenar todos los datos necesarios", 0);
+        } else {
+            boolean error = false;
+            LocalDateTime fecha = null;
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            try {
+                fecha = LocalDateTime.parse(t_guiaVisFECHA.getText(), formatter);
+            } catch (Exception pe) {
+                error = true;
+            }
+
+            if (error) {
+                mostrarJOPtionPane("Error con la fecha", "Debes insertar la fecha con \n" +
+                        "el formato: dd/mm/yyyy hh:mm\n" +
+                        "Ejemplo: 09/11/2020 17:30", 0);
+            } else {
+                boolean error2 = false;
+                try {
+                    float coste = Float.parseFloat(t_guiaVisCOSTE.getText());
+                    float duracion = Float.parseFloat(t_guiaVisDUREST.getText());
+                } catch (NumberFormatException ignored) {
+                    error2 = true;
+                }
+
+                if (error2) {
+                    mostrarJOPtionPane("Error con duración o coste", "Debes insertar la duración estimada \n" +
+                            "y el coste con el formato: número.decimal\n" +
+                            "Ejemplo: 7.5", 0);
+                } else {
+                    Visita visita = null;
+                    if (bbdd == 4) {
+                        visita = new Visita(visitas.size() + 1, empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                                t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
+                                t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
+                        new InsertarEditarDatosDB4O().insertarEditarVisita(visita);
+                    } else {
+                        if (listVisitasEmp.isEnabled()) {
+                            new EditarDatos().editarVisitas(bbdd, (Visita) listVisitasEmp.getSelectedValue());
+                        } else {
+                            visita = new Visita(empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                                    t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
+                                    t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
+                            new InsertarDatos().insertarVisita(bbdd, visita);
+                        }
+                    }
+
+                    String registro;
+                    if (listVisitasEmp.isEnabled()) {
+                        selectedGuiaVisita = listVisitasEmp.getSelectedIndex();
+                        registro = "Editada la visita " + visita.getCod();
+                    } else {
+                        if (todasVisitas)
+                            selectedGuiaVisita = todasVisitasSize;
+                        else
+                            selectedGuiaVisita = misVisitasSize;
+                        registro = "Creada nueva visita";
+                    }
+
+                    registroEmpleado(registro);
+                    cargarListasGuia();
+
+                    if (todasVisitas)
+                        actualizarListaGuiaTodasVisitas();
+                    else
+                        actualizarListaGuiaMisVisitas();
+
+                    terminarAnyadirGuiaVisita();
+                }
+            }
+        }
+    }
+
+    public boolean comprobarDatosGuiaVisitaInsertados() {
+        boolean datosInsertados = true;
+
+        ArrayList<JTextField> textos = new ArrayList<>();
+        textos.add(t_guiaVisNOMBRE); textos.add(t_guiaVisPUNTOPART);
+        textos.add(t_guiaVisFECHA); textos.add(t_guiaVisDUREST);
+        textos.add(t_guiaVisTEMATICA); textos.add(t_guiaVisCOSTE);
+
+        for (JTextField texto: textos){
+            if (texto.getText().equalsIgnoreCase(""))
+                datosInsertados = false;
+        }
+
+        return datosInsertados;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MÉTODOS TAB CLIENTE
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MÉTODOS TAB ADMIN
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MÉTODOS TAB RRHH
 
     public void borrarClienteEmpleado() {
         String registro = "";
@@ -306,17 +743,16 @@ public class VentanaSecundaria {
     public void cargarImagenes() {
         añadirButton.setIcon(new ImageIcon("Assets/añadir.png"));
         editarButton.setIcon(new ImageIcon("Assets/save.png"));
-        editarVisitaButton.setIcon(new ImageIcon("Assets/edit.png"));
+        b_guiaVisEditar.setIcon(new ImageIcon("Assets/edit.png"));
         eliminarButton.setIcon(new ImageIcon("Assets/delete.png"));
-        eliminarVisitaButton.setIcon(new ImageIcon("Assets/delete.png"));
+        b_guiaVisEliminar.setIcon(new ImageIcon("Assets/delete.png"));
         clienteButton.setIcon(new ImageIcon("Assets/cliente.png"));
         empleadoButton.setIcon(new ImageIcon("Assets/empleado.png"));
-        nuevaVisitaButton.setIcon(new ImageIcon("Assets/nuevaVisita.png"));
+        b_guiaVisNueva.setIcon(new ImageIcon("Assets/nuevaVisita.png"));
         misVisitasButton.setIcon(new ImageIcon("Assets/mis.png"));
-        misVisitasButton2.setIcon(new ImageIcon("Assets/mis.png"));
+        b_guiaVisMisVisitas.setIcon(new ImageIcon("Assets/mis.png"));
         realizarReservaButton.setIcon(new ImageIcon("Assets/pedido.png"));
     }
-
 
     public void cargarClientesEnLista() {
         DefaultListModel<Cliente> modeloCli = new DefaultListModel<>();
@@ -331,37 +767,6 @@ public class VentanaSecundaria {
             modeloEmp.addElement(e);
         listEmpleadosOClientes.setModel(modeloEmp);
     }
-
-    public void cargarDatos() {
-        cargarListas();
-        actualizarListas();
-        actualizarDatosEmpleado();
-    }
-
-    public void cargarListas() {
-        if (empleado != null) {
-            if (empleado.getCargo().equalsIgnoreCase("RRHH")) { //RRHH
-                cargarListasRRHH();
-                tabbedPane1.removeTabAt(3);
-                tabbedPane1.removeTabAt(2);
-                tabbedPane1.removeTabAt(1);
-            } else if (empleado.getCargo().equalsIgnoreCase("Guía")) { //GUIA
-                cargarListasGuia();
-                tabbedPane1.removeTabAt(3);
-                tabbedPane1.removeTabAt(2);
-                tabbedPane1.removeTabAt(0);
-            } else { //ADMINISTRADOR
-                cargarListasAdmin();
-            }
-        } else { // CLIENTE
-            cargarListasCliente();
-            tabbedPane1.removeTabAt(3);
-            tabbedPane1.removeTabAt(1);
-            tabbedPane1.removeTabAt(0);
-        }
-
-    }
-
 
     public void editarInsertarEmpleadoCliente() {
 
@@ -484,33 +889,6 @@ public class VentanaSecundaria {
         return datosInsertados;
     }
 
-    public void registroEmpleado(String registro) {
-        if (bbdd == 4) {
-            int cod = new CargarDatosDB4O().cargarRegistrosEmpleados().size() + 1;
-            RegistroEmpleado re = new RegistroEmpleado(cod, empleado, registro);
-            new InsertarEditarDatosDB4O().insertarEditarRegistroEmpleado(re);
-        } else {
-            new InsertarDatos().insertarRegistroEmpleado(bbdd, empleado.getDni(), registro);
-        }
-    }
-
-    public void actualizarListas() {
-
-        actualizarListaEmpleados();
-        actualizarListaVisitasEmpleados();
-        actualizarListaVisitasClientes();
-
-        try {
-            listEmpleadosOClientes.setSelectedIndex(0);
-        } catch (NullPointerException ignored) {}
-        try {
-            listVisitasEmp.setSelectedIndex(0);
-        } catch (NullPointerException ignored) {}
-        try {
-            listVisitasCli.setSelectedIndex(0);
-        } catch (NullPointerException ignored) {}
-    }
-
     public void actualizarListaVisitasClientes() {
         DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
         for (Visita v: visitas) {
@@ -520,15 +898,6 @@ public class VentanaSecundaria {
         listVisitasCli.setModel(modeloVisCli);
     }
 
-    public void actualizarListaVisitasEmpleados() {
-        DefaultListModel<Visita> modeloVisEmp = new DefaultListModel<>();
-        for (Visita v: visitas)
-            if (v.getFecha().isAfter(LocalDateTime.now()))
-                modeloVisEmp.addElement(v);
-        listVisitasEmp.setModel(modeloVisEmp);
-
-    }
-
     public void actualizarListaEmpleados() {
         DefaultListModel<Empleado> modeloEmp = new DefaultListModel<>();
         for (Empleado e: empleados)
@@ -536,7 +905,7 @@ public class VentanaSecundaria {
         listEmpleadosOClientes.setModel(modeloEmp);
     }
 
-    public void vaciarDatos() {
+    public void vaciarDatosListEmpCli() {
         DNI.setText("");
         NOMBRE.setText("");
         APELLIDO.setText("");
@@ -618,7 +987,6 @@ public class VentanaSecundaria {
         }
     }
 
-
     public void calcularDineroRecaudadoGastado() {
         dineroRecGan = 0;
         ArrayList<Visita> visitasEmpCli = new ArrayList<>();
@@ -656,53 +1024,9 @@ public class VentanaSecundaria {
 
     }
 
-    public void cargarListasRRHH() {
-        if (bbdd == 4) { //BD4O
-            empleados = new CargarDatosDB4O().cargarEmpleados();
-            clientes = new CargarDatosDB4O().cargarClientes();
-        } else { //SQL
-            empleados = new CargarDatos().cargarEmpleados(bbdd);
-            clientes = new CargarDatos().cargarClientes(bbdd);
-        }
-    }
 
-    public void cargarListasGuia() {
-        if (bbdd == 4) { //BD4O
-            visitas = new CargarDatosDB4O().cargarVisitas();
-        } else { //SQL
-            visitas = new CargarDatos().cargarVisitas(bbdd);
-        }
-    }
-
-    public void cargarListasAdmin() {
-        if (bbdd == 4) { //BD4O
-            empleados = new CargarDatosDB4O().cargarEmpleados();
-            clientes = new CargarDatosDB4O().cargarClientes();
-            visitas = new CargarDatosDB4O().cargarVisitas();
-        } else { //SQL
-            empleados = new CargarDatos().cargarEmpleados(bbdd);
-            clientes = new CargarDatos().cargarClientes(bbdd);
-            visitas = new CargarDatos().cargarVisitas(bbdd);
-        }
-    }
-
-    public void cargarListasCliente() {
-        if (bbdd == 4) { //BD4O
-            visitas = new CargarDatosDB4O().cargarVisitas();
-        } else { //SQL
-            visitas = new CargarDatos().cargarVisitas(bbdd);
-        }
-    }
-
-    public void mostrarJOPtionPane(String titulo, String mensaje, int tipo) {
-        JButton okButton = new JButton("Entendido");
-        okButton.setFocusPainted(false);
-        Object[] options = {okButton};
-        final JOptionPane pane = new JOptionPane(mensaje, tipo, JOptionPane.YES_NO_OPTION, null, options);
-        JDialog dialog = pane.createDialog(titulo);
-        okButton.addActionListener(e -> dialog.dispose());
-        dialog.setVisible(true);
-    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // SETTERS Y GETTERS
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
@@ -725,7 +1049,6 @@ public class VentanaSecundaria {
     }
 
     public JPanel getPanelSecundario() {return ventanaSecundaria;}
-
 
 }
 
