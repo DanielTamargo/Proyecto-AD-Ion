@@ -168,14 +168,14 @@ public class CargarDatosDB4O {
                 ObjectSet<Visita> resultadoVis = bd.queryByExample(vis);
 
                 if (resultadoVis.size() == 0) {
-                    System.out.println("No existen visitas en la BBDD");
+                    System.out.println("El empleado '" + emp.getDni() + "' no ha organizado ninguna visita aún");
                 }
                 while (resultadoVis.hasNext()) {
                     Visita v = resultadoVis.next();
                     visitas.add(v);
                 }
             } catch (Db4oException ex) {
-                System.out.println("Error al cargar las visitas");
+                System.out.println("Error al cargar las visitas del empleado '" + emp.getDni() + "'");
             }
             bd.close();
         }
@@ -197,7 +197,7 @@ public class CargarDatosDB4O {
                 ObjectSet<VisitaCliente> resultadoVisCli = bd.queryByExample(visCliQuery);
 
                 if (resultadoVisCli.size() == 0) {
-                    System.out.println("No existen visitas de clientes en la BBDD");
+                    System.out.println("El cliente no ha participado en ninguna visita");
                 }
                 while (resultadoVisCli.hasNext()) {
                     VisitaCliente visCli = resultadoVisCli.next();

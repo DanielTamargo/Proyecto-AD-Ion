@@ -66,13 +66,13 @@ public class VentanaSecundaria {
     private JTextField t_guiaVisTEMATICA;
     private JTextField t_guiaVisCOSTE;
     private JList listVisitasCli;
-    private JTextField textField2;
-    private JTextField textField5;
-    private JTextField textField9;
-    private JTextField textField10;
-    private JTextField textField11;
-    private JTextField textField12;
-    private JTextField textField13;
+    private JTextField t_cliVisGUIA;
+    private JTextField t_cliVisPLAZAS;
+    private JTextField t_cliVisPUNTOPART;
+    private JTextField t_cliVisFECHA;
+    private JTextField t_cliVisDUREST;
+    private JTextField t_cliVisTEMATICA;
+    private JTextField t_cliVisCOSTE;
     private JButton realizarReservaButton;
     private JSpinner spinnerMAXCLIENTES;
     private JButton misVisitasButton;
@@ -87,6 +87,7 @@ public class VentanaSecundaria {
     private JComboBox CARGO;
     private JTextField t_guiaVisANYO;
     private JTextField t_guiaVisGUIA;
+    private JTextField t_cliVisNOMBRE;
 
     // GENERALES
     private int bbdd = 1;
@@ -195,7 +196,12 @@ public class VentanaSecundaria {
                 if (b_guiaVisEliminar.getText().equalsIgnoreCase("Cancelar")) {
                     terminarAnyadirGuiaVisita();
                 } else {
-                    eliminarPresionado(2);
+                    Visita visita = null;
+                    try {
+                        visita = (Visita) listVisitasEmp.getSelectedValue();
+                    } catch (NullPointerException ignored) { }
+                    if (visita != null)
+                        eliminarPresionado(2);
                 }
             }
         });
@@ -509,33 +515,25 @@ public class VentanaSecundaria {
     }
 
     public void borrarGuiaVisita() {
-        Visita visita = null;
-        try {
-            visita = (Visita) listVisitasEmp.getSelectedValue();
-        } catch (NullPointerException ignored) { }
-
-        if (visita != null) {
-            if (bbdd == 4) {
-                new BorrarDatosDB4O().borrarVisita(visita);
-            } else {
-                new BorrarDatos().borrarVisita(bbdd, visita.getCod());
-            }
-            Visita visitaEliminar = null;
-            for (Visita v: visitas) {
-                if (v.getCod() == visita.getCod())
-                    visitaEliminar = v;
-            }
-            if (visitaEliminar != null)
-                visitas.remove(visitaEliminar);
-
-            String registro = "Eliminado la visita " + visita.getCod();
-            registroEmpleado(registro);
-            actualizarListaGuia();
-            selectedGuiaVisita = 0;
-            terminarAnyadirGuiaVisita();
-
+        Visita visita = (Visita) listVisitasEmp.getSelectedValue();
+        if (bbdd == 4) {
+            new BorrarDatosDB4O().borrarVisita(visita);
+        } else {
+            new BorrarDatos().borrarVisita(bbdd, visita.getCod());
         }
+        Visita visitaEliminar = null;
+        for (Visita v: visitas) {
+            if (v.getCod() == visita.getCod())
+                visitaEliminar = v;
+        }
+        if (visitaEliminar != null)
+            visitas.remove(visitaEliminar);
 
+        String registro = "Eliminado la visita " + visita.getCod();
+        registroEmpleado(registro);
+        actualizarListaGuia();
+        selectedGuiaVisita = 0;
+        terminarAnyadirGuiaVisita();
     }
 
     public void editarInsertarGuiaVisita() {
@@ -578,7 +576,11 @@ public class VentanaSecundaria {
                         new InsertarEditarDatosDB4O().insertarEditarVisita(visita);
                     } else {
                         if (listVisitasEmp.isEnabled()) {
-                            new EditarDatos().editarVisitas(bbdd, (Visita) listVisitasEmp.getSelectedValue());
+                            Visita visitaElegida = (Visita) listVisitasEmp.getSelectedValue();
+                            visita = new Visita(visitaElegida.getCod(), empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                                    t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
+                                    t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
+                            new EditarDatos().editarVisitas(bbdd, visitaElegida);
                         } else {
                             visita = new Visita(empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
                                     t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),

@@ -79,7 +79,6 @@ public class CargarDatos {
     }
 
     public LocalDateTime oracleStringToLocalDateTime(String fechaStr) {
-        System.out.println(fechaStr);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime fecha = null;
         if (fechaStr.length() < 11)
