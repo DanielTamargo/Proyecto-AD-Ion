@@ -5,6 +5,7 @@ import com.company.DB4O.CargarDatosDB4O;
 import com.company.DB4O.InsertarDatosBaseDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
 import com.company.HiloCloud;
+import com.company.Metadatos;
 import com.company.Modelo.*;
 import com.company.sql.BorrarDatos;
 import com.company.sql.CargarDatos;
@@ -328,7 +329,7 @@ public class VentanaSecundaria {
         panelAdmin.setLayout(null);
         Dimension dim = new Dimension();
 
-        l_gananciasAnualesText = new JLabel("Ganancias anuales totales:");
+        l_gananciasAnualesText = new JLabel("Ganancias anuales totales");
         dim.setSize(250, 50);
         l_gananciasAnualesText.setFont(new Font("Microsoft Yahei UI", Font.PLAIN, 16));
         l_gananciasAnualesText.setHorizontalAlignment(JLabel.RIGHT);
@@ -390,7 +391,25 @@ public class VentanaSecundaria {
         HiloCloud hiloCloud = new HiloCloud(l_fondoCloud);
         hiloCloud.start();
 
+        b_adminMetadatos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (bbdd != 4) {
+                    StringBuilder sb = new Metadatos().generarMetadatos(bbdd);
+                    JFrame frame = new JFrame("Metadatos");
+                    VentanaDatos vd = new VentanaDatos(sb);
+                    frame.setContentPane(vd.getPanel());
+                    vd.setVentanaDatos(frame);
+                    vd.setVentanaSecundaria(frameVentanaSecundaria);
+                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
 
+                    frameVentanaSecundaria.dispose();
+                }
+            }
+        });
 
     }
 
@@ -643,7 +662,7 @@ public class VentanaSecundaria {
             }
             int plazasLibres = totalPlazas - plazasOcupadas;
             t_cliVisPLAZAS.setText(String.valueOf(plazasLibres));
-            
+
             if (clienteTodasVisitas && plazasLibres <= 0) {
                 b_cliReservar.setEnabled(false);
             } else if (!clienteTodasVisitas && visita.getFecha().isBefore(LocalDateTime.now())) {
