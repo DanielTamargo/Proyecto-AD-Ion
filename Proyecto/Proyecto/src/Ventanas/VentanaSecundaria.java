@@ -468,7 +468,11 @@ public class VentanaSecundaria {
             int totalPlazas = visita.getNumMaxClientes();
             int plazasOcupadas = 0;
             if (bbdd == 4) {
-                plazasOcupadas = new CargarDatosDB4O().cargarNumClientesApuntadosAVisitaDelEmpleado(visita);
+                ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasClientes();
+                for (VisitaCliente visitaCliente : visitasClientes) {
+                    if (visitaCliente.getVisita().getCod() == visita.getCod())
+                        plazasOcupadas++;
+                }
             } else {
                 plazasOcupadas = new CargarDatos().numClientesApuntadosAVisita(bbdd, visita.getCod());
             }
@@ -1112,8 +1116,13 @@ public class VentanaSecundaria {
             }
             for (Visita v: visitasEmpCli) {
                 int numClientes = 0;
-                if (bbdd == 4)
-                    numClientes = new CargarDatosDB4O().cargarNumClientesApuntadosAVisitaDelEmpleado(v);
+                if (bbdd == 4) {
+                    ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasClientes();
+                    for (VisitaCliente visitaCliente : visitasClientes) {
+                        if (visitaCliente.getVisita().getCod() == v.getCod())
+                            numClientes++;
+                    }
+                }
                 else
                     numClientes = new CargarDatos().numClientesApuntadosAVisita(bbdd, v.getCod());
                 dineroRecGan += (v.getCoste() * numClientes);

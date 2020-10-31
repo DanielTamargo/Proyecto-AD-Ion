@@ -17,7 +17,12 @@ public class DB4Opruebas {
 
     public static void main(String[] args) {
 
-        new InsertarDatosBaseDB4O().insertarDatosBase();
+        ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasClientes();
+        for (VisitaCliente visitaCliente : visitasClientes) {
+            System.out.println(visitaCliente);
+        }
+
+        //new InsertarDatosBaseDB4O().insertarDatosBase();
 
         /*
         ArrayList<Cliente> clientes = new CargarDatosDB4O().cargarClientes();
