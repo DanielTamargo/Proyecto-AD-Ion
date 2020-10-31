@@ -16,6 +16,10 @@ import java.util.Date;
 public class DB4Opruebas {
 
     public static void main(String[] args) {
+
+        new InsertarDatosBaseDB4O().insertarDatosBase();
+
+        /*
         ArrayList<Cliente> clientes = new CargarDatosDB4O().cargarClientes();
         if (clientes.size() <= 0) {
             System.out.println("Insertando datos base");
@@ -25,6 +29,8 @@ public class DB4Opruebas {
 
         for (Cliente c: clientes)
             System.out.println(c);
+
+         */
 
     }
 

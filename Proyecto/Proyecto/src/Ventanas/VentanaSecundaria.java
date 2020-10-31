@@ -73,9 +73,9 @@ public class VentanaSecundaria {
     private JTextField t_cliVisDUREST;
     private JTextField t_cliVisTEMATICA;
     private JTextField t_cliVisCOSTE;
-    private JButton realizarReservaButton;
+    private JButton b_cliReservar;
     private JSpinner spinnerMAXCLIENTES;
-    private JButton misVisitasButton;
+    private JButton b_cliMisVisitas;
     private JButton b_guiaVisMisVisitas;
     private JPanel tabRRHH;
     private JPanel tabGUIA;
@@ -109,16 +109,18 @@ public class VentanaSecundaria {
     private double dineroRecGan = 0.0;
 
     // GUIA
-    private boolean todasVisitas = true;
+    private boolean empleadoTodasVisitas = true;
     private int todasVisitasSize = 0;
     private int misVisitasSize = 0;
 
+    // CLIENTE
+    private boolean clienteTodasVisitas = true;
 
     public VentanaSecundaria() {
         cargarImagenes();
         mostrarLabelsYTextFieldsEmpleado();
 
-        // Listeneres Tab RRHH
+        // LISTENERS TAB RRHH
         clienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -187,7 +189,7 @@ public class VentanaSecundaria {
         });
 
 
-        // Listeners Tab Guia
+        // LISTENERS TAB GUIA
         b_guiaVisEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -214,12 +216,13 @@ public class VentanaSecundaria {
         b_guiaVisMisVisitas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (todasVisitas) {
-                    todasVisitas = false;
+                if (empleadoTodasVisitas) {
+                    t_guiaVisGUIA.setText(empleado.getNombre() + " " + empleado.getPrimerapellido());
+                    empleadoTodasVisitas = false;
                     b_guiaVisMisVisitas.setText("Todas visitas");
                     b_guiaVisMisVisitas.setIcon(new ImageIcon("assets/mis.png")); //TODO nuevo icono (?)
                 } else {
-                    todasVisitas = true;
+                    empleadoTodasVisitas = true;
                     b_guiaVisMisVisitas.setText("Mis visitas");
                     b_guiaVisMisVisitas.setIcon(new ImageIcon("assets/mis.png"));
                 }
@@ -262,12 +265,23 @@ public class VentanaSecundaria {
         });
 
 
-        // Listeners Tab Cliente
+        // LISTENERS TAB CLIENTE
+        b_cliMisVisitas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        listVisitasCli.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                actualizarDatosClienteVisita();
+            }
+        });
 
 
 
-
-        // Listeners Tab Admin
+        // LISTENERS TAB ADMIN
 
 
 
@@ -360,7 +374,6 @@ public class VentanaSecundaria {
         }
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MÉTODOS COMUNES
     public void mostrarJOPtionPane(String titulo, String mensaje, int tipo) {
@@ -422,6 +435,112 @@ public class VentanaSecundaria {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // MÉTODOS TAB CLIENTE
+
+    public void vaciarDatosClienteVisita() {
+        // TODO vaciar cuando se apunte a una visita (por si se ha apuntado a todas las disponibles
+        t_cliVisGUIA.setText("");
+        t_cliVisNOMBRE.setText("");
+        t_cliVisPLAZAS.setText("");
+        t_cliVisPUNTOPART.setText("");
+        t_cliVisFECHA.setText("");
+        t_cliVisDUREST.setText("");
+        t_cliVisTEMATICA.setText("");
+        t_cliVisCOSTE.setText("");
+    }
+
+    public void actualizarDatosClienteVisita() {
+        Visita visita = null;
+        try {
+            visita = (Visita) listVisitasCli.getSelectedValue();
+        } catch (Exception ignored) { }
+        if (visita != null) {
+            b_cliReservar.setEnabled(true);
+
+            try {
+                t_cliVisGUIA.setText(visita.getGuia().getNombre() + " " + visita.getGuia().getPrimerapellido());
+            } catch (NullPointerException ignored) {
+                t_cliVisGUIA.setText("");
+            }
+
+            t_cliVisNOMBRE.setText(visita.getNombre());
+
+            int totalPlazas = visita.getNumMaxClientes();
+            int plazasOcupadas = 0;
+            if (bbdd == 4) {
+                plazasOcupadas = new CargarDatosDB4O().cargarNumClientesApuntadosAVisitaDelEmpleado(visita);
+            } else {
+                plazasOcupadas = new CargarDatos().numClientesApuntadosAVisita(bbdd, visita.getCod());
+            }
+            int plazasLibres = totalPlazas - plazasOcupadas;
+            t_cliVisPLAZAS.setText(String.valueOf(plazasLibres));
+
+            if (plazasLibres <= 0) {
+                b_cliReservar.setEnabled(false);
+            }
+
+            t_cliVisPUNTOPART.setText(visita.getPuntoPartida());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            String fechaFormateada = visita.getFecha().format(formatter);
+            t_cliVisFECHA.setText(fechaFormateada);
+
+            t_cliVisDUREST.setText(String.valueOf(visita.getDuracionEstimada()));
+            t_cliVisTEMATICA.setText(visita.getTematica());
+            t_cliVisCOSTE.setText(String.valueOf(visita.getCoste()));
+
+        }
+    }
+
+    public void actualizarListaClienteTodasVisitas() {
+        todasVisitasSize = 0;
+        DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
+        for (Visita v: visitas) {
+            if (v.getFecha().isAfter(LocalDateTime.now())) {
+                modeloVisCli.addElement(v);
+                todasVisitasSize++;
+            }
+        }
+        listVisitasCli.setModel(modeloVisCli);
+    }
+
+    public void actualizarListaClienteMisVisitas() {
+        misVisitasSize = 0;
+        DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
+
+        ArrayList<Visita> visitasCliente = new ArrayList<>();
+
+        if (bbdd == 4) {
+            ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasCliente(cliente);
+            for (Visita vis: visitas) {
+                for (VisitaCliente visCli: visitasClientes) {
+                    if (vis.getCod() == visCli.getVisita().getCod()) {
+                        visitasCliente.add(vis);
+                        break;
+                    }
+                }
+            }
+
+        } else {
+            visitasCliente = new CargarDatos().cargarVisitasCliente(bbdd, cliente.getDni());
+        }
+
+        for (Visita v: visitasCliente) {
+            modeloVisCli.addElement(v);
+        }
+        listVisitasCli.setModel(modeloVisCli);
+    }
+
+    public void actualizarListaCliente() {
+        if (clienteTodasVisitas)
+            actualizarListaClienteTodasVisitas();
+        else
+            actualizarListaClienteMisVisitas();
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MÉTODOS TAB GUIA
     
     public void actualizarDatosGuiaVisita() {
@@ -481,7 +600,7 @@ public class VentanaSecundaria {
     }
 
     public void actualizarListaGuia() {
-        if (todasVisitas)
+        if (empleadoTodasVisitas)
             actualizarListaGuiaTodasVisitas();
         else
             actualizarListaGuiaMisVisitas();
@@ -594,7 +713,7 @@ public class VentanaSecundaria {
                         selectedGuiaVisita = listVisitasEmp.getSelectedIndex();
                         registro = "Editada la visita " + visita.getCod();
                     } else {
-                        if (todasVisitas)
+                        if (empleadoTodasVisitas)
                             selectedGuiaVisita = todasVisitasSize;
                         else
                             selectedGuiaVisita = misVisitasSize;
@@ -604,7 +723,7 @@ public class VentanaSecundaria {
                     registroEmpleado(registro);
                     cargarListasGuia();
 
-                    if (todasVisitas)
+                    if (empleadoTodasVisitas)
                         actualizarListaGuiaTodasVisitas();
                     else
                         actualizarListaGuiaMisVisitas();
@@ -630,13 +749,6 @@ public class VentanaSecundaria {
 
         return datosInsertados;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // MÉTODOS TAB CLIENTE
-
-
-
-
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -751,9 +863,9 @@ public class VentanaSecundaria {
         clienteButton.setIcon(new ImageIcon("Assets/cliente.png"));
         empleadoButton.setIcon(new ImageIcon("Assets/empleado.png"));
         b_guiaVisNueva.setIcon(new ImageIcon("Assets/nuevaVisita.png"));
-        misVisitasButton.setIcon(new ImageIcon("Assets/mis.png"));
+        b_cliMisVisitas.setIcon(new ImageIcon("Assets/mis.png"));
         b_guiaVisMisVisitas.setIcon(new ImageIcon("Assets/mis.png"));
-        realizarReservaButton.setIcon(new ImageIcon("Assets/pedido.png"));
+        b_cliReservar.setIcon(new ImageIcon("Assets/pedido.png"));
     }
 
     public void cargarClientesEnLista() {
@@ -805,7 +917,6 @@ public class VentanaSecundaria {
                     } else {
                         java.sql.Date fechaNacSQL = new java.sql.Date(fechaNacUtil.getTime());
                         java.sql.Date fechaContrSQL = new java.sql.Date(fechaContrUtil.getTime());
-                        ;
                         emp = new Empleado(DNI.getText(), NOMBRE.getText(), APELLIDO.getText(),
                                 fechaNacSQL, fechaContrSQL, NACIONALIDAD.getText(), (String) CARGO.getSelectedItem(),
                                 String.valueOf(CONTRASEÑA.getPassword()));
@@ -1004,7 +1115,7 @@ public class VentanaSecundaria {
                 if (bbdd == 4)
                     numClientes = new CargarDatosDB4O().cargarNumClientesApuntadosAVisitaDelEmpleado(v);
                 else
-                    numClientes = new CargarDatos().numClientesApuntadosAVisitaDelEmpleado(bbdd, v.getCod());
+                    numClientes = new CargarDatos().numClientesApuntadosAVisita(bbdd, v.getCod());
                 dineroRecGan += (v.getCoste() * numClientes);
             }
         } else {

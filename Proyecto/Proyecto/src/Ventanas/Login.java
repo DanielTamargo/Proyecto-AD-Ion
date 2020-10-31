@@ -1,9 +1,13 @@
 package Ventanas;
 
 import com.company.DB4O.CargarDatosDB4O;
+import com.company.DB4O.InsertarEditarDatosDB4O;
 import com.company.Modelo.Cliente;
 import com.company.Modelo.Empleado;
+import com.company.Modelo.RegistroCliente;
+import com.company.Modelo.RegistroEmpleado;
 import com.company.sql.CargarDatos;
+import com.company.sql.InsertarDatos;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -49,6 +53,13 @@ public class Login {
                     iniciarSesionEmpleado();
                     if (empleado == null)
                         iniciarSesionCliente();
+
+                    //TODO recordatorio: login registra quién y cuándo inicia sesión
+                    if (empleado != null)
+                        registroEmpleado("Iniciado sesión");
+                    if (cliente != null)
+                        registroCliente("Iniciado sesión");
+
                 } else {
                     tituloJOpt = "Faltan datos";
                     mensajeJOpt = "Debes introducir tus datos para poder iniciar sesión";
@@ -68,6 +79,26 @@ public class Login {
 
             }
         });
+    }
+
+    public void registroEmpleado(String registro) {
+        if (bbdd == 4) {
+            int cod = new CargarDatosDB4O().cargarRegistrosEmpleados().size() + 1;
+            RegistroEmpleado re = new RegistroEmpleado(cod, empleado, registro);
+            new InsertarEditarDatosDB4O().insertarEditarRegistroEmpleado(re);
+        } else {
+            new InsertarDatos().insertarRegistroEmpleado(bbdd, empleado.getDni(), registro);
+        }
+    }
+
+    public void registroCliente(String registro) {
+        if (bbdd == 4) {
+            int cod = new CargarDatosDB4O().cargarRegistrosClientes().size() + 1;
+            RegistroCliente re = new RegistroCliente(cod, cliente, registro);
+            new InsertarEditarDatosDB4O().insertarEditarRegistroCliente(re);
+        } else {
+            new InsertarDatos().insertarRegistroCliente(bbdd, cliente.getDni(), registro);
+        }
     }
 
     public void mostrarJOPtionPane(String titulo, String mensaje, int tipo) {

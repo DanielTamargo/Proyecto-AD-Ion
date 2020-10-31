@@ -12,21 +12,26 @@ public class ventanaPrincipal {
     private JPanel VentanaPrincipal;
     private JPanel informacion;
     private JButton infoButton;
-    private JLabel telefonolbl;
-    private JLabel telefonolbl2;
-    private JLabel telefonolbl3;
-    private JLabel telefonolbl4;
-    private JLabel direccionlbl;
-    private JLabel direccionlbl2;
-    private JLabel direccionlbl3;
-    private JLabel direccionlbl4;
+
+    private JLabel iconoContact1;
+    private JLabel iconoDir1;
+    private JLabel iconoBuild1;
+    private JLabel iconoContact2;
+    private JLabel iconoContact4;
+    private JLabel iconoContact3;
+    private JLabel iconoBuild2;
+    private JLabel iconoBuild3;
+    private JLabel iconoBuild4;
+    private JLabel iconoDir2;
+    private JLabel iconoDir3;
+    private JLabel iconoDir4;
 
     private JFrame frameVentanaPrincipal;
     private int bbdd = 1;
 
     // TODO los listeners dentro del constructor vacío de la ventana
     public ventanaPrincipal() {
-
+        informacion.setVisible(false);
         //informacion.setVisible(false);
         cargarImagenes();
 
@@ -65,10 +70,14 @@ public class ventanaPrincipal {
         infoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (informacion.isVisible())
+                if (informacion.isVisible()) {
                     informacion.setVisible(false);
-                else
+                    frameVentanaPrincipal.pack();
+                }
+                else {
                     informacion.setVisible(true);
+                    frameVentanaPrincipal.pack();
+                }
             }
         });
 
@@ -76,19 +85,30 @@ public class ventanaPrincipal {
     }
 
     public void cargarImagenes() {
+
+        //AGENCIAS
         oracleButton.setIcon(new ImageIcon("Assets/oracle.png"));
         MYSQLButton.setIcon(new ImageIcon("Assets/mysql.png"));
         SQLiteButton.setIcon(new ImageIcon("Assets/sqlite.png"));
         DB4OButton.setIcon(new ImageIcon("Assets/db4o.png"));
+
+        //INFO
         infoButton.setIcon(new ImageIcon("Assets/info.png"));
-        telefonolbl.setIcon(new ImageIcon("Assets/telefono.png"));
-        telefonolbl2.setIcon(new ImageIcon("Assets/telefono.png"));
-        telefonolbl3.setIcon(new ImageIcon("Assets/telefono.png"));
-        telefonolbl4.setIcon(new ImageIcon("Assets/telefono.png"));
-        direccionlbl.setIcon(new ImageIcon("Assets/direccion.png"));
-        direccionlbl2.setIcon(new ImageIcon("Assets/direccion.png"));
-        direccionlbl3.setIcon(new ImageIcon("Assets/direccion.png"));
-        direccionlbl4.setIcon(new ImageIcon("Assets/direccion.png"));
+
+        iconoDir1.setIcon(new ImageIcon("Assets/dir.png"));
+        iconoDir2.setIcon(new ImageIcon("Assets/dir.png"));
+        iconoDir3.setIcon(new ImageIcon("Assets/dir.png"));
+        iconoDir4.setIcon(new ImageIcon("Assets/dir.png"));
+
+        iconoBuild1.setIcon(new ImageIcon("Assets/build.png"));
+        iconoBuild2.setIcon(new ImageIcon("Assets/build.png"));
+        iconoBuild3.setIcon(new ImageIcon("Assets/build.png"));
+        iconoBuild4.setIcon(new ImageIcon("Assets/build.png"));
+
+        iconoContact1.setIcon(new ImageIcon("Assets/contact.png"));
+        iconoContact2.setIcon(new ImageIcon("Assets/contact.png"));
+        iconoContact3.setIcon(new ImageIcon("Assets/contact.png"));
+        iconoContact4.setIcon(new ImageIcon("Assets/contact.png"));
     }
 
     public void abrirVentanaLogin() {

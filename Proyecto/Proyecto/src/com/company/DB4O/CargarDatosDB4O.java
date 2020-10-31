@@ -182,6 +182,30 @@ public class CargarDatosDB4O {
         return visitas;
     }
 
+    public ArrayList<VisitaCliente> cargarVisitasCliente(Cliente cli) {
+        ArrayList<VisitaCliente> visitasClientes = new ArrayList<>();
+
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            try {
+                VisitaCliente visCliQuery = new VisitaCliente(cli);
+                ObjectSet<VisitaCliente> resultadoVisCli = bd.queryByExample(visCliQuery);
+
+                if (resultadoVisCli.size() == 0) {
+                    System.out.println("El cliente no ha participado en ninguna visita");
+                }
+                while (resultadoVisCli.hasNext()) {
+                    VisitaCliente visCli = resultadoVisCli.next();
+                    visitasClientes.add(visCli);
+                }
+            } catch (Db4oException ex) {
+                System.out.println("Error al cargar las visitas de los clientes");
+            }
+            bd.close();
+        }
+        return visitasClientes;
+    }
+
     /**
      * Método que devuelve todas las visitas de los clientes
      *
@@ -211,6 +235,23 @@ public class CargarDatosDB4O {
         return visitasClientes;
     }
 
+    public int numClientesApuntadosAVisita(Visita vis) {
+        int numClientes = 0;
+
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        if (bd != null) {
+            try {
+                VisitaCliente visCliQuery = new VisitaCliente(vis);
+                ObjectSet<VisitaCliente> resultadoVisCli = bd.queryByExample(visCliQuery);
+                while (resultadoVisCli.hasNext()) {
+                    numClientes++;
+                }
+            } catch (Db4oException ignored) { }
+            bd.close();
+        }
+
+        return numClientes;
+    }
 
     public int cargarNumClientesApuntadosAVisitaDelEmpleado(Visita v) {
         int numClientes = 0;

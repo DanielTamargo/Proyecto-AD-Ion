@@ -11,6 +11,25 @@ public class Varios {
 
     public static void main(String[] args) {
 
+        ArrayList<String> test1 = new ArrayList<>();
+        test1.add("Hola"); test1.add("Bien"); test1.add("Mal"); test1.add("Genial"); test1.add("Adiós");
+        ArrayList<String> test2 = new ArrayList<>();
+        test2.add("AAAA"); test2.add("BBBB"); test2.add("Mal"); test2.add("CCCC"); test2.add("DDDD");
+
+        for (String s1: test1) {
+            System.out.println(s1);
+            for (String s2: test2) {
+                if (s1.equalsIgnoreCase(s2)) {
+                    System.out.println("Coincide -> " + s2);
+                    break;
+                }
+                System.out.println(s2);
+            }
+            System.out.println();
+        }
+
+
+        /*
         ArrayList<Visita> visitas = new CargarDatos().cargarVisitas(1);
         for (Visita v: visitas)
             System.out.println(v);
@@ -21,7 +40,7 @@ public class Varios {
 
         for (Visita v: visitas)
             System.out.println(v);
-
+        */
 
         /*
         LocalDateTime antes = LocalDateTime.now();

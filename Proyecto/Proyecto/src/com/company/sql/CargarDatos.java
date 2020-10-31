@@ -531,7 +531,7 @@ public class CargarDatos {
     }
 
 
-    public int numClientesApuntadosAVisitaDelEmpleado(int bbdd, int cod) {
+    public int numClientesApuntadosAVisita(int bbdd, int cod) {
         int numClientes = 0;
         Connection conexion = realizarConexion(bbdd);
         if (conexion != null) {

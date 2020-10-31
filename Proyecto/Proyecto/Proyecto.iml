@@ -19,15 +19,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../Recursos/db4o-8.0.276.16149-all-java5.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/../Recursos/sqlite/sqlite-jdbc-3.7.2.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -40,6 +31,15 @@
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../Recursos/ojdbc10-full/ojdbc10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../Recursos/db4o-8.0.276.16149-all-java5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
