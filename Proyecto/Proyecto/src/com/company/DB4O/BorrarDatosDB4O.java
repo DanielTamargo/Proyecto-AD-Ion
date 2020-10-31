@@ -153,6 +153,46 @@ public class BorrarDatosDB4O {
         mostrarJOPtionPane(titulo, mensaje, tipo);
     }
 
+    /**
+     * Elimina el registro de un empleado en una visita (cancela el registro)
+     *
+     * @param cliente <- cliente apuntado que va a cancelar el registro
+     * @param visita <- visita de la que se desapunta el cliente
+     */
+    public void borrarVisitaCliente(Cliente cliente, Visita visita) {
+        ObjectContainer bd = new ConexionDB4O().conectarBD();
+        String titulo = "Registro cancelado";
+        String mensaje = "Registro cancelado con éxito.";
+        int tipo = 1;
+        boolean error = false;
+        if (bd != null) {
+            try {
+                VisitaCliente visCliQuery = new VisitaCliente(cliente, visita); // Buscamos por la clave primaria única
+                ObjectSet<VisitaCliente> result = bd.queryByExample(visCliQuery);
+
+                if (result.size() > 0) {
+                    while (result.hasNext()) {
+                        VisitaCliente vc = result.next();
+                        bd.delete(vc);
+                    }
+                } else
+                    error = true;
+                bd.close();
+            } catch (Db4oException ignored) {
+                error = true;
+            }
+        } else
+            error = true;
+
+        if (error) {
+            titulo = "Error";
+            mensaje = "Error al cancelar el registro.";
+            tipo = 0;
+        }
+
+        mostrarJOPtionPane(titulo, mensaje, tipo);
+    }
+
 
     /**
      * Elimina las visitas organizadas por un empleado

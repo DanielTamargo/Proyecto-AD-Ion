@@ -163,6 +163,34 @@ public class BorrarDatos {
         }
     }
 
+    public void borrarVisitaCliente(int bbdd, String dniCliente, int codVisita) {
+        boolean eliminado = true;
+        Connection conexion = realizarConexion(bbdd);
+        if (conexion != null) {
+            try {
+                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                if (sentencia.executeUpdate("DELETE FROM visitasclientes WHERE cliente='" + dniCliente + "' and visita=" + codVisita) <= 0)
+                    eliminado = false;
+                conexion.close();
+            } catch (SQLException throwables) {
+                eliminado = false;
+            }
+
+            String mensajeJOptionPane;
+            String tituloJOptionPane = "Error";
+            int tipoJOptionPane = 0; // 0 = error, 1 = información
+
+            if (eliminado) {
+                tituloJOptionPane = "Reserva cancelada";
+                mensajeJOptionPane = "Reserva cancelada con éxito.";
+                tipoJOptionPane = 1;
+            }
+            else
+                mensajeJOptionPane = "Error al cancelar la reserva.";
+
+            mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
+        }
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

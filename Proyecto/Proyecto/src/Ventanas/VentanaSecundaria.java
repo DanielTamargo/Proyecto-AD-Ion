@@ -2,7 +2,9 @@ package Ventanas;
 
 import com.company.DB4O.BorrarDatosDB4O;
 import com.company.DB4O.CargarDatosDB4O;
+import com.company.DB4O.InsertarDatosBaseDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
+import com.company.HiloCloud;
 import com.company.Modelo.*;
 import com.company.sql.BorrarDatos;
 import com.company.sql.CargarDatos;
@@ -14,6 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -88,6 +91,7 @@ public class VentanaSecundaria {
     private JTextField t_guiaVisANYO;
     private JTextField t_guiaVisGUIA;
     private JTextField t_cliVisNOMBRE;
+    private JPanel panelAdmin;
 
     // GENERALES
     private int bbdd = 1;
@@ -115,6 +119,13 @@ public class VentanaSecundaria {
 
     // CLIENTE
     private boolean clienteTodasVisitas = true;
+
+    // ADMIN
+    private JLabel l_fondoCloud;
+    private JLabel l_gananciasAnualesText;
+    private JLabel l_gananciasAnualesCifra;
+    private JButton b_adminMetadatos;
+    private JButton b_adminRegistros;
 
     public VentanaSecundaria() {
         cargarImagenes();
@@ -247,6 +258,9 @@ public class VentanaSecundaria {
                 b_guiaVisEditar.setText("Añadir");
                 b_guiaVisEditar.setIcon(new ImageIcon("assets/save.png"));
                 listVisitasEmp.setEnabled(false);
+
+                b_guiaVisEditar.setEnabled(true);
+                b_guiaVisEliminar.setEnabled(true);
             }
         });
         listVisitasEmp.addListSelectionListener(new ListSelectionListener() {
@@ -264,12 +278,42 @@ public class VentanaSecundaria {
             }
         });
 
-
         // LISTENERS TAB CLIENTE
         b_cliMisVisitas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (clienteTodasVisitas) {
+                    clienteTodasVisitas = false;
+                    b_cliMisVisitas.setText("Todas visitas");
+                    b_cliReservar.setText("Cancelar reserva");
+                } else {
+                    clienteTodasVisitas = true;
+                    b_cliMisVisitas.setText("Mis visitas");
+                    b_cliReservar.setText("Realizar reserva");
+                }
 
+                actualizarListaCliente();
+                vaciarDatosClienteVisita();
+
+                try {
+                    listVisitasCli.setSelectedIndex(0);
+                } catch (NullPointerException ignored) { }
+
+            }
+        });
+        b_cliReservar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (cliente == null) {
+                    mostrarJOPtionPane("Imposible reservar" , "¡Un administrador no puede apuntarse" +
+                            " a una visita!", 0);
+                } else {
+                    if (b_cliReservar.getText().equalsIgnoreCase("Cancelar reserva")) {
+                        eliminarPresionado(3);
+                    } else {
+                        insertarCliVisita();
+                    }
+                }
             }
         });
         listVisitasCli.addListSelectionListener(new ListSelectionListener() {
@@ -280,8 +324,71 @@ public class VentanaSecundaria {
         });
 
 
+        // TAB ADMIN
+        panelAdmin.setLayout(null);
+        Dimension dim = new Dimension();
 
-        // LISTENERS TAB ADMIN
+        l_gananciasAnualesText = new JLabel("Ganancias anuales totales:");
+        dim.setSize(250, 50);
+        l_gananciasAnualesText.setFont(new Font("Microsoft Yahei UI", Font.PLAIN, 16));
+        l_gananciasAnualesText.setHorizontalAlignment(JLabel.RIGHT);
+        l_gananciasAnualesText.setPreferredSize(dim);
+        l_gananciasAnualesText.setMinimumSize(dim);
+        l_gananciasAnualesText.setMaximumSize(dim);
+        l_gananciasAnualesText.setBounds(450, 50, dim.width, dim.height);
+        panelAdmin.add(l_gananciasAnualesText);
+
+        l_gananciasAnualesCifra = new JLabel("470.5"); //TODO CALCULAR GANANCIAS ANUALES REALES
+        dim.setSize(250, 50);
+        l_gananciasAnualesCifra.setFont(new Font("Microsoft Yahei UI", Font.BOLD, 24));
+        l_gananciasAnualesCifra.setHorizontalAlignment(JLabel.RIGHT);
+        l_gananciasAnualesCifra.setPreferredSize(dim);
+        l_gananciasAnualesCifra.setMinimumSize(dim);
+        l_gananciasAnualesCifra.setMaximumSize(dim);
+        l_gananciasAnualesCifra.setBounds(450, 80, dim.width, dim.height);
+        panelAdmin.add(l_gananciasAnualesCifra);
+
+        JLabel l_opcionesDev = new JLabel("Opciones especiales desarrollador");
+        dim.setSize(250, 50);
+        l_opcionesDev.setFont(new Font("Microsoft Yahei UI", Font.PLAIN, 14));
+        l_opcionesDev.setHorizontalAlignment(JLabel.RIGHT);
+        l_opcionesDev.setPreferredSize(dim);
+        l_opcionesDev.setMinimumSize(dim);
+        l_opcionesDev.setMaximumSize(dim);
+        l_opcionesDev.setBounds(450, 280, dim.width, dim.height);
+        panelAdmin.add(l_opcionesDev);
+
+        b_adminRegistros = new JButton("Registros");
+        dim.setSize(150, 50);
+        b_adminRegistros.setFont(new Font("Microsoft Yahei UI", Font.BOLD, 14));
+        b_adminRegistros.setPreferredSize(dim);
+        b_adminRegistros.setMaximumSize(dim);
+        b_adminRegistros.setMinimumSize(dim);
+        b_adminRegistros.setBounds(550, 340, dim.width, dim.height);
+        b_adminRegistros.setFocusPainted(false);
+        panelAdmin.add(b_adminRegistros);
+
+        b_adminMetadatos = new JButton("Metadatos");
+        dim.setSize(150, 50);
+        b_adminMetadatos.setFont(new Font("Microsoft Yahei UI", Font.BOLD, 14));
+        b_adminMetadatos.setPreferredSize(dim);
+        b_adminMetadatos.setMaximumSize(dim);
+        b_adminMetadatos.setMinimumSize(dim);
+        b_adminMetadatos.setFocusPainted(false);
+        b_adminMetadatos.setBounds(550, 410, dim.width, dim.height);
+        panelAdmin.add(b_adminMetadatos);
+
+        l_fondoCloud = new JLabel("");
+        l_fondoCloud.setIcon(new ImageIcon("Assets/cloud1.png"));
+        panelAdmin.add(l_fondoCloud);
+        dim.setSize(300, 450);
+        l_fondoCloud.setPreferredSize(dim);
+        l_fondoCloud.setMinimumSize(dim);
+        l_fondoCloud.setMaximumSize(dim);
+        l_fondoCloud.setBounds(30, 55, dim.width, dim.height);
+
+        HiloCloud hiloCloud = new HiloCloud(l_fondoCloud);
+        hiloCloud.start();
 
 
 
@@ -293,6 +400,7 @@ public class VentanaSecundaria {
         cargarListas();
         actualizarListas();
         actualizarDatosEmpleado();
+        actualizarListaCliente();
     }
 
     public void cargarListas() {
@@ -391,9 +499,17 @@ public class VentanaSecundaria {
         JButton eliminarButton = new JButton("Eliminar");
         noButton.setFocusPainted(false);
         Object[] options = {noButton, eliminarButton};
+
+        String titulo = "Eliminando datos";
+        String mensaje = "Una vez eliminados los datos no podrán recuperarse.";
+        if (tipo == 3) {
+            mensaje = "Si cancelas la reserva podrás volver a reservar mientras\nsiga habiendo plazas libres";
+            titulo = "Cancelando reserva";
+        }
+
         final JOptionPane pane = new JOptionPane("¿Estás seguro?\n" +
-                "Una vez eliminados los datos no podrán recuperarse.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION, null, options);
-        JDialog dialog = pane.createDialog("Eliminando datos");
+               mensaje, JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION, null, options);
+        JDialog dialog = pane.createDialog(titulo);
         noButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -407,7 +523,8 @@ public class VentanaSecundaria {
                     borrarClienteEmpleado();
                 else if (tipo == 2)
                     borrarGuiaVisita();
-                //TODO if tipo == 3 borrarCliVisita()
+                else if (tipo == 3)
+                    borrarCliVisita();
                 dialog.dispose();
             }
         });
@@ -436,6 +553,54 @@ public class VentanaSecundaria {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MÉTODOS TAB CLIENTE
+
+    public void insertarCliVisita() {
+        Visita vis = null;
+        try {
+            vis = (Visita) listVisitasCli.getSelectedValue();
+        } catch (NullPointerException ignored) { }
+        if (vis != null) {
+            if (bbdd == 4) {
+                VisitaCliente visitaCliente = new VisitaCliente(cliente, vis);
+                new InsertarEditarDatosDB4O().insertarEditarVisitaCliente(visitaCliente);
+            } else {
+                new InsertarDatos().insertarVisitaCliente(bbdd, vis.getCod(), cliente.getDni());
+            }
+
+            registroCliente("Realizado reserva a visita " + vis.getCod());
+            actualizarListaCliente();
+
+        } else {
+            String tituloJOptionPane = "Error";
+            int tipoJOptionPane = 0;
+            String mensajeJOptionPane = "Error al realizar la reserva.";
+            mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
+        }
+    }
+
+    public void borrarCliVisita() {
+        Visita vis = null;
+        try {
+            vis = (Visita) listVisitasCli.getSelectedValue();
+        } catch (NullPointerException ignored) { }
+        if (vis != null) {
+
+            if (bbdd == 4) {
+                new BorrarDatosDB4O().borrarVisitaCliente(cliente, vis);
+            } else {
+                new BorrarDatos().borrarVisitaCliente(bbdd, cliente.getDni(), vis.getCod());
+            }
+
+            registroCliente("Cancelado reserva a visita " + vis.getCod());
+            actualizarListaCliente();
+
+        } else {
+            String tituloJOptionPane = "Error";
+            int tipoJOptionPane = 0;
+            String mensajeJOptionPane = "Error al cancelar la reserva.";
+            mostrarJOPtionPane(tituloJOptionPane, mensajeJOptionPane, tipoJOptionPane);
+        }
+    }
 
     public void vaciarDatosClienteVisita() {
         // TODO vaciar cuando se apunte a una visita (por si se ha apuntado a todas las disponibles
@@ -478,8 +643,10 @@ public class VentanaSecundaria {
             }
             int plazasLibres = totalPlazas - plazasOcupadas;
             t_cliVisPLAZAS.setText(String.valueOf(plazasLibres));
-
-            if (plazasLibres <= 0) {
+            
+            if (clienteTodasVisitas && plazasLibres <= 0) {
+                b_cliReservar.setEnabled(false);
+            } else if (!clienteTodasVisitas && visita.getFecha().isBefore(LocalDateTime.now())) {
                 b_cliReservar.setEnabled(false);
             }
 
@@ -493,44 +660,78 @@ public class VentanaSecundaria {
             t_cliVisTEMATICA.setText(visita.getTematica());
             t_cliVisCOSTE.setText(String.valueOf(visita.getCoste()));
 
+        } else {
+            b_cliReservar.setEnabled(false);
+            vaciarDatosClienteVisita();
         }
     }
 
     public void actualizarListaClienteTodasVisitas() {
-        todasVisitasSize = 0;
         DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
-        for (Visita v: visitas) {
-            if (v.getFecha().isAfter(LocalDateTime.now())) {
-                modeloVisCli.addElement(v);
-                todasVisitasSize++;
+        try {
+            if (bbdd == 4) {
+                ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasCliente(cliente);
+                boolean reservada;
+                for (Visita vis : visitas) {
+                    reservada = false;
+                    for (VisitaCliente visCli : visitasClientes) {
+                        if (vis.getCod() == visCli.getVisita().getCod()) {
+                            reservada = true;
+                            break;
+                        }
+                    }
+                    if (!reservada && vis.getFecha().isAfter(LocalDateTime.now())) {
+                        modeloVisCli.addElement(vis);
+                    }
+                }
+            } else {
+                ArrayList<Visita> visitasCliente = new CargarDatos().cargarVisitasCliente(bbdd, cliente.getDni());
+                boolean reservada;
+                for (Visita vis : visitas) {
+                    reservada = false;
+                    for (Visita visCli : visitasCliente) {
+                        if (vis.getCod() == visCli.getCod()) {
+                            reservada = true;
+                            break;
+                        }
+                    }
+                    if (!reservada && vis.getFecha().isAfter(LocalDateTime.now())) {
+                        modeloVisCli.addElement(vis);
+                    }
+                }
+            }
+        } catch (NullPointerException ex) {
+            for (Visita vis : visitas) {
+                modeloVisCli.addElement(vis);
             }
         }
         listVisitasCli.setModel(modeloVisCli);
     }
 
     public void actualizarListaClienteMisVisitas() {
-        misVisitasSize = 0;
         DefaultListModel<Visita> modeloVisCli = new DefaultListModel<>();
-
         ArrayList<Visita> visitasCliente = new ArrayList<>();
-
-        if (bbdd == 4) {
-            ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasCliente(cliente);
-            for (Visita vis: visitas) {
-                for (VisitaCliente visCli: visitasClientes) {
-                    if (vis.getCod() == visCli.getVisita().getCod()) {
-                        visitasCliente.add(vis);
-                        break;
+        try {
+            if (bbdd == 4) {
+                ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasCliente(cliente);
+                for (Visita vis : visitas) {
+                    for (VisitaCliente visCli : visitasClientes) {
+                        if (vis.getCod() == visCli.getVisita().getCod()) {
+                            visitasCliente.add(vis);
+                            break;
+                        }
                     }
                 }
+
+            } else {
+                visitasCliente = new CargarDatos().cargarVisitasCliente(bbdd, cliente.getDni());
             }
 
-        } else {
-            visitasCliente = new CargarDatos().cargarVisitasCliente(bbdd, cliente.getDni());
-        }
+            for (Visita v : visitasCliente) {
+                modeloVisCli.addElement(v);
+            }
+        } catch (NullPointerException ex) {
 
-        for (Visita v: visitasCliente) {
-            modeloVisCli.addElement(v);
         }
         listVisitasCli.setModel(modeloVisCli);
     }
@@ -573,6 +774,15 @@ public class VentanaSecundaria {
             t_guiaVisDUREST.setText(String.valueOf(visita.getDuracionEstimada()));
             t_guiaVisTEMATICA.setText(visita.getTematica());
             t_guiaVisCOSTE.setText(String.valueOf(visita.getCoste()));
+
+            if (visita.getGuia().getDni().equalsIgnoreCase(empleado.getDni())
+                    || empleado.getCargo().equalsIgnoreCase("Administrador")) {
+                b_guiaVisEditar.setEnabled(true);
+                b_guiaVisEliminar.setEnabled(true);
+            } else {
+                b_guiaVisEditar.setEnabled(false);
+                b_guiaVisEliminar.setEnabled(false);
+            }
         }
     }
 

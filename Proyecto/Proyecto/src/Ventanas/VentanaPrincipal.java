@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ventanaPrincipal {
+public class VentanaPrincipal {
     private JButton oracleButton;
     private JButton DB4OButton;
     private JButton MYSQLButton;
@@ -30,7 +30,7 @@ public class ventanaPrincipal {
     private int bbdd = 1;
 
     // TODO los listeners dentro del constructor vacío de la ventana
-    public ventanaPrincipal() {
+    public VentanaPrincipal() {
         informacion.setVisible(false);
         //informacion.setVisible(false);
         cargarImagenes();
@@ -131,7 +131,7 @@ public class ventanaPrincipal {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new ventanaPrincipal().VentanaPrincipal);
+        frame.setContentPane(new VentanaPrincipal().VentanaPrincipal);
         frame.pack();
         frame.setVisible(true);
     }
