@@ -73,10 +73,12 @@ public class ventanaPrincipal {
                 if (informacion.isVisible()) {
                     informacion.setVisible(false);
                     frameVentanaPrincipal.pack();
+                    //frameVentanaPrincipal.setLocationRelativeTo(null);
                 }
                 else {
                     informacion.setVisible(true);
                     frameVentanaPrincipal.pack();
+                    //frameVentanaPrincipal.setLocationRelativeTo(null);
                 }
             }
         });
