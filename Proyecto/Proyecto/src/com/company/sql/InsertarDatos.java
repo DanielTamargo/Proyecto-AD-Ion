@@ -271,8 +271,8 @@ public class InsertarDatos {
                     sql = "INSERT INTO registrosempleados" +
                             "(empleado, fecha, registro) " +
                             "VALUES('" + dni + "', TO_DATE('" +
-                            fecha.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
-                            "', 'yyyy/mm/dd'), '" + registro + "')";
+                            fecha.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")) +
+                            "', 'yyyy/mm/dd hh24:mi:ss'), '" + registro + "')";
                 } else {
                     sql = "INSERT INTO registrosempleados" +
                             "(empleado, fecha, registro) " +
@@ -315,8 +315,8 @@ public class InsertarDatos {
                     sql = "INSERT INTO registrosclientes" +
                             "(cliente, fecha, registro) " +
                             "VALUES('" + dni + "', TO_DATE('" +
-                            fecha.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
-                            "', 'yyyy/mm/dd'), '" + registro + "')";
+                            fecha.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")) +
+                            "', 'yyyy/mm/dd hh24:mi:ss'), '" + registro + "')";
                 } else {
                     sql = "INSERT INTO registrosclientes" +
                             "(cliente, fecha, registro) " +

@@ -94,7 +94,6 @@ public class CargarDatos {
             fechaStr += " 19:30:00";
         else
             fechaStr += " 18:30:00";
-        System.out.println(fechaStr);
         try {
             fecha = LocalDateTime.parse(fechaStr, formatter);
         } catch (Exception e) {
@@ -619,8 +618,13 @@ public class CargarDatos {
                 ResultSet r = sentencia.executeQuery("SELECT * FROM registrosEmpleados ORDER BY fecha DESC"); // Ejecutamos la sentencia
                 while (r.next()) { // Recorremos los datos
                     datos = true;
-                    // cod int, empleado (dni) string, fecha date, registro string
-                    LocalDateTime fecha = stringToLocalDateTime(r.getString(3));
+
+                    LocalDateTime fecha = null;
+                    if (bbdd != 3)
+                        fecha = stringToLocalDateTime(r.getString(3));
+                    else
+                        fecha = oracleStringToLocalDateTime(r.getString(3));
+
                     String fechaStr = localDateTimeToString(fecha);
 
                     System.out.format("%5d, %s | %s | %s\n", r.getInt(1), fechaStr, r.getString(2), r.getString(4));
