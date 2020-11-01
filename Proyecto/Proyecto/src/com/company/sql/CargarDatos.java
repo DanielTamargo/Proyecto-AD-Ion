@@ -1,8 +1,6 @@
 package com.company.sql;
 
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
+import com.company.modelo.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -608,7 +606,8 @@ public class CargarDatos {
     ///////// REGISTROS
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void mostrarRegistrosEmpleados(int bbdd) {
+    public ArrayList<RegistroEmpleado> cargarRegistrosEmpleados(int bbdd) {
+        ArrayList<RegistroEmpleado> registrosEmpleados = new ArrayList<>();
         Connection conexion = realizarConexion(bbdd);
         boolean datos = false;
 
@@ -625,7 +624,9 @@ public class CargarDatos {
                     String fechaStr = localDateTimeToString(fecha);
 
                     System.out.format("%5d, %s | %s | %s\n", r.getInt(1), fechaStr, r.getString(2), r.getString(4));
-
+                    Empleado emp = cargarEmpleado(bbdd, conexion, r.getString(2));
+                    RegistroEmpleado regEmp = new RegistroEmpleado(r.getInt(1), emp, fecha, r.getString(4));
+                    registrosEmpleados.add(regEmp);
                 }
                 r.close(); // Cerrar ResultSet
                 sentencia.close();// Cerrar Statement
@@ -638,9 +639,11 @@ public class CargarDatos {
                 System.out.println("Error al cargar los registros de los empleados");
             }
         }
+        return registrosEmpleados;
     }
 
-    public void mostrarRegistrosClientes(int bbdd) {
+    public ArrayList<RegistroCliente> cargarRegistrosClientes(int bbdd) {
+        ArrayList<RegistroCliente> registrosClientes = new ArrayList<>();
         Connection conexion = realizarConexion(bbdd);
         boolean datos = false;
 
@@ -657,7 +660,9 @@ public class CargarDatos {
                     String fechaStr = localDateTimeToString(fecha);
 
                     System.out.format("%5d, %s | %s | %s\n", r.getInt(1), fechaStr, r.getString(2), r.getString(4));
-
+                    Cliente cli = cargarCliente(conexion, r.getString(2));
+                    RegistroCliente regCli = new RegistroCliente(r.getInt(1), cli, fecha, r.getString(4));
+                    registrosClientes.add(regCli);
                 }
                 r.close(); // Cerrar ResultSet
                 sentencia.close();// Cerrar Statement
@@ -670,6 +675,7 @@ public class CargarDatos {
                 System.out.println("Error al cargar los registros de los clientes");
             }
         }
+        return registrosClientes;
     }
 
 

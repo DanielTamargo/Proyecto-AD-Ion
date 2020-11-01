@@ -1,6 +1,6 @@
 package com.company.DB4O;
 
-import com.company.Modelo.*;
+import com.company.modelo.*;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oException;

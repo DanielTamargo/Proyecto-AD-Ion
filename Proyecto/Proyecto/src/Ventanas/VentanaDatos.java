@@ -1,6 +1,6 @@
 package Ventanas;
 
-import com.company.Metadatos;
+import com.company.varios.Metadatos;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

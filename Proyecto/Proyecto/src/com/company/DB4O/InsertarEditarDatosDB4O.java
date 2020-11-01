@@ -1,6 +1,6 @@
 package com.company.DB4O;
 
-import com.company.Modelo.*;
+import com.company.modelo.*;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oException;
@@ -184,20 +184,19 @@ public class InsertarEditarDatosDB4O {
         boolean error = false;
 
         if (bd != null) {
-            VisitaCliente visQuery = new VisitaCliente(visitaCliente.getVisita());
+            Visita visQuery = new Visita(visitaCliente.getVisita().getCod());
+            Cliente cliQuery = new Cliente(visitaCliente.getCliente().getDni());
             try {
-                ObjectSet<VisitaCliente> result = bd.queryByExample(visQuery);
+                ObjectSet<Visita> result = bd.queryByExample(visQuery);
+                ObjectSet<Cliente> result2 = bd.queryByExample(cliQuery);
 
-                if (result.size() == 0) {
-                    bd.store(visitaCliente);
+                if (result.size() >= 1 && result2.size() >= 1) {
+                    Visita visita = result.next();
+                    Cliente cliente = result2.next();
+                    VisitaCliente vc = new VisitaCliente(cliente, visita);
+                    bd.store(vc);
                     titulo = "VisitaCliente insertada";
                     mensaje = "Cliente apuntado a la visita con éxito.";
-                } else {
-                    VisitaCliente existe = result.next();
-                    existe.cambiarDatosDB4O(visitaCliente);
-                    bd.store(existe);
-                    titulo = "VisitaCliente editada";
-                    mensaje = "Visita del cliente editada con éxito.";
                 }
                 tipo = 1;
 
@@ -217,50 +216,56 @@ public class InsertarEditarDatosDB4O {
         mostrarJOPtionPane(titulo, mensaje, tipo);
     }
 
-
+    /**
+     * Método que genera un registro de un empleado
+     *
+     * @param registroEmpleado <- registro a guardar
+     */
     public void insertarEditarRegistroEmpleado(RegistroEmpleado registroEmpleado) {
         ObjectContainer bd = new ConexionDB4O().conectarBD();
-
+        Empleado empleado = null;
         if (bd != null) {
-            RegistroEmpleado regQuery = new RegistroEmpleado(registroEmpleado.getCod());
+            Empleado empQuery = new Empleado(registroEmpleado.getEmpleado().getDni());
             try {
-                ObjectSet<RegistroEmpleado> result = bd.queryByExample(regQuery);
-
-                if (result.size() == 0) {
-                    bd.store(registroEmpleado);
+                ObjectSet<Empleado> result = bd.queryByExample(empQuery);
+                if (result.size() >= 1) {
+                    empleado = result.next();
+                    RegistroEmpleado re = new RegistroEmpleado(registroEmpleado.getCod(), empleado, registroEmpleado.getFecha(), registroEmpleado.getRegistro());
+                    bd.store(re);
                     System.out.println("Registro creado:" +
                             "\n\tEmpleado '" + registroEmpleado.getEmpleado().getDni() + "' a las " +
                             registroEmpleado.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
                             "\n\t" + registroEmpleado.getRegistro() + "\n");
-                } else {
-                    RegistroEmpleado existe = result.next();
-                    existe.setRegistro(registroEmpleado.getRegistro());
-                    bd.store(existe);
                 }
-
             } catch (Db4oException ignored) { }
+
             bd.close();
         }
     }
 
+    /**
+     * Método que genera un registro de un cliente
+     *
+     * @param registroCliente <- registro a guardar
+     */
     public void insertarEditarRegistroCliente(RegistroCliente registroCliente) {
         ObjectContainer bd = new ConexionDB4O().conectarBD();
-
+        Cliente cliente = null;
         if (bd != null) {
-            RegistroCliente regQuery = new RegistroCliente(registroCliente.getCod());
+            Cliente empQuery = new Cliente(registroCliente.getCliente().getDni());
             try {
-                ObjectSet<RegistroCliente> result = bd.queryByExample(regQuery);
-
-                if (result.size() == 0) {
-                    bd.store(registroCliente);
-                    System.out.println("Registro creado: " + registroCliente);
-                } else {
-                    RegistroCliente existe = result.next();
-                    existe.setRegistro(registroCliente.getRegistro());
-                    bd.store(existe);
+                ObjectSet<Cliente> result = bd.queryByExample(empQuery);
+                if (result.size() >= 1) {
+                    cliente = result.next();
+                    RegistroCliente re = new RegistroCliente(registroCliente.getCod(), cliente, registroCliente.getFecha(), registroCliente.getRegistro());
+                    bd.store(re);
+                    System.out.println("Registro creado:" +
+                            "\n\tCliente '" + registroCliente.getCliente().getDni() + "' a las " +
+                            registroCliente.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +
+                            "\n\t" + registroCliente.getRegistro() + "\n");
                 }
-
             } catch (Db4oException ignored) { }
+
             bd.close();
         }
     }

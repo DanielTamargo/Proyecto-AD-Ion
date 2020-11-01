@@ -1,14 +1,12 @@
 package com.company.DB4O;
 
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
-import com.company.Modelo.VisitaCliente;
-import com.db4o.Db4oEmbedded;
+import com.company.modelo.Cliente;
+import com.company.modelo.Empleado;
+import com.company.modelo.Visita;
+import com.company.modelo.VisitaCliente;
 import com.db4o.ObjectContainer;
 
 import java.util.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

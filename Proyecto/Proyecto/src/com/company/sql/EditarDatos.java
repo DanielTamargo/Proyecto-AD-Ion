@@ -1,8 +1,8 @@
 package com.company.sql;
 
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
+import com.company.modelo.Cliente;
+import com.company.modelo.Empleado;
+import com.company.modelo.Visita;
 
 import javax.swing.*;
 import java.sql.Connection;

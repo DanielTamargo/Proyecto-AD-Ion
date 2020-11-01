@@ -1,6 +1,6 @@
 package com.company.DB4O;
 
-import com.company.Modelo.*;
+import com.company.modelo.*;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.ext.Db4oException;
@@ -283,7 +283,8 @@ public class CargarDatosDB4O {
 
         for (Cliente cliente : clientes) {
             for (VisitaCliente visitaCliente : visitaClientes) {
-                if (cliente.getDni().equalsIgnoreCase(visitaCliente.getCliente().getDni())) {
+                if (cliente.getDni().equalsIgnoreCase(visitaCliente.getCliente().getDni())
+                        && visitaCliente.getVisita().getCod() == v.getCod()) {
                     clientesApuntados.add(cliente);
                     break;
                 }

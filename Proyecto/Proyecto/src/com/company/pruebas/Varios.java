@@ -1,14 +1,9 @@
 package com.company.pruebas;
 
 import Ventanas.VentanaDatos;
-import com.company.Metadatos;
-import com.company.Modelo.Visita;
-import com.company.sql.CargarDatos;
+import com.company.varios.Metadatos;
 
 import javax.swing.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Varios {
 

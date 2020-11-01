@@ -4,10 +4,10 @@ import com.company.DB4O.BorrarDatosDB4O;
 import com.company.DB4O.CargarDatosDB4O;
 import com.company.DB4O.InsertarDatosBaseDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
-import com.company.Modelo.VisitaCliente;
+import com.company.modelo.Cliente;
+import com.company.modelo.Empleado;
+import com.company.modelo.Visita;
+import com.company.modelo.VisitaCliente;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,13 +16,13 @@ import java.util.Date;
 public class DB4Opruebas {
 
     public static void main(String[] args) {
-
+/*
         ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasClientes();
         for (VisitaCliente visitaCliente : visitasClientes) {
             System.out.println(visitaCliente);
         }
-
-        //new InsertarDatosBaseDB4O().insertarDatosBase();
+*/
+        new InsertarDatosBaseDB4O().insertarDatosBase();
 
         /*
         ArrayList<Cliente> clientes = new CargarDatosDB4O().cargarClientes();

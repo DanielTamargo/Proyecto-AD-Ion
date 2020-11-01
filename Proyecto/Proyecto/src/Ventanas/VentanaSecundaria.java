@@ -3,9 +3,9 @@ package Ventanas;
 import com.company.DB4O.BorrarDatosDB4O;
 import com.company.DB4O.CargarDatosDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
-import com.company.HiloCloud;
-import com.company.Metadatos;
-import com.company.Modelo.*;
+import com.company.varios.HiloCloud;
+import com.company.varios.Metadatos;
+import com.company.modelo.*;
 import com.company.sql.BorrarDatos;
 import com.company.sql.CargarDatos;
 import com.company.sql.EditarDatos;
@@ -93,6 +93,12 @@ public class VentanaSecundaria {
     private JTextField t_cliVisNOMBRE;
     private JPanel panelAdmin;
     private JButton b_guiaVisClientes;
+    private JButton b_logout2;
+    private JLabel l_nombreUsuario2;
+    private JLabel l_nombreUsuario1;
+    private JLabel l_nombreUsuario3;
+    private JButton b_logout1;
+    private JButton b_logout3;
 
     // GENERALES
     private int bbdd = 1;
@@ -127,6 +133,8 @@ public class VentanaSecundaria {
     private JLabel l_gananciasAnualesCifra;
     private JButton b_adminMetadatos;
     private JButton b_adminRegistros;
+    private JLabel l_nombreUsuario4;
+    private JButton b_logout4;
 
     public VentanaSecundaria() {
         cargarImagenes();
@@ -363,18 +371,38 @@ public class VentanaSecundaria {
         l_gananciasAnualesText.setPreferredSize(dim);
         l_gananciasAnualesText.setMinimumSize(dim);
         l_gananciasAnualesText.setMaximumSize(dim);
-        l_gananciasAnualesText.setBounds(450, 50, dim.width, dim.height);
+        l_gananciasAnualesText.setBounds(450, 180, dim.width, dim.height);
         panelAdmin.add(l_gananciasAnualesText);
 
-        l_gananciasAnualesCifra = new JLabel("470.5"); //TODO CALCULAR GANANCIAS ANUALES REALES
+        l_gananciasAnualesCifra = new JLabel("470.5");
         dim.setSize(250, 50);
         l_gananciasAnualesCifra.setFont(new Font("Microsoft Yahei UI", Font.BOLD, 24));
         l_gananciasAnualesCifra.setHorizontalAlignment(JLabel.RIGHT);
         l_gananciasAnualesCifra.setPreferredSize(dim);
         l_gananciasAnualesCifra.setMinimumSize(dim);
         l_gananciasAnualesCifra.setMaximumSize(dim);
-        l_gananciasAnualesCifra.setBounds(450, 80, dim.width, dim.height);
+        l_gananciasAnualesCifra.setBounds(450, 205, dim.width, dim.height);
         panelAdmin.add(l_gananciasAnualesCifra);
+
+        l_nombreUsuario4 = new JLabel("Daniel Tamargo");
+        dim.setSize(250, 50);
+        l_nombreUsuario4.setFont(new Font("Microsoft Yahei UI", Font.PLAIN, 16));
+        l_nombreUsuario4.setHorizontalAlignment(JLabel.RIGHT);
+        l_nombreUsuario4.setPreferredSize(dim);
+        l_nombreUsuario4.setMinimumSize(dim);
+        l_nombreUsuario4.setMaximumSize(dim);
+        l_nombreUsuario4.setBounds(450, 40, dim.width, dim.height);
+        panelAdmin.add(l_nombreUsuario4);
+
+        b_logout4 = new JButton("Cerrar Sesión");
+        dim.setSize(150, 50);
+        b_logout4.setFont(new Font("Microsoft Yahei UI", Font.BOLD, 14));
+        b_logout4.setPreferredSize(dim);
+        b_logout4.setMaximumSize(dim);
+        b_logout4.setMinimumSize(dim);
+        b_logout4.setBounds(550, 80, dim.width, dim.height);
+        b_logout4.setFocusPainted(false);
+        panelAdmin.add(b_logout4);
 
         JLabel l_opcionesDev = new JLabel("Opciones especiales desarrollador");
         dim.setSize(250, 50);
@@ -383,7 +411,7 @@ public class VentanaSecundaria {
         l_opcionesDev.setPreferredSize(dim);
         l_opcionesDev.setMinimumSize(dim);
         l_opcionesDev.setMaximumSize(dim);
-        l_opcionesDev.setBounds(450, 280, dim.width, dim.height);
+        l_opcionesDev.setBounds(450, 297, dim.width, dim.height);
         panelAdmin.add(l_opcionesDev);
 
         b_adminRegistros = new JButton("Registros");
@@ -392,7 +420,7 @@ public class VentanaSecundaria {
         b_adminRegistros.setPreferredSize(dim);
         b_adminRegistros.setMaximumSize(dim);
         b_adminRegistros.setMinimumSize(dim);
-        b_adminRegistros.setBounds(550, 340, dim.width, dim.height);
+        b_adminRegistros.setBounds(550, 345, dim.width, dim.height);
         b_adminRegistros.setFocusPainted(false);
         panelAdmin.add(b_adminRegistros);
 
@@ -430,6 +458,37 @@ public class VentanaSecundaria {
                 abrirVentanaDatos(sb, "Metadatos");
             }
         });
+        b_adminRegistros.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirVentanaRegistros();
+            }
+        });
+
+        b_logout1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                volverAlInicio();
+            }
+        });
+        b_logout2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                volverAlInicio();
+            }
+        });
+        b_logout3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                volverAlInicio();
+            }
+        });
+        b_logout4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                volverAlInicio();
+            }
+        });
 
 
     }
@@ -441,6 +500,10 @@ public class VentanaSecundaria {
         actualizarListas();
         actualizarDatosEmpleado();
         actualizarListaCliente();
+
+        calcularDineroAnualTotal();
+
+        cargarNombreUsuario();
     }
 
     public void cargarListas() {
@@ -522,8 +585,46 @@ public class VentanaSecundaria {
         }
     }
 
+    public void calcularDineroAnualTotal() {
+        double dineroTotalAnual = 0;
+        for (Visita visita : visitas) {
+            if (visita.getFecha().getYear() == LocalDateTime.now().getYear()) {
+                int numClientes = 0;
+                if (bbdd == 4) {
+                    ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasClientes();
+                    for (VisitaCliente visitaCliente : visitasClientes) {
+                        if (visitaCliente.getVisita().getCod() == visita.getCod())
+                            numClientes++;
+                    }
+                } else {
+                    numClientes = new CargarDatos().numClientesApuntadosAVisita(bbdd, visita.getCod());
+                }
+                dineroTotalAnual += (visita.getCoste() * numClientes);
+            }
+        }
+        l_gananciasAnualesCifra.setText(String.valueOf(dineroTotalAnual));
+    }
+
+    public void cargarNombreUsuario() {
+        String nombreUsuario = "";
+        if (empleado != null)
+            nombreUsuario = "Bienvenido/a " + empleado.getNombre() + " " + empleado.getPrimerapellido();
+        else
+            nombreUsuario = "Bienvenido/a " + cliente.getNombre() + " " + cliente.getApellidos();
+
+        l_nombreUsuario1.setText(nombreUsuario);
+        l_nombreUsuario2.setText(nombreUsuario);
+        l_nombreUsuario3.setText(nombreUsuario);
+        l_nombreUsuario4.setText(nombreUsuario);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MÉTODOS COMUNES
+
+    public void volverAlInicio() {
+        frameVentanaSecundaria.dispose();
+        frameVentanaPrincipal.setVisible(true);
+    }
 
     public void mostrarJOPtionPane(String titulo, String mensaje, int tipo) {
         JButton okButton = new JButton("Entendido");
@@ -541,6 +642,22 @@ public class VentanaSecundaria {
         frame.setContentPane(vd.getPanel());
         vd.setVentanaDatos(frame);
         vd.setVentanaSecundaria(frameVentanaSecundaria);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        frameVentanaSecundaria.dispose();
+    }
+
+    public void abrirVentanaRegistros() {
+        JFrame frame = new JFrame("Registros");
+        VentanaRegistros vr = new VentanaRegistros();
+        frame.setContentPane(vr.getPanel());
+        vr.setBbdd(bbdd);
+        vr.setVentanaRegistros(frame);
+        vr.setVentanaSecundaria(frameVentanaSecundaria);
+        vr.actualizarDatosJTable();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);

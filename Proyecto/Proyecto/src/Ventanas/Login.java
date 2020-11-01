@@ -2,10 +2,10 @@ package Ventanas;
 
 import com.company.DB4O.CargarDatosDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.RegistroCliente;
-import com.company.Modelo.RegistroEmpleado;
+import com.company.modelo.Cliente;
+import com.company.modelo.Empleado;
+import com.company.modelo.RegistroCliente;
+import com.company.modelo.RegistroEmpleado;
 import com.company.sql.CargarDatos;
 import com.company.sql.InsertarDatos;
 
@@ -128,7 +128,7 @@ public class Login {
     }
 
     public void abrirVentanaSecundaria() {
-        JFrame frame = new JFrame("Ventana Datos");
+        JFrame frame = new JFrame("Datos");
         VentanaSecundaria vs = new VentanaSecundaria();
         frame.setContentPane(vs.getPanelSecundario());
         vs.setBbdd(bbdd);

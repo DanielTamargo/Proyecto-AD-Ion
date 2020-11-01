@@ -1,8 +1,8 @@
 package com.company.pruebas;
 
-import com.company.Modelo.Cliente;
-import com.company.Modelo.Empleado;
-import com.company.Modelo.Visita;
+import com.company.modelo.Cliente;
+import com.company.modelo.Empleado;
+import com.company.modelo.Visita;
 import com.company.sql.BorrarDatos;
 import com.company.sql.CargarDatos;
 import com.company.sql.EditarDatos;
