@@ -1,6 +1,6 @@
 package com.company;
 
-import Ventanas.VentanaPrincipal;
+import com.company.ventanas.VentanaPrincipal;
 import javax.swing.*;
 
 public class Main {

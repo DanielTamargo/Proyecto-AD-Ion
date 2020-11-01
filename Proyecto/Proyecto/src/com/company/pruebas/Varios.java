@@ -1,6 +1,6 @@
 package com.company.pruebas;
 
-import Ventanas.VentanaDatos;
+import com.company.ventanas.VentanaDatos;
 import com.company.varios.Metadatos;
 
 import javax.swing.*;

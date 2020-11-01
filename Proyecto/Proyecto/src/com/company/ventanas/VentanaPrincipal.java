@@ -1,4 +1,4 @@
-package Ventanas;
+package com.company.ventanas;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -89,28 +89,28 @@ public class VentanaPrincipal {
     public void cargarImagenes() {
 
         //AGENCIAS
-        oracleButton.setIcon(new ImageIcon("Assets/oracle.png"));
-        MYSQLButton.setIcon(new ImageIcon("Assets/mysql.png"));
-        SQLiteButton.setIcon(new ImageIcon("Assets/sqlite.png"));
-        DB4OButton.setIcon(new ImageIcon("Assets/db4o.png"));
+        oracleButton.setIcon(new ImageIcon("assets/oracle.png"));
+        MYSQLButton.setIcon(new ImageIcon("assets/mysql.png"));
+        SQLiteButton.setIcon(new ImageIcon("assets/sqlite.png"));
+        DB4OButton.setIcon(new ImageIcon("assets/db4o.png"));
 
         //INFO
-        infoButton.setIcon(new ImageIcon("Assets/info.png"));
+        infoButton.setIcon(new ImageIcon("assets/info.png"));
 
-        iconoDir1.setIcon(new ImageIcon("Assets/dir.png"));
-        iconoDir2.setIcon(new ImageIcon("Assets/dir.png"));
-        iconoDir3.setIcon(new ImageIcon("Assets/dir.png"));
-        iconoDir4.setIcon(new ImageIcon("Assets/dir.png"));
+        iconoDir1.setIcon(new ImageIcon("assets/dir.png"));
+        iconoDir2.setIcon(new ImageIcon("assets/dir.png"));
+        iconoDir3.setIcon(new ImageIcon("assets/dir.png"));
+        iconoDir4.setIcon(new ImageIcon("assets/dir.png"));
 
-        iconoBuild1.setIcon(new ImageIcon("Assets/build.png"));
-        iconoBuild2.setIcon(new ImageIcon("Assets/build.png"));
-        iconoBuild3.setIcon(new ImageIcon("Assets/build.png"));
-        iconoBuild4.setIcon(new ImageIcon("Assets/build.png"));
+        iconoBuild1.setIcon(new ImageIcon("assets/build.png"));
+        iconoBuild2.setIcon(new ImageIcon("assets/build.png"));
+        iconoBuild3.setIcon(new ImageIcon("assets/build.png"));
+        iconoBuild4.setIcon(new ImageIcon("assets/build.png"));
 
-        iconoContact1.setIcon(new ImageIcon("Assets/contact.png"));
-        iconoContact2.setIcon(new ImageIcon("Assets/contact.png"));
-        iconoContact3.setIcon(new ImageIcon("Assets/contact.png"));
-        iconoContact4.setIcon(new ImageIcon("Assets/contact.png"));
+        iconoContact1.setIcon(new ImageIcon("assets/contact.png"));
+        iconoContact2.setIcon(new ImageIcon("assets/contact.png"));
+        iconoContact3.setIcon(new ImageIcon("assets/contact.png"));
+        iconoContact4.setIcon(new ImageIcon("assets/contact.png"));
     }
 
     public void abrirVentanaLogin() {

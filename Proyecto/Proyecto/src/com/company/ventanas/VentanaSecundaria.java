@@ -1,4 +1,4 @@
-package Ventanas;
+package com.company.ventanas;
 
 import com.company.DB4O.BorrarDatosDB4O;
 import com.company.DB4O.CargarDatosDB4O;
@@ -435,7 +435,7 @@ public class VentanaSecundaria {
         panelAdmin.add(b_adminMetadatos);
 
         l_fondoCloud = new JLabel("");
-        l_fondoCloud.setIcon(new ImageIcon("Assets/cloud1.png"));
+        l_fondoCloud.setIcon(new ImageIcon("assets/cloud1.png"));
         panelAdmin.add(l_fondoCloud);
         dim.setSize(300, 450);
         l_fondoCloud.setPreferredSize(dim);
@@ -1082,15 +1082,20 @@ public class VentanaSecundaria {
                                 "Ejemplo: 7.5", 0);
                     } else {
                         Visita visita = null;
+                        Empleado guia;
+                        try {
+                            guia = visitaElegida.getGuia();
+                        } catch (NullPointerException ignored) {
+                            guia = empleado;
+                        }
                         if (bbdd == 4) {
-                            visita = new Visita(visitas.size() + 1, empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                            visita = new Visita(visitas.size() + 1, guia, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
                                     t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
                                     t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
                             new InsertarEditarDatosDB4O().insertarEditarVisita(visita);
                         } else {
                             if (listVisitasEmp.isEnabled()) {
-
-                                visita = new Visita(visitaElegida.getCod(), empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                                visita = new Visita(visitaElegida.getCod(), guia, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
                                         t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
                                         t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
                                 new EditarDatos().editarVisitas(bbdd, visita);
@@ -1250,18 +1255,18 @@ public class VentanaSecundaria {
     }
 
     public void cargarImagenes() {
-        añadirButton.setIcon(new ImageIcon("Assets/añadir.png"));
-        editarButton.setIcon(new ImageIcon("Assets/save.png"));
-        b_guiaVisEditar.setIcon(new ImageIcon("Assets/edit.png"));
-        eliminarButton.setIcon(new ImageIcon("Assets/delete.png"));
-        b_guiaVisEliminar.setIcon(new ImageIcon("Assets/delete.png"));
-        clienteButton.setIcon(new ImageIcon("Assets/cliente.png"));
-        empleadoButton.setIcon(new ImageIcon("Assets/empleado.png"));
-        b_guiaVisNueva.setIcon(new ImageIcon("Assets/nuevaVisita.png"));
-        b_cliMisVisitas.setIcon(new ImageIcon("Assets/mis.png"));
-        b_guiaVisMisVisitas.setIcon(new ImageIcon("Assets/mis.png"));
-        b_cliReservar.setIcon(new ImageIcon("Assets/pedido.png"));
-        b_guiaVisClientes.setIcon(new ImageIcon("Assets/cliente24x24.png"));
+        añadirButton.setIcon(new ImageIcon("assets/añadir.png"));
+        editarButton.setIcon(new ImageIcon("assets/save.png"));
+        b_guiaVisEditar.setIcon(new ImageIcon("assets/edit.png"));
+        eliminarButton.setIcon(new ImageIcon("assets/delete.png"));
+        b_guiaVisEliminar.setIcon(new ImageIcon("assets/delete.png"));
+        clienteButton.setIcon(new ImageIcon("assets/cliente.png"));
+        empleadoButton.setIcon(new ImageIcon("assets/empleado.png"));
+        b_guiaVisNueva.setIcon(new ImageIcon("assets/nuevaVisita.png"));
+        b_cliMisVisitas.setIcon(new ImageIcon("assets/mis.png"));
+        b_guiaVisMisVisitas.setIcon(new ImageIcon("assets/mis.png"));
+        b_cliReservar.setIcon(new ImageIcon("assets/pedido.png"));
+        b_guiaVisClientes.setIcon(new ImageIcon("assets/cliente24x24.png"));
     }
 
     public void cargarClientesEnLista() {

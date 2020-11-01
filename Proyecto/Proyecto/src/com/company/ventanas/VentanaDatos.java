@@ -1,4 +1,4 @@
-package Ventanas;
+package com.company.ventanas;
 
 import com.company.varios.Metadatos;
 

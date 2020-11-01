@@ -1,4 +1,4 @@
-package Ventanas;
+package com.company.ventanas;
 
 import com.company.DB4O.CargarDatosDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;

@@ -1,4 +1,4 @@
-package Ventanas;
+package com.company.ventanas;
 
 import com.company.DB4O.CargarDatosDB4O;
 import com.company.modelo.RegistroCliente;
@@ -7,9 +7,7 @@ import com.company.sql.CargarDatos;
 import com.company.varios.ModeloTableRegistros;
 
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
