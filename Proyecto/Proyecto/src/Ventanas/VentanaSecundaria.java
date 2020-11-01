@@ -421,10 +421,13 @@ public class VentanaSecundaria {
         b_adminMetadatos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                StringBuilder sb;
                 if (bbdd != 4) {
-                    StringBuilder sb = new Metadatos().generarMetadatos(bbdd);
-                    abrirVentanaDatos(sb, "Metadatos");
+                    sb = new Metadatos().generarMetadatos(bbdd);
+                } else {
+                    sb = new Metadatos().generarMetadatosDB4O();
                 }
+                abrirVentanaDatos(sb, "Metadatos");
             }
         });
 

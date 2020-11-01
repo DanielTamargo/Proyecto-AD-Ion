@@ -1,7 +1,9 @@
 package com.company;
 
+import com.company.Modelo.*;
 import com.company.sql.Conexiones;
 
+import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -132,6 +134,124 @@ public class Metadatos {
                 cn.printStackTrace();
             }
         }
+        return sb;
+    }
+
+    /**
+     * Método reutilizado para simular la generación de metadatos de DB4O
+     *
+     */
+    public StringBuilder generarMetadatosDB4O() {
+        StringBuilder sb = new StringBuilder();
+
+        String nombre = "DB4O";
+        String driver = "db4o-8.0.276.16149-all-java5";
+        String versionDriver = "native";
+        String url = "Db4oEmbedded.newConfiguration():db4o.yap";
+        String usuario = "null";
+
+        System.out.println("INFORMACION SOBRE LA BASE DE DATOS: " + nombre);
+        sb.append("INFORMACION SOBRE LA BASE DE DATOS: ").append(nombre).append("\n");
+        System.out.println("Driver            : " + driver);
+        sb.append("Driver            : ").append(driver).append("\n");
+        System.out.println("Versión del Driver: " + versionDriver);
+        sb.append("Versión del Driver: ").append(versionDriver).append("\n");
+        System.out.println("URL               : " + url);
+        sb.append("URL               : ").append(url).append("\n");
+        System.out.println("Usuario           : " + usuario);
+        sb.append("Usuario           : ").append(usuario).append("\n");
+
+        System.out.println();
+        sb.append(System.getProperty("line.separator"));
+
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+
+        System.out.println("Class.Empleado");
+        sb.append("Class.Empleado").append("\n");
+        for (Field field: Empleado.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+
+        System.out.println("Class.Cliente");
+        sb.append("Class.Cliente").append("\n");
+        for (Field field: Cliente.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+
+        System.out.println("Class.Visita");
+        sb.append("Class.Visita").append("\n");
+        for (Field field: Visita.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+
+        System.out.println("Class.VisitaCliente");
+        sb.append("Class.VisitaCliente").append("\n");
+        for (Field field: VisitaCliente.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+        System.out.println("Class.RegistroEmpleado");
+        sb.append("Class.RegistroEmpleado").append("\n");
+        for (Field field: RegistroEmpleado.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+
+        System.out.println("Class.RegistroCliente");
+        sb.append("Class.RegistroCliente").append("\n");
+        for (Field field: RegistroCliente.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+
+        System.out.println("Class.Bonificacion");
+        sb.append("Class.Bonificacion").append("\n");
+        for (Field field: Bonificacion.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+        System.out.println("======================================================================");
+        sb.append("======================================================================").append("\n");
+
+        System.out.println("Class.BonificacionVisita");
+        sb.append("Class.BonificacionVisita").append("\n");
+        for (Field field: BonificacionVisita.class.getDeclaredFields()) {
+            String format = String.format("\t%-22s | %s\n", field.getName(), field.getType().toString().replace("class", "").trim());
+            System.out.format(format);
+            sb.append(format);
+        }
+        sb.append("\n");
+
         return sb;
     }
 }

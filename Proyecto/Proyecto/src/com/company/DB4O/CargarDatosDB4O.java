@@ -268,7 +268,12 @@ public class CargarDatosDB4O {
         return numClientes;
     }
 
-
+    /**
+     * Devuelve un StringBuilder con las líneas a mostrar de los clientes apuntados a una visita
+     *
+     * @param v <- visita de la cual se quieren recoger los clientes apuntados
+     * @return sb <- StrinBuilder con las líneas de texto
+     */
     public StringBuilder cargarClientesApuntados(Visita v) {
         StringBuilder sb = new StringBuilder();
 

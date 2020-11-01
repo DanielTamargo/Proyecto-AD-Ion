@@ -1,8 +1,11 @@
 package com.company.pruebas;
 
+import Ventanas.VentanaDatos;
+import com.company.Metadatos;
 import com.company.Modelo.Visita;
 import com.company.sql.CargarDatos;
 
+import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,6 +14,19 @@ public class Varios {
 
     public static void main(String[] args) {
 
+        JFrame frame = new JFrame("Metadatos");
+        VentanaDatos vd = new VentanaDatos(new Metadatos().generarMetadatosDB4O());
+        frame.setContentPane(vd.getPanel());
+        vd.setVentanaDatos(frame);
+        //.setVentanaSecundaria(frameVentanaSecundaria);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        //frameVentanaSecundaria.dispose();
+
+        /*
         ArrayList<String> test1 = new ArrayList<>();
         test1.add("Hola"); test1.add("Bien"); test1.add("Mal"); test1.add("Genial"); test1.add("Adiós");
         ArrayList<String> test2 = new ArrayList<>();
@@ -27,7 +43,7 @@ public class Varios {
             }
             System.out.println();
         }
-
+*/
 
         /*
         ArrayList<Visita> visitas = new CargarDatos().cargarVisitas(1);
