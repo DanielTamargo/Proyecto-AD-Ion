@@ -1,6 +1,6 @@
-package com.company;
+package com.company.varios;
 
-import com.company.Modelo.*;
+import com.company.modelo.*;
 import com.company.sql.Conexiones;
 
 import java.lang.reflect.Field;

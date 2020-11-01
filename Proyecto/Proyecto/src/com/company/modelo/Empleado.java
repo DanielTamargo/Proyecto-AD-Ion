@@ -1,9 +1,8 @@
-package com.company.Modelo;
+package com.company.modelo;
 
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Objects;
 
 public class Empleado {
