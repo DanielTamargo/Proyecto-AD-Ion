@@ -530,7 +530,58 @@ public class CargarDatos {
         return visitasCliente;
     }
 
+    public ArrayList<Cliente> clientesApuntadosAVisita(int bbdd, int cod) {
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        Connection conexion = realizarConexion(bbdd);
+        if (conexion != null) {
 
+            try {
+                Statement sentencia = conexion.createStatement(); // Preparamos la sentencia
+                ResultSet r = sentencia.executeQuery("SELECT cliente FROM visitasclientes WHERE visita=" + cod); // Ejecutamos la sentencia
+                while (r.next()) { // Recorremos los datos
+                    Statement sentencia2 = conexion.createStatement(); // Preparamos la sentencia
+                    ResultSet r2 = sentencia2.executeQuery("SELECT * FROM clientes WHERE dni='" + r.getString(1) + "'");
+                    while (r2.next()) {
+                        clientes.add(new Cliente(r2.getString(1), r2.getString(2),
+                                r2.getString(3), r2.getInt(4), r2.getString(5),
+                                r2.getString(6)));
+                    }
+                    r2.close();
+                    sentencia2.close();
+                }
+                r.close(); // Cerrar ResultSet
+                sentencia.close();// Cerrar Statement
+                conexion.close(); // Cerrar Conexión
+
+            } catch (SQLException ignored) {
+                ignored.printStackTrace();
+            }
+        }
+        return clientes;
+    }
+
+
+    public StringBuilder clientesApuntados(int bbdd, int codVisita) {
+        StringBuilder sb = new StringBuilder();
+
+        ArrayList<Cliente> clientes = clientesApuntadosAVisita(bbdd, codVisita);
+        if (clientes.size() > 0)
+            sb.append("CLIENTES APUNTADOS A LA VISITA:\n\n");
+        for (Cliente cliente : clientes) {
+            sb.append("\t").append(cliente).append("\n");
+        }
+
+        return sb;
+    }
+
+
+    /**
+     * Devuelve el número de clientes apuntados a la visita (útil para calcular el dinero que ha ganado cada visita)
+     *
+     * @param bbdd <- int que controlará a que base de datos conectarse
+     * @param cod <- codigo de la visita para saber cuantos clientes apuntados hay
+     * @return numClientes <- int con el número de clientes apuntados
+     */
     public int numClientesApuntadosAVisita(int bbdd, int cod) {
         int numClientes = 0;
         Connection conexion = realizarConexion(bbdd);

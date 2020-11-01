@@ -2,7 +2,6 @@ package Ventanas;
 
 import com.company.DB4O.BorrarDatosDB4O;
 import com.company.DB4O.CargarDatosDB4O;
-import com.company.DB4O.InsertarDatosBaseDB4O;
 import com.company.DB4O.InsertarEditarDatosDB4O;
 import com.company.HiloCloud;
 import com.company.Metadatos;
@@ -93,6 +92,7 @@ public class VentanaSecundaria {
     private JTextField t_guiaVisGUIA;
     private JTextField t_cliVisNOMBRE;
     private JPanel panelAdmin;
+    private JButton b_guiaVisClientes;
 
     // GENERALES
     private int bbdd = 1;
@@ -260,8 +260,35 @@ public class VentanaSecundaria {
                 b_guiaVisEditar.setIcon(new ImageIcon("assets/save.png"));
                 listVisitasEmp.setEnabled(false);
 
+                b_guiaVisClientes.setEnabled(false);
+
                 b_guiaVisEditar.setEnabled(true);
                 b_guiaVisEliminar.setEnabled(true);
+            }
+        });
+        b_guiaVisClientes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Visita visita = null;
+                try {
+                    visita = (Visita) listVisitasEmp.getSelectedValue();
+                } catch (NullPointerException ignored) {}
+
+                if (visita != null) {
+                    StringBuilder sb = new StringBuilder();
+
+                    if (bbdd == 4) {
+                        sb = new CargarDatosDB4O().cargarClientesApuntados(visita);
+                    } else {
+                        sb = new CargarDatos().clientesApuntados(bbdd, visita.getCod());
+                    }
+
+                    if (sb.length() <= 0) {
+                        mostrarJOPtionPane("Sin clientes", "Aún no hay clientes apuntados a la visita", 1);
+                    } else {
+                        abrirVentanaDatos(sb, "Clientes Apuntados");
+                    }
+                }
             }
         });
         listVisitasEmp.addListSelectionListener(new ListSelectionListener() {
@@ -396,20 +423,11 @@ public class VentanaSecundaria {
             public void actionPerformed(ActionEvent e) {
                 if (bbdd != 4) {
                     StringBuilder sb = new Metadatos().generarMetadatos(bbdd);
-                    JFrame frame = new JFrame("Metadatos");
-                    VentanaDatos vd = new VentanaDatos(sb);
-                    frame.setContentPane(vd.getPanel());
-                    vd.setVentanaDatos(frame);
-                    vd.setVentanaSecundaria(frameVentanaSecundaria);
-                    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    frame.pack();
-                    frame.setLocationRelativeTo(null);
-                    frame.setVisible(true);
-
-                    frameVentanaSecundaria.dispose();
+                    abrirVentanaDatos(sb, "Metadatos");
                 }
             }
         });
+
 
     }
 
@@ -503,6 +521,7 @@ public class VentanaSecundaria {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MÉTODOS COMUNES
+
     public void mostrarJOPtionPane(String titulo, String mensaje, int tipo) {
         JButton okButton = new JButton("Entendido");
         okButton.setFocusPainted(false);
@@ -511,6 +530,20 @@ public class VentanaSecundaria {
         JDialog dialog = pane.createDialog(titulo);
         okButton.addActionListener(e -> dialog.dispose());
         dialog.setVisible(true);
+    }
+
+    public void abrirVentanaDatos(StringBuilder sb, String titulo) {
+        JFrame frame = new JFrame(titulo);
+        VentanaDatos vd = new VentanaDatos(sb);
+        frame.setContentPane(vd.getPanel());
+        vd.setVentanaDatos(frame);
+        vd.setVentanaSecundaria(frameVentanaSecundaria);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        frameVentanaSecundaria.dispose();
     }
 
     public void eliminarPresionado(int tipo) {
@@ -797,9 +830,11 @@ public class VentanaSecundaria {
             if (visita.getGuia().getDni().equalsIgnoreCase(empleado.getDni())
                     || empleado.getCargo().equalsIgnoreCase("Administrador")) {
                 b_guiaVisEditar.setEnabled(true);
+                b_guiaVisClientes.setEnabled(true);
                 b_guiaVisEliminar.setEnabled(true);
             } else {
                 b_guiaVisEditar.setEnabled(false);
+                b_guiaVisClientes.setEnabled(false);
                 b_guiaVisEliminar.setEnabled(false);
             }
         }
@@ -889,79 +924,86 @@ public class VentanaSecundaria {
     }
 
     public void editarInsertarGuiaVisita() {
-        if (!comprobarDatosGuiaVisitaInsertados()) {
-            mostrarJOPtionPane("Faltan datos", "Debes rellenar todos los datos necesarios", 0);
-        } else {
-            boolean error = false;
-            LocalDateTime fecha = null;
+        Visita visitaElegida = null;
+        try {
+            visitaElegida = (Visita) listVisitasEmp.getSelectedValue();
+        } catch (NullPointerException ignored) { }
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            try {
-                fecha = LocalDateTime.parse(t_guiaVisFECHA.getText(), formatter);
-            } catch (Exception pe) {
-                error = true;
-            }
-
-            if (error) {
-                mostrarJOPtionPane("Error con la fecha", "Debes insertar la fecha con \n" +
-                        "el formato: dd/mm/yyyy hh:mm\n" +
-                        "Ejemplo: 09/11/2020 17:30", 0);
+        if (visitaElegida != null) {
+            if (!comprobarDatosGuiaVisitaInsertados()) {
+                mostrarJOPtionPane("Faltan datos", "Debes rellenar todos los datos necesarios", 0);
             } else {
-                boolean error2 = false;
+                boolean error = false;
+                LocalDateTime fecha = null;
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 try {
-                    float coste = Float.parseFloat(t_guiaVisCOSTE.getText());
-                    float duracion = Float.parseFloat(t_guiaVisDUREST.getText());
-                } catch (NumberFormatException ignored) {
-                    error2 = true;
+                    fecha = LocalDateTime.parse(t_guiaVisFECHA.getText(), formatter);
+                } catch (Exception pe) {
+                    error = true;
                 }
 
-                if (error2) {
-                    mostrarJOPtionPane("Error con duración o coste", "Debes insertar la duración estimada \n" +
-                            "y el coste con el formato: número.decimal\n" +
-                            "Ejemplo: 7.5", 0);
+                if (error) {
+                    mostrarJOPtionPane("Error con la fecha", "Debes insertar la fecha con \n" +
+                            "el formato: dd/mm/yyyy hh:mm\n" +
+                            "Ejemplo: 09/11/2020 17:30", 0);
                 } else {
-                    Visita visita = null;
-                    if (bbdd == 4) {
-                        visita = new Visita(visitas.size() + 1, empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
-                                t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
-                                t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
-                        new InsertarEditarDatosDB4O().insertarEditarVisita(visita);
+                    boolean error2 = false;
+                    try {
+                        float coste = Float.parseFloat(t_guiaVisCOSTE.getText());
+                        float duracion = Float.parseFloat(t_guiaVisDUREST.getText());
+                    } catch (NumberFormatException ignored) {
+                        error2 = true;
+                    }
+
+                    if (error2) {
+                        mostrarJOPtionPane("Error con duración o coste", "Debes insertar la duración estimada \n" +
+                                "y el coste con el formato: número.decimal\n" +
+                                "Ejemplo: 7.5", 0);
                     } else {
-                        if (listVisitasEmp.isEnabled()) {
-                            Visita visitaElegida = (Visita) listVisitasEmp.getSelectedValue();
-                            visita = new Visita(visitaElegida.getCod(), empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                        Visita visita = null;
+                        if (bbdd == 4) {
+                            visita = new Visita(visitas.size() + 1, empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
                                     t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
                                     t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
-                            new EditarDatos().editarVisitas(bbdd, visitaElegida);
+                            new InsertarEditarDatosDB4O().insertarEditarVisita(visita);
                         } else {
-                            visita = new Visita(empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
-                                    t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
-                                    t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
-                            new InsertarDatos().insertarVisita(bbdd, visita);
+                            if (listVisitasEmp.isEnabled()) {
+
+                                visita = new Visita(visitaElegida.getCod(), empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                                        t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
+                                        t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
+                                new EditarDatos().editarVisitas(bbdd, visita);
+                            } else {
+                                visita = new Visita(empleado, t_guiaVisNOMBRE.getText(), (int) spinnerMAXCLIENTES.getValue(),
+                                        t_guiaVisPUNTOPART.getText(), fecha, fecha.getYear(), Float.parseFloat(t_guiaVisDUREST.getText()),
+                                        t_guiaVisTEMATICA.getText(), Float.parseFloat(t_guiaVisCOSTE.getText()));
+                                new InsertarDatos().insertarVisita(bbdd, visita);
+                            }
                         }
-                    }
 
-                    String registro;
-                    if (listVisitasEmp.isEnabled()) {
-                        selectedGuiaVisita = listVisitasEmp.getSelectedIndex();
-                        registro = "Editada la visita " + visita.getCod();
-                    } else {
+                        String registro;
+                        if (listVisitasEmp.isEnabled()) {
+                            selectedGuiaVisita = listVisitasEmp.getSelectedIndex();
+                            registro = "Editada la visita " + visita.getCod();
+                        } else {
+                            if (empleadoTodasVisitas)
+                                selectedGuiaVisita = todasVisitasSize;
+                            else
+                                selectedGuiaVisita = misVisitasSize;
+                            registro = "Creada nueva visita";
+                        }
+
+                        registroEmpleado(registro);
+                        cargarListasGuia();
+
                         if (empleadoTodasVisitas)
-                            selectedGuiaVisita = todasVisitasSize;
+                            actualizarListaGuiaTodasVisitas();
                         else
-                            selectedGuiaVisita = misVisitasSize;
-                        registro = "Creada nueva visita";
+                            actualizarListaGuiaMisVisitas();
+
+                        terminarAnyadirGuiaVisita();
                     }
-
-                    registroEmpleado(registro);
-                    cargarListasGuia();
-
-                    if (empleadoTodasVisitas)
-                        actualizarListaGuiaTodasVisitas();
-                    else
-                        actualizarListaGuiaMisVisitas();
-
-                    terminarAnyadirGuiaVisita();
                 }
             }
         }
@@ -1099,6 +1141,7 @@ public class VentanaSecundaria {
         b_cliMisVisitas.setIcon(new ImageIcon("Assets/mis.png"));
         b_guiaVisMisVisitas.setIcon(new ImageIcon("Assets/mis.png"));
         b_cliReservar.setIcon(new ImageIcon("Assets/pedido.png"));
+        b_guiaVisClientes.setIcon(new ImageIcon("Assets/cliente24x24.png"));
     }
 
     public void cargarClientesEnLista() {

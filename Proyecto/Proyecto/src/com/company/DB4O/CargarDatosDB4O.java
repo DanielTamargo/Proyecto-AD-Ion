@@ -182,6 +182,12 @@ public class CargarDatosDB4O {
         return visitas;
     }
 
+    /**
+     * Método que devuelve un arraylist con todas las visitasclientes de un cliente
+     *
+     * @param cli <- cliente del cual se quiere conocer sus visitas
+     * @return visitasClientes <- arraylist con todas las visitasclientes del cliente
+     */
     public ArrayList<VisitaCliente> cargarVisitasCliente(Cliente cli) {
         ArrayList<VisitaCliente> visitasClientes = new ArrayList<>();
 
@@ -235,6 +241,15 @@ public class CargarDatosDB4O {
         return visitasClientes;
     }
 
+    /**
+     * Método que devuelve el número de clientes apuntados a una visita
+     *
+     * error: aparentemente produce un bucle infinito, desconocemos por qué, sospechamos que es porque el hash se realiza
+     * con dos objetos enteros y produce conflicto por lo que recorre miles de resultados cuando deberían ser unos pocos
+     *
+     * @param vis <- visita de la cual se quiere saber el número de clientes
+     * @return numClientes <- el número de clientes apuntados
+     */
     public int numClientesApuntadosAVisita(Visita vis) {
         int numClientes = 0;
 
@@ -253,24 +268,39 @@ public class CargarDatosDB4O {
         return numClientes;
     }
 
-    public int cargarNumClientesApuntadosAVisitaDelEmpleado(Visita v) {
-        int numClientes = 0;
-        ObjectContainer bd = new ConexionDB4O().conectarBD();
-        if (bd != null) {
-            VisitaCliente visCliQuery = new VisitaCliente(v);
-            ObjectSet<VisitaCliente> resultadoVisCli = bd.queryByExample(visCliQuery);
-            while (resultadoVisCli.hasNext()) {
-                numClientes++;
+
+    public StringBuilder cargarClientesApuntados(Visita v) {
+        StringBuilder sb = new StringBuilder();
+
+        ArrayList<Cliente> clientes = cargarClientes();
+        ArrayList<VisitaCliente> visitaClientes = cargarVisitasClientes();
+        ArrayList<Cliente> clientesApuntados = new ArrayList<>();
+
+        for (Cliente cliente : clientes) {
+            for (VisitaCliente visitaCliente : visitaClientes) {
+                if (cliente.getDni().equalsIgnoreCase(visitaCliente.getCliente().getDni())) {
+                    clientesApuntados.add(cliente);
+                    break;
+                }
             }
-            bd.close();
         }
 
-        return numClientes;
+        if (clientesApuntados.size() > 0)
+            sb.append("CLIENTES APUNTADOS A LA VISITA:\n\n");
+        for (Cliente clienteApuntado : clientesApuntados) {
+            sb.append("\t").append(clienteApuntado).append("\n");
+        }
+
+        return sb;
     }
 
-
+    /**
+     * Método que devuelve un array list con todos los registros de todos los empleados
+     *
+     * @return registrosEmpleados <- devuelve los registros de los empleados
+     */
     public ArrayList<RegistroEmpleado> cargarRegistrosEmpleados() {
-        ArrayList<RegistroEmpleado> registroEmpleados = new ArrayList<>();
+        ArrayList<RegistroEmpleado> registrosEmpleados = new ArrayList<>();
 
         ObjectContainer bd = new ConexionDB4O().conectarBD();
         if (bd != null) {
@@ -280,16 +310,21 @@ public class CargarDatosDB4O {
 
                 while (result.hasNext()) {
                     RegistroEmpleado reg = result.next();
-                    registroEmpleados.add(reg);
+                    registrosEmpleados.add(reg);
                 }
             } catch (Db4oException ignored) { }
             bd.close();
         }
-        return registroEmpleados;
+        return registrosEmpleados;
     }
 
+    /**
+     * Método que devuelve un array list con todos los registros de todos los clientes
+     *
+     * @return registrosClientes <- devuelve los registros de los clientes
+     */
     public ArrayList<RegistroCliente> cargarRegistrosClientes() {
-        ArrayList<RegistroCliente> registroClientes = new ArrayList<>();
+        ArrayList<RegistroCliente> registrosClientes = new ArrayList<>();
 
         ObjectContainer bd = new ConexionDB4O().conectarBD();
         if (bd != null) {
@@ -299,12 +334,12 @@ public class CargarDatosDB4O {
 
                 while (result.hasNext()) {
                     RegistroCliente reg = result.next();
-                    registroClientes.add(reg);
+                    registrosClientes.add(reg);
                 }
             } catch (Db4oException ignored) { }
             bd.close();
         }
-        return registroClientes;
+        return registrosClientes;
     }
 
 }
