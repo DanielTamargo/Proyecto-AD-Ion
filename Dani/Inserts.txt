@@ -113,10 +113,47 @@ VALUES ('72125486Q', 'Conociendo la gastronomía española', 5, 'Virgen Blanca',
 ///////////////// VISITASCLIENTES
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-INSERT INTO visitasclientes VALUES ('20993742D', 1);
-INSERT INTO visitasclientes VALUES ('69905367H', 1);
-INSERT INTO visitasclientes VALUES ('17927085B', 1);
-INSERT INTO visitasclientes VALUES ('81358766S', 1);
+INSERT INTO visitasclientes VALUES ('21959836B', 67);
+INSERT INTO visitasclientes VALUES ('94551332B', 67);
+INSERT INTO visitasclientes VALUES ('12614890B', 67);
+INSERT INTO visitasclientes VALUES ('37390862S', 67);
+INSERT INTO visitasclientes VALUES ('21305670B', 67);
+
+INSERT INTO visitasclientes VALUES ('21959836B', 62);
+INSERT INTO visitasclientes VALUES ('94551332B', 62);
+INSERT INTO visitasclientes VALUES ('61544791B', 62);
+
+INSERT INTO visitasclientes VALUES ('94551332B', 63);
+INSERT INTO visitasclientes VALUES ('61544791B', 63);
+INSERT INTO visitasclientes VALUES ('90829875T', 63);
+INSERT INTO visitasclientes VALUES ('81358766S', 63);
+INSERT INTO visitasclientes VALUES ('88195988G', 63);
+INSERT INTO visitasclientes VALUES ('69922951F', 63);
+INSERT INTO visitasclientes VALUES ('73871496G', 63);
+INSERT INTO visitasclientes VALUES ('12336603R', 63);
+
+INSERT INTO visitasclientes VALUES ('21959836B', 68);
+INSERT INTO visitasclientes VALUES ('61544791B', 68);
+INSERT INTO visitasclientes VALUES ('69905367H', 68);
+INSERT INTO visitasclientes VALUES ('20993742D', 68);
+
+INSERT INTO visitasclientes VALUES ('21959836B', 75);
+INSERT INTO visitasclientes VALUES ('61544791B', 75);
+INSERT INTO visitasclientes VALUES ('22146078E', 75);
+INSERT INTO visitasclientes VALUES ('90829875T', 75);
+
+
+INSERT INTO visitasclientes VALUES ('21959836B', 70);
+INSERT INTO visitasclientes VALUES ('61544791B', 70);
+INSERT INTO visitasclientes VALUES ('22146078E', 70);
+INSERT INTO visitasclientes VALUES ('90829875T', 70);
+
+INSERT INTO visitasclientes VALUES ('94551332B', 72);
+INSERT INTO visitasclientes VALUES ('61544791B', 72);
+INSERT INTO visitasclientes VALUES ('22146078E', 72);
+INSERT INTO visitasclientes VALUES ('90829875T', 72);
+
+
 
 
 
