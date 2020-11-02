@@ -13,6 +13,10 @@ INSERT INTO empleados VALUES ('77484057R', 'Paula', 'Moreno', '2000-01-01', '201
 INSERT INTO empleados VALUES ('84084189F', 'Elena', 'Moreno', '2000-01-01', '2019-10-10', 'Colombiana', 'Guía', 'test'); 
 INSERT INTO empleados VALUES ('14679664Y', 'Iñigo', 'Orive', '1995-08-17', '2019-11-19', 'Española', 'Guía', 'test');
 
+INSERT INTO empleados VALUES ('72125486Q', 'Saioa', 'Medina', '2001-04-19', '2019-11-20', 'Española', 'Guía', 'test');
+INSERT INTO empleados VALUES ('34363525F', 'Laura', 'Herrera', '1997-03-18', '2019-12-01', 'Española', 'Guía', 'test');
+INSERT INTO empleados VALUES ('51227145G', 'Carlos', 'Morales', '1990-09-20', '2019-12-01', 'Mexicana', 'Guía', 'test');
+
 INSERT INTO empleados VALUES ('51298783C', 'Irune', 'Stavinski', '1997-01-02', '2019-08-20', 'Rusa', 'RRHH', 'test');
 INSERT INTO empleados VALUES ('90032473P', 'Ander', 'Zugasti', '1993-08-05', '2019-11-19', 'Española', 'RRHH', 'test');
 INSERT INTO empleados VALUES ('88139440J', 'Gorka', 'Alda', '1994-12-30', '2019-11-23', 'Española', 'RRHH', 'test');
@@ -35,14 +39,74 @@ INSERT INTO clientes VALUES ('81358766S', 'Nekane', 'Martínez Saiz', 20, 'Estud
 INSERT INTO clientes VALUES ('88195988G', 'Josué', 'Campo Abecia', 22, 'Estudiante', 'test'); 
 INSERT INTO clientes VALUES ('69922951F', 'Rakel', 'Ubierna Martínez', 32, 'Profesora', 'test'); 
 
+INSERT INTO clientes VALUES ('21959836B', 'Pedro', 'Molina Castro', 24, 'Diseñador', 'test'); 
+INSERT INTO clientes VALUES ('94551332B', 'Daniel', 'Ortiz Silva', 24, 'Chef', 'test'); 
+INSERT INTO clientes VALUES ('12614890B', 'Alejandro', 'Núñez Cabrera', 25, 'Dentista', 'test'); 
+INSERT INTO clientes VALUES ('37390862S', 'Angel', 'Luna Godoy', 28, 'Diseñador', 'test'); 
+INSERT INTO clientes VALUES ('21305670B', 'Pablo', 'Ferreyra Moreno', 25, 'Doctor', 'test'); 
+INSERT INTO clientes VALUES ('88234668K', 'Iván', 'Aguirre Martínez', 20, 'Estudiante', 'test'); 
+INSERT INTO clientes VALUES ('42130367W', 'Óscar', 'Ramos Vargas', 32, 'Ayudante Chef', 'test'); 
+INSERT INTO clientes VALUES ('61544791B', 'Enrique', 'Cáceres Figueroa', 20, 'Estudiante', 'test'); 
+INSERT INTO clientes VALUES ('03338628V', 'Vicente', 'Córdoba Correa', 39, 'Doctor', 'test'); 
+INSERT INTO clientes VALUES ('13654878P', 'Andrés', 'Miranda Mansilla', 30, 'Panadero', 'test'); 
+INSERT INTO clientes VALUES ('28078280H', 'Mario', 'Farias Roldán', 33, 'Autor', 'test'); 
+INSERT INTO clientes VALUES ('35478007R', 'Roberto', 'Guzmán Lucero', 36, 'Astrónomo', 'test'); 
+INSERT INTO clientes VALUES ('11974693L', 'Jaime', 'Cruz Escobar', 24, 'Limpiador', 'test'); 
+INSERT INTO clientes VALUES ('27433087K', 'Julia', 'Bustos Mendoza', 19, 'Estudiante', 'test'); 
+INSERT INTO clientes VALUES ('52687922M', 'Patricia', 'Díaz Martínez', 37, 'Pescadora', 'test'); 
+INSERT INTO clientes VALUES ('41659196D', 'Alba', 'Álvarez Álvaro', 29, 'Policía', 'test'); 
+INSERT INTO clientes VALUES ('40596923Z', 'Mónica', 'Sánchez García', 30, 'Ingeniera', 'test'); 
+INSERT INTO clientes VALUES ('35862373Z', 'Rosa', 'Sosa Ramírez', 32, 'Ingeniera', 'test'); 
+INSERT INTO clientes VALUES ('83650999E', 'Alicia', 'Molina Valdez', 26, 'Florista', 'test'); 
+INSERT INTO clientes VALUES ('90829875T', 'María', 'Velázquez Arce', 32, 'Dentista', 'test'); 
+INSERT INTO clientes VALUES ('22146078E', 'Alicia', 'Campos Soto', 18, 'Estudiante', 'test'); 
+INSERT INTO clientes VALUES ('84494795V', 'Ángela', 'Toledo Olivera', 20, 'Estudiante', 'test'); 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////// VISITAS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
-VALUES ('77484057R', 'Visita al parque de Salburua', 5, 'Salburua', '2020-12-08 17:00:00', 2020, 2.5, "Paseo por el parque", 58.5); 
+VALUES ('77484057R', 'Visita al parque de Salburua', 8, 'Salburua', '2020-12-08 17:00:00', 2020, 2.5, 'Paseo', 58.5); 
 INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
-VALUES ('77484057R', 'Visita al parque de Salburua', 5, 'Salburua', '2020-12-08 17:00:00', 2020, 2.5, "Paseo por el parque", 58.5); 
+VALUES ('77484057R', 'Visita al parque de Salburua', 8, 'Salburua', '2020-12-11 17:00:00', 2020, 2.5, 'Paseo', 58.5); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('77484057R', 'Visita al parque de Salburua', 8, 'Salburua', '2020-12-15 17:00:00', 2020, 2.5, 'Paseo', 58.5); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('77484057R', 'Visita al parque de Salburua', 8, 'Salburua', '2020-12-18 17:00:00', 2020, 2.5, 'Paseo', 58.5); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('77484057R', 'Visita al parque de Salburua', 8, 'Salburua', '2020-12-21 17:00:00', 2020, 2.5, 'Paseo', 58.5); 
+
+
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('14679664Y', 'Visita a la Catedral', 5, 'Catedral', '2020-12-09 11:00:00', 2020, 2, 'Visita', 40);
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('14679664Y', 'Visita a la Catedral', 5, 'Catedral', '2020-12-12 11:00:00', 2020, 2, 'Visita', 40); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('14679664Y', 'Visita a la Catedral', 5, 'Catedral', '2020-12-16 11:00:00', 2020, 2, 'Visita', 40); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('14679664Y', 'Visita a la Catedral', 5, 'Catedral', '2020-12-19 11:00:00', 2020, 2, 'Visita', 40); 
+
+
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('60563277E', 'Ruta del Pico Gorbea', 5, 'Gorbea', '2020-12-10 16:00:00', 2020, 2, 'Montaña', 35); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('60563277E', 'Ruta del Pico Gorbea', 5, 'Gorbea', '2020-12-12 16:00:00', 2020, 2, 'Montaña', 35); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('60563277E', 'Ruta del Pico Gorbea', 5, 'Gorbea', '2020-12-14 16:00:00', 2020, 2, 'Montaña', 35); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('60563277E', 'Ruta del Pico Gorbea', 5, 'Gorbea', '2020-12-16 16:00:00', 2020, 2, 'Montaña', 35); 
+
+
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('72125486Q', 'Conociendo la gastronomía española', 5, 'Virgen Blanca', '2020-12-10 11:00:00', 2020, 2.5, 'Cocina', 90); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('72125486Q', 'Conociendo la gastronomía española', 5, 'Virgen Blanca', '2020-12-12 11:00:00', 2020, 2.5, 'Cocina', 90); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('72125486Q', 'Conociendo la gastronomía española', 5, 'Virgen Blanca', '2020-12-14 11:00:00', 2020, 2.5, 'Cocina', 90); 
+INSERT INTO visitas(guia, nombre, numMaxClientes, puntoPartida, fecha, anyo, duracionEstimada, tematica, coste) 
+VALUES ('72125486Q', 'Conociendo la gastronomía española', 5, 'Virgen Blanca', '2020-12-16 11:00:00', 2020, 2.5, 'Cocina', 90); 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -128,7 +128,12 @@ public class Login {
     }
 
     public void abrirVentanaSecundaria() {
-        JFrame frame = new JFrame("Datos");
+
+        String titulo = "Cliente";
+        if (empleado != null)
+            titulo = empleado.getCargo();
+
+        JFrame frame = new JFrame(titulo);
         VentanaSecundaria vs = new VentanaSecundaria();
         frame.setContentPane(vs.getPanelSecundario());
         vs.setBbdd(bbdd);
