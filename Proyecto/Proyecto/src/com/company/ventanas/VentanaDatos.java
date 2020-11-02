@@ -10,6 +10,7 @@ public class VentanaDatos {
     private JPanel panel;
     private JButton b_volver;
     private JTextPane textPane1;
+    private JScrollPane scrollPane1;
     private StringBuilder sb;
 
     private JFrame ventanaDatos;
@@ -32,6 +33,8 @@ public class VentanaDatos {
 
     public void volcarDatos() {
         textPane1.setText(String.valueOf(sb));
+        textPane1.setSelectionStart(sb.toString().indexOf(':') + 2);
+        textPane1.setSelectionEnd(sb.toString().indexOf('\n'));
     }
 
     public void setVentanaDatos(JFrame ventanaDatos) {
