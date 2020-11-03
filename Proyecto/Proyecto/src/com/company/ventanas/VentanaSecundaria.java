@@ -131,6 +131,7 @@ public class VentanaSecundaria {
     private JLabel l_fondoCloud;
     private JLabel l_gananciasAnualesText;
     private JLabel l_gananciasAnualesCifra;
+    private JLabel l_gananciasTotales;
     private JButton b_adminMetadatos;
     private JButton b_adminRegistros;
     private JLabel l_nombreUsuario4;
@@ -364,14 +365,14 @@ public class VentanaSecundaria {
         panelAdmin.setLayout(null);
         Dimension dim = new Dimension();
 
-        l_gananciasAnualesText = new JLabel("Ganancias anuales totales");
+        l_gananciasAnualesText = new JLabel("Ganancias este año");
         dim.setSize(250, 50);
         l_gananciasAnualesText.setFont(new Font("Microsoft Yahei UI", Font.PLAIN, 16));
         l_gananciasAnualesText.setHorizontalAlignment(JLabel.RIGHT);
         l_gananciasAnualesText.setPreferredSize(dim);
         l_gananciasAnualesText.setMinimumSize(dim);
         l_gananciasAnualesText.setMaximumSize(dim);
-        l_gananciasAnualesText.setBounds(450, 180, dim.width, dim.height);
+        l_gananciasAnualesText.setBounds(450, 175, dim.width, dim.height);
         panelAdmin.add(l_gananciasAnualesText);
 
         l_gananciasAnualesCifra = new JLabel("470.5");
@@ -381,8 +382,18 @@ public class VentanaSecundaria {
         l_gananciasAnualesCifra.setPreferredSize(dim);
         l_gananciasAnualesCifra.setMinimumSize(dim);
         l_gananciasAnualesCifra.setMaximumSize(dim);
-        l_gananciasAnualesCifra.setBounds(450, 205, dim.width, dim.height);
+        l_gananciasAnualesCifra.setBounds(450, 200, dim.width, dim.height);
         panelAdmin.add(l_gananciasAnualesCifra);
+
+        l_gananciasTotales = new JLabel("(totales: 420.0)");
+        dim.setSize(250, 50);
+        l_gananciasTotales.setFont(new Font("Microsoft Yahei UI", Font.PLAIN, 16));
+        l_gananciasTotales.setHorizontalAlignment(JLabel.RIGHT);
+        l_gananciasTotales.setPreferredSize(dim);
+        l_gananciasTotales.setMinimumSize(dim);
+        l_gananciasTotales.setMaximumSize(dim);
+        l_gananciasTotales.setBounds(450, 225, dim.width, dim.height);
+        panelAdmin.add(l_gananciasTotales);
 
         l_nombreUsuario4 = new JLabel("Daniel Tamargo");
         dim.setSize(250, 50);
@@ -504,6 +515,17 @@ public class VentanaSecundaria {
         calcularDineroAnualTotal();
 
         cargarNombreUsuario();
+
+
+        if (empleado != null) {
+            try {
+                if (bbdd == 4 && empleado.getCargo().equalsIgnoreCase("Administrador")) {
+                    b_cliMisVisitas.doClick();
+                    b_cliMisVisitas.setText("Mis Visitas");
+                    b_cliMisVisitas.setEnabled(false);
+                }
+            } catch (NullPointerException ignored) { }
+        }
     }
 
     public void cargarListas() {
@@ -586,23 +608,26 @@ public class VentanaSecundaria {
     }
 
     public void calcularDineroAnualTotal() {
+        double dineroTotal = 0;
         double dineroTotalAnual = 0;
         for (Visita visita : visitas) {
-            if (visita.getFecha().getYear() == LocalDateTime.now().getYear()) {
-                int numClientes = 0;
-                if (bbdd == 4) {
-                    ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasClientes();
-                    for (VisitaCliente visitaCliente : visitasClientes) {
-                        if (visitaCliente.getVisita().getCod() == visita.getCod())
-                            numClientes++;
-                    }
-                } else {
-                    numClientes = new CargarDatos().numClientesApuntadosAVisita(bbdd, visita.getCod());
+            int numClientes = 0;
+            if (bbdd == 4) {
+                ArrayList<VisitaCliente> visitasClientes = new CargarDatosDB4O().cargarVisitasClientes();
+                for (VisitaCliente visitaCliente : visitasClientes) {
+                    if (visitaCliente.getVisita().getCod() == visita.getCod())
+                        numClientes++;
                 }
+            } else {
+                numClientes = new CargarDatos().numClientesApuntadosAVisita(bbdd, visita.getCod());
+            }
+            dineroTotal += (visita.getCoste() * numClientes);
+            if (visita.getFecha().getYear() == LocalDateTime.now().getYear()) {
                 dineroTotalAnual += (visita.getCoste() * numClientes);
             }
         }
         l_gananciasAnualesCifra.setText(String.valueOf(dineroTotalAnual));
+        l_gananciasTotales.setText("(totales: " + String.valueOf(dineroTotal) + ")");
     }
 
     public void cargarNombreUsuario() {

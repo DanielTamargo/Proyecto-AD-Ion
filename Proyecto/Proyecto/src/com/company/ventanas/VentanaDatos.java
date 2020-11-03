@@ -33,8 +33,13 @@ public class VentanaDatos {
 
     public void volcarDatos() {
         textPane1.setText(String.valueOf(sb));
-        textPane1.setSelectionStart(sb.toString().indexOf(':') + 2);
-        textPane1.setSelectionEnd(sb.toString().indexOf('\n'));
+        try {
+            textPane1.setSelectionStart(sb.toString().indexOf(':') + 2);
+            textPane1.setSelectionEnd(sb.toString().indexOf('\n'));
+        } catch (Exception ignored) {
+            textPane1.setSelectionStart(0);
+            textPane1.setSelectionEnd(0);
+        }
     }
 
     public void setVentanaDatos(JFrame ventanaDatos) {

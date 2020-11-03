@@ -115,23 +115,23 @@ public class InsertarDatosBaseDB4O {
         Empleado emp8 = empleados.get(7);
 
         Visita visita1 = new Visita(1, emp5, "Visita nocturna", 50, "Plaza España",
-                stringToLocalDateTime("2020-10-16 21:30:00"), 2020, 1.5f, "Misterio", 45.50f);
+                stringToLocalDateTime("2019-12-16 21:30:00"), 2020, 1.5f, "Misterio", 45.50f);
         Visita visita2 = new Visita(2, emp7, "Visita histórica muralla", 33, "Catedral Santa Maria",
-                stringToLocalDateTime("2020-10-11 18:00:00"), 2020, 2.0f, "Historia", 40.0f);
+                stringToLocalDateTime("2020-12-11 18:00:00"), 2020, 2.0f, "Historia", 40.0f);
         Visita visita3 = new Visita(3, emp6, "Visita histórica", 20, "Plaza Abastos",
-                stringToLocalDateTime("2020-10-23 12:00:00"), 2020, 2.0f, "Historia", 30.0f);
+                stringToLocalDateTime("2020-12-23 12:00:00"), 2020, 2.0f, "Historia", 30.0f);
 
         Visita visita4 = new Visita(4, emp8, "Visita histórica", 45, "Plaza Abastos",
-                stringToLocalDateTime("2020-11-01 17:00:00"), 2020, 2.5f, "Historia", 25.0f);
+                stringToLocalDateTime("2020-12-01 17:00:00"), 2020, 2.5f, "Historia", 25.0f);
 
         Visita visita5 = new Visita(5, emp5, "Visita por las afueras", 20, "Estatua del Santo",
-                stringToLocalDateTime("2020-10-10 11:00:00"), 2020, 2.5f, "Historia", 20.0f);
+                stringToLocalDateTime("2020-12-10 11:00:00"), 2020, 2.5f, "Historia", 20.0f);
 
         Visita visita6 = new Visita(6, emp9, "Visita leyendas", 20, "Virgen Blanca",
-                stringToLocalDateTime("2020-11-01 20:00:00"), 2020, 2.5f, "Misterio", 30.0f);
+                stringToLocalDateTime("2020-12-01 20:00:00"), 2020, 2.5f, "Misterio", 30.0f);
 
         Visita visita7 = new Visita(7, emp6, "Visita histórica con leyendas", 30, "Plaza España",
-                stringToLocalDateTime("2020-10-22 18:30:00"), 2020, 2.0f, "Misterio", 25.0f);
+                stringToLocalDateTime("2020-12-22 18:30:00"), 2020, 2.0f, "Misterio", 25.0f);
 
         visitas.add(visita1);
         visitas.add(visita2);
