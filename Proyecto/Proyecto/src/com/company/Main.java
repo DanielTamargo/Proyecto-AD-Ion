@@ -6,6 +6,7 @@ import javax.swing.*;
 public class Main {
 
     /**
+     * Ejecutar desde aquí.
      * Arranca la aplicación
      */
     public static void main(String[] args) {
@@ -16,15 +17,6 @@ public class Main {
         frame.setContentPane(vp.getVentanaPrincipal());
         vp.setFrameVentanaPrincipal(frame);
         frame.pack();
-        /*
-        Dimension windowSize = frame.getSize();
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Point centerPoint = ge.getCenterPoint();
-
-        int dx = centerPoint.x - windowSize.width / 2;
-        int dy = centerPoint.y - windowSize.height / 2 - 60;
-        frame.setLocation(dx, dy);
-        */
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 

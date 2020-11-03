@@ -1,0 +1,52 @@
+~ DATOS DE ACCESO ~
+--------------------
+Oracle - RRHH
+--------------------
+Admin: 47729833A 123
+RRHH: 40293744K 123
+Guía: 98458026V 123
+
+Cliente sin participaciones: 
+58895306B
+
+Cliente con varias participaciones: 
+61557364A
+
+--------------------
+DB4O - Clientes
+--------------------
+Admin: 23020399K 1234
+RRHH: 68601853Y 1234
+Guía: 39333645B 1234
+
+Cliente sin participaciones: 
+62927665X
+
+Cliente con varias participaciones: 
+28045926W
+
+--------------------
+MySQL - Guía
+--------------------
+Admin: 52354260G 1234
+RRHH: 53955150W 1234
+Guía: 39333645B 1234
+
+Cliente sin participaciones: 
+24854627E
+
+Cliente con varias participaciones: 
+74809061C
+
+--------------------
+SQLite - Admin
+--------------------
+Admin: 99613328Y test
+RRHH: 51298783C test
+Guía: 77484057R test
+
+Cliente sin participaciones: 
+11974693L test
+
+Cliente con varias participaciones: 
+21959836B test
